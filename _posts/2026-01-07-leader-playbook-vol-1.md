@@ -6,6 +6,8 @@ date: 2026-01-07 13:33:00 +0800
 mermaid: true
 categories: lead
 tags: [ lead, strategy, playbook, influence ]
+redirect_from:
+  - /lead/2026/01/07/leader-playbook-vol-1.html
 ---
 
 I have always wondered: **How do you lead effectively when you have no leverage?**
