@@ -18,7 +18,7 @@ purest form of leadership: **Influence.**
 To get something done well in this environment, you must shift from _transactional_ leadership ("do this and get that")
 to _transformational_ leadership (connecting to purpose, identity, and growth).
 
-<div class="mermaid">
+```mermaid
 graph TD
     %% Core Problem & Solution
     Start[<b>The Challenge</b><br/>No Leverage / No Authority] -->|Shift Mindset| Solution[<b>The Solution</b><br/>Pure Influence]
@@ -45,8 +45,7 @@ graph TD
     classDef pillar fill:#e1f5fe,stroke:#0277bd,stroke-width:2px;
     class Solution,Trans main;
     class P1,P2,P3 pillar;
-
-</div>
+```
 
 ---
 
