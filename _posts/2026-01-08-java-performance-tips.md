@@ -5,6 +5,8 @@ author: "Boyu"
 date: 2026-01-08 15:38:00 +0800
 categories: tech
 tags: [ tech, java, performance, tips, cheatsheet ]
+redirect_from:
+  - /tech/2026/01/08/java-performance-tips.html
 ---
 
 This is an evolving tips list (or a cheatsheet) for common Java performance optimizations.

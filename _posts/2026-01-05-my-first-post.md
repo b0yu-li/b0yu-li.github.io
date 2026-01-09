@@ -5,6 +5,8 @@ author: "Boyu"
 date: 2026-01-05 17:29:00 +0800
 categories: update
 tags: [ introduction, life ]
+redirect_from:
+  - /update/2026/01/05/my-first-post.html
 ---
 
 ## Who am I?

@@ -5,6 +5,8 @@ author: "Boyu"
 date: 2026-01-08 11:36:00 +0800
 categories: tech
 tags: [ leetcode, java, journey ]
+redirect_from:
+  - /tech/2026/01/08/leetcode-journey.html
 ---
 
 This is an evolving blog documenting how I approached the problems
