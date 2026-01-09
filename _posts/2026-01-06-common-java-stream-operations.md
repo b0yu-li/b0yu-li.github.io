@@ -15,14 +15,14 @@ This is an evolving cheatsheet for common Java Stream operations.
 
 ### Get the frequency map using `Collectors.counting`
 
-``` Java
+```java
 import java.util.stream.Collectors;
 import java.util.function.Function;
 
 final List<String> letters = List.of("a", "b", "b", "c", "c", "c", "d", "d", "d", "d");
 
 final Map<String, Long> frequencyMap = letters.stream()
-    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+  .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 ```
 
 Output: The `frequencyMap` will look like this: `{a=1, b=2, c=3, d=4}`
