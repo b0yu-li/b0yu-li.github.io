@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "LeetCode Journey: Digest LeetCode 75"
-author: "Boyu"
+author: boyu
 date: 2026-01-08 11:36:00 +0800
 categories: tech
 tags: [ leetcode, java, journey ]
