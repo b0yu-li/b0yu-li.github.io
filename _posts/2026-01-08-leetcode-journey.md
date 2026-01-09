@@ -27,7 +27,7 @@ in [LeetCode 75 Study Plan](https://leetcode.com/studyplan/leetcode-75/).
 
 > **Pro Tip:**
 > You can skip the description portion if you already know the problem.
-{: .prompt-tip }
+> {: .prompt-tip }
 
 You are given an integer array `nums` and an integer `k`.
 
@@ -115,7 +115,7 @@ public int maxOperations(int[] nums, int k) {
   sort the array first. This is the _cost of admission_ for this approach.)
 + And I pair them up like this.
 
-<img src="/assets/images/leetcode-journey-1679-matchmaker-analogy.svg" alt="LeetCode Journey: No. 1679, The Matchmaker Analogy" width="600">
+<img src="/assets/images/leetcode-journey-1679-matchmaker-analogy.svg" alt="LeetCode Journey: No. 1679, The Matchmaker Analogy" width="800">
 
 ###### Solution Snippet
 
@@ -181,7 +181,7 @@ public int maxOperations(int[] nums, int k) {
 
 > **Pro Tip:**
 > You can skip the description portion if you already know the problem.
-{: .prompt-tip }
+> {: .prompt-tip }
 
 Given an integer array nums, return all the triplets `[nums[i], nums[j], nums[k]]` such that `i != j`, `i != k`, and
 `j != k`, and `nums[i] + nums[j] + nums[k] == 0`.
