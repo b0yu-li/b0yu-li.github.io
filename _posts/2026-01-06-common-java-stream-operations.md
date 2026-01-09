@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Java Stream Operations Cheatsheet"
-author: "Boyu"
+author: boyu
 date: 2026-01-06 11:42:00 +0800
 categories: tech
 tags: [ tech, java, stream, utility, cheatsheet ]

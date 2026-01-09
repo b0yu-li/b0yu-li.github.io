@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Hi! I am Boyu and nice to meet you."
-author: "Boyu"
+author: boyu
 date: 2026-01-05 17:29:00 +0800
 categories: update
 tags: [ introduction, life ]
