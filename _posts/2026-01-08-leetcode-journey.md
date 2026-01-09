@@ -23,9 +23,7 @@ in [LeetCode 75 Study Plan](https://leetcode.com/studyplan/leetcode-75/).
 #### No.1679 - Max Number of K-Sum Pair
 
 <details markdown="1">
-<summary><b>Click here to unfold the extra details</b></summary>
-
-##### Description (CAN SKIP IF YOU ALREADY KNOW THE PROBLEM)
+<summary><h5>Description (CAN SKIP IF YOU ALREADY KNOW THE PROBLEM)</h5></summary>
 
 You are given an integer array `nums` and an integer `k`.
 
