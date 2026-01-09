@@ -25,7 +25,9 @@ in [LeetCode 75 Study Plan](https://leetcode.com/studyplan/leetcode-75/).
 <details markdown="1">
 <summary><h5 style="display:inline-block; margin:0; vertical-align:middle;">Description</h5></summary>
 
-> **TIP** You can skip it if you already know the problem.
+> **Pro Tip:**
+> You can skip the description portion if you already know the problem.
+{: .prompt-tip }
 
 You are given an integer array `nums` and an integer `k`.
 
@@ -178,7 +180,7 @@ public int maxOperations(int[] nums, int k) {
 <summary><h5 style="display:inline-block; margin:0; vertical-align:middle;">Description</h5></summary>
 
 > **Pro Tip:**
-> You can skip it if you already know the problem.
+> You can skip the description portion if you already know the problem.
 {: .prompt-tip }
 
 Given an integer array nums, return all the triplets `[nums[i], nums[j], nums[k]]` such that `i != j`, `i != k`, and
