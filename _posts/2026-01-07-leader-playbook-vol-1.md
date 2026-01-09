@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Leader Playbook Vol.1: Influence Beyond Carrots and Sticks"
-author: "Boyu"
+author: boyu
 date: 2026-01-07 13:33:00 +0800
 mermaid: true
 categories: lead

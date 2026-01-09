@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Java Performance Tips"
-author: "Boyu"
+author: boyu
 date: 2026-01-08 15:38:00 +0800
 categories: tech
 tags: [ tech, java, performance, tips, cheatsheet ]
