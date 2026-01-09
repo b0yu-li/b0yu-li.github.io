@@ -75,7 +75,7 @@ Return _the maximum number of operations you can perform on the array_.
 
 ###### Solution Snippet
 
-```Java
+```java
 public int maxOperations(int[] nums, int k) {
   final Map<Integer, Integer> waitingRoom = new HashMap<>();
   int count = 0;
@@ -117,7 +117,7 @@ public int maxOperations(int[] nums, int k) {
 
 ###### Solution Snippet
 
-```Java
+```java
 public int maxOperations(int[] nums, int k) {
   // Step 0: Line them up smallest to biggest (sorting)
   Arrays.sort(nums);
