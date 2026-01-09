@@ -143,7 +143,7 @@ public int maxOperations(int[] nums, int k) {
       left++;
       continue;
     }
-    // Case II: One has to be smaller, only RIGHT side can be smaller
+    // Case III: One has to be smaller, only RIGHT side can be smaller
     if (k < leftCandidate + rightCandidate) {
       right--;
     }
