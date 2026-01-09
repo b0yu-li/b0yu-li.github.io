@@ -177,9 +177,9 @@ public int maxOperations(int[] nums, int k) {
 <details markdown="1">
 <summary><h5 style="display:inline-block; margin:0; vertical-align:middle;">Description</h5></summary>
 
-> [!TIP]
 > **Pro Tip:**
 > You can skip it if you already know the problem.
+{: .prompt-tip }
 
 Given an integer array nums, return all the triplets `[nums[i], nums[j], nums[k]]` such that `i != j`, `i != k`, and
 `j != k`, and `nums[i] + nums[j] + nums[k] == 0`.
