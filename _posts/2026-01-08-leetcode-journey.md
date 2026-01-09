@@ -75,24 +75,24 @@ Return _the maximum number of operations you can perform on the array_.
 
 ###### Solution Snippet
 
-``` Java
+```Java
 public int maxOperations(int[] nums, int k) {
-    final Map<Integer, Integer> waitingRoom = new HashMap<>();
-    int count = 0;
+  final Map<Integer, Integer> waitingRoom = new HashMap<>();
+  int count = 0;
 
-    for (int currentGuest : nums) {
-        final int partner = k - currentGuest;
-        final Integer candidatePartnersCount = waitingRoom.getOrDefault(partner, 0);
-        if (candidatePartnersCount > 0) {
-            waitingRoom.put(partner, candidatePartnersCount - 1);
-            count++;
-            continue;
-        }
-        final Integer existingCountOfCurrentGuest = waitingRoom.getOrDefault(currentGuest, 0);
-        waitingRoom.put(currentGuest, existingCountOfCurrentGuest + 1);
+  for (int currentGuest : nums) {
+    final int partner = k - currentGuest;
+    final Integer candidatePartnersCount = waitingRoom.getOrDefault(partner, 0);
+    if (candidatePartnersCount > 0) {
+      waitingRoom.put(partner, candidatePartnersCount - 1);
+      count++;
+      continue;
     }
+    final Integer existingCountOfCurrentGuest = waitingRoom.getOrDefault(currentGuest, 0);
+    waitingRoom.put(currentGuest, existingCountOfCurrentGuest + 1);
+  }
 
-    return count;
+  return count;
 }
 ```
 
@@ -126,26 +126,26 @@ public int maxOperations(int[] nums, int k) {
   int left = 0;
   int right = nums.length - 1;
 
-    while (left < right) {
-        final int leftCandidate = nums[left];
-        final int rightCandidate = nums[right];
-        // Case I: Found one pair, congrads! Let both go and count them up!
-        if (k == leftCandidate + rightCandidate) {
-            count++;
-            left++;
-            right--;
-            continue;
-        }
-        // Case II: One has to be bigger, only LEFT side can be bigger
-        if (k > leftCandidate + rightCandidate) {
-            left++;
-            continue;
-        }
-        // Case II: One has to be smaller, only RIGHT side can be smaller
-        if (k < leftCandidate + rightCandidate) {
-            right--;
-        }
+  while (left < right) {
+    final int leftCandidate = nums[left];
+    final int rightCandidate = nums[right];
+    // Case I: Found one pair, congrads! Let both go and count them up!
+    if (k == leftCandidate + rightCandidate) {
+      count++;
+      left++;
+      right--;
+      continue;
     }
+    // Case II: One has to be bigger, only LEFT side can be bigger
+    if (k > leftCandidate + rightCandidate) {
+      left++;
+      continue;
+    }
+    // Case II: One has to be smaller, only RIGHT side can be smaller
+    if (k < leftCandidate + rightCandidate) {
+      right--;
+    }
+  }
 
   return count;
 }
@@ -163,11 +163,11 @@ public int maxOperations(int[] nums, int k) {
 ###### Space Complexity Analysis: _O(logN)_
 
 + I am sorting **in-place**.
-    + There is no new array allocated on the heap.
-    + Note: We say O(logN) (instead of pure O(1)) to account for the stack space used by the recursive calls inside the
-      Quicksort algorithm.
-    + _In an interview_: You can state, "It uses **O(1) auxiliary space** excluding the recursion stack," which is often
-      what
-      they are looking for.
+  + There is no new array allocated on the heap.
+  + Note: We say O(logN) (instead of pure O(1)) to account for the stack space used by the recursive calls inside the
+    Quicksort algorithm.
+  + _In an interview_: You can state, "It uses **O(1) auxiliary space** excluding the recursion stack," which is often
+    what
+    they are looking for.
 
 ---
