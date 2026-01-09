@@ -12,7 +12,7 @@ redirect_from:
 This is an evolving blog documenting how I approached the problems
 in [LeetCode 75 Study Plan](https://leetcode.com/studyplan/leetcode-75/).
 
-📚 Here's my code repo: https://github.com/b0yu-li/lc2026
+📚 Here's my code repo: [https://github.com/b0yu-li/lc2026](https://github.com/b0yu-li/lc2026)
 
 ---
 
@@ -177,7 +177,9 @@ public int maxOperations(int[] nums, int k) {
 <details markdown="1">
 <summary><h5 style="display:inline-block; margin:0; vertical-align:middle;">Description</h5></summary>
 
-> **TIP** You can skip it if you already know the problem.
+> [!TIP]
+> **Pro Tip:**
+> You can skip it if you already know the problem.
 
 Given an integer array nums, return all the triplets `[nums[i], nums[j], nums[k]]` such that `i != j`, `i != k`, and
 `j != k`, and `nums[i] + nums[j] + nums[k] == 0`.
