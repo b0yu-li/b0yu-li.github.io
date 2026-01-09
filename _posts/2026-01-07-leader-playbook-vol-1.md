@@ -40,9 +40,13 @@ graph TD
     P3 --> Auto[<b>Autonomy</b><br/>Define 'What' not 'How']
     P3 --> Clear[<b>Clarity is King</b><br/>Micro-goals, Definition of Done]
 
-    %% Styling
-    classDef main fill:#f9f,stroke:#333,stroke-width:2px;
-    classDef pillar fill:#e1f5fe,stroke:#0277bd,stroke-width:2px;
+    %% Styling - REVISED FOR DARK MODE
+    %% We use white fills (fill:#fff) so they invert to black in dark mode
+    %% We use colored strokes (borders) to distinguish categories
+    
+    classDef main fill:#fff,stroke:#906,stroke-width:3px,color:#000;
+    classDef pillar fill:#fff,stroke:#0277bd,stroke-width:2px,stroke-dasharray: 5 5,color:#000;
+    
     class Solution,Trans main;
     class P1,P2,P3 pillar;
 ```
