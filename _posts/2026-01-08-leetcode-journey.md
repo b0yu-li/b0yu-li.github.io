@@ -22,7 +22,7 @@ in [LeetCode 75 Study Plan](https://leetcode.com/studyplan/leetcode-75/).
 
 #### No.1679 - Max Number of K-Sum Pair
 
-<details markdown="1">
+<details markdown="1" style="margin-bottom: 2rem;">
 <summary><h5 style="display:inline-block; margin:0; vertical-align:middle;">Description</h5></summary>
 
 > **Pro Tip:**
@@ -176,7 +176,7 @@ public int maxOperations(int[] nums, int k) {
 
 #### No.15 - 3Sum
 
-<details markdown="1">
+<details markdown="1" style="margin-bottom: 2rem;">
 <summary><h5 style="display:inline-block; margin:0; vertical-align:middle;">Description</h5></summary>
 
 > **Pro Tip:**
