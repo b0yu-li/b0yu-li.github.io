@@ -22,6 +22,9 @@ in [LeetCode 75 Study Plan](https://leetcode.com/studyplan/leetcode-75/).
 
 #### No.1679 - Max Number of K-Sum Pair
 
+<details markdown="1">
+<summary><b>Click here to unfold the extra details</b></summary>
+
 ##### Description (CAN SKIP IF YOU ALREADY KNOW THE PROBLEM)
 
 You are given an integer array `nums` and an integer `k`.
@@ -59,11 +62,13 @@ Return _the maximum number of operations you can perform on the array_.
 - `1 <= nums[i] <= 10^9`
 - `1 <= k <= 10^9`
 
+</details>
+
 ##### How I Approach It (Solution #1 - The Waiting Room Analogy)
 
 + Imagine I am the **bouncer** at the door of a club.
-    + People (`nums`) arrive one by one.
-    + I have a "Waiting Room" (the `HashMap`).
+  + People (`nums`) arrive one by one.
+  + I have a "Waiting Room" (the `HashMap`).
 + And I perform actions like this:
 
 <img src="/assets/images/leetcode-journey-1679-waiting-room-analogy.svg" alt="LeetCode Journey: No. 1679, The Waiting Room Analogy" width="600">
@@ -114,12 +119,12 @@ public int maxOperations(int[] nums, int k) {
 
 ```Java
 public int maxOperations(int[] nums, int k) {
-    // Step 0: Line them up smallest to biggest (sorting)
-    Arrays.sort(nums);
+  // Step 0: Line them up smallest to biggest (sorting)
+  Arrays.sort(nums);
 
-    int count = 0;
-    int left = 0;
-    int right = nums.length - 1;
+  int count = 0;
+  int left = 0;
+  int right = nums.length - 1;
 
     while (left < right) {
         final int leftCandidate = nums[left];
@@ -142,7 +147,7 @@ public int maxOperations(int[] nums, int k) {
         }
     }
 
-    return count;
+  return count;
 }
 ```
 
@@ -155,7 +160,7 @@ public int maxOperations(int[] nums, int k) {
 
 + **Total:** The sorting dominates the linear scan, so the final complexity is **O(N * logN)**.
 
-###### Space Complexity Analysis: _O(logN)_ ()
+###### Space Complexity Analysis: _O(logN)_
 
 + I am sorting **in-place**.
     + There is no new array allocated on the heap.
