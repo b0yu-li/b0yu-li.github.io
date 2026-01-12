@@ -26,7 +26,7 @@ Inside, there are only different shades of **Blue** and **Green**.
 + **The Scale (The Key):** This is the box itself. It defines which colors are allowed.
 + **Diatonic Chords:** These are drawings you make using _only_ the crayons in that box. Even though the shades are
   different, they all look like they belong together.
-+ **Non-Diatonic:** If you suddenly grabbed a **Hot Red** crayon and scribbled on your ocean drawing,
++ **Non-Diatonic:** If you suddenly grabbed a **Hot Pink** crayon and scribbled on your ocean drawing,
   that would be a "non-diatonic" note. It stands out and feels surprising.
 
 I used an AI tool to visualize this crayon analogy.
