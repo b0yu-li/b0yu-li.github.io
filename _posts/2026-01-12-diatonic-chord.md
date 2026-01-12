@@ -8,7 +8,7 @@ tags: [ music, music-theory, chord, producer ]
 ---
 
 > **More about me**
-> I want to become a Trance producer, and I use Logic Pro as my DAW.
+> Becoming a Trance producer is my aspiration, and I use Logic Pro as my DAW.
 {: .prompt-info }
 
 ## What is a Diatonic Chord?
@@ -29,6 +29,9 @@ Inside, there are only different shades of **Blue** and **Green**.
 + **Non-Diatonic:** If you suddenly grabbed a **Hot Red** crayon and scribbled on your ocean drawing,
   that would be a "non-diatonic" note. It stands out and feels surprising.
 
+I used an AI tool to visualize this crayon analogy.
+<img src="/assets/images/diatonic-chord-analogy.jpg" alt="The Crayon Box Analogy" width="600">
+
 ## Why Should a Trance Producer Care?
 
 1. **The "Euphoria" Safety Net**: Trance is built on rolling basslines and supersaw leads. Because the sonic spectrum is
@@ -42,3 +45,12 @@ Inside, there are only different shades of **Blue** and **Green**.
 2. **The Benefit:** They provide a "safe" harmonic foundation, essential for the dense layering in Trance music.
 3. **The Tool:** Use Logic Pro’s **Scale Quantize** or **Chord Trigger** to lock yourself into a key and explore
    diatonic progressions instantly.
+
+> **If you're interested, here is a practice:**
+> 1. Open Logic Pro.
+> 2. Load a synthesizer (try Retro Synth).
+> 3. Add the **MIDI FX "Chord Trigger"** before the synth. 
+> 4. Select the preset **"Single > Major Scale Chords"**.
+> 
+> Play the white keys. You are now playing strictly **Diatonic chords**. Do they sound good?
+{: .prompt-tip }
