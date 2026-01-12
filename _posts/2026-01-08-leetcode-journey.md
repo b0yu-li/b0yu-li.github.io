@@ -27,7 +27,7 @@ in [LeetCode 75 Study Plan](https://leetcode.com/studyplan/leetcode-75/).
 
 > **Pro Tip:**
 > You can skip the description portion if you already know the problem.
-> {: .prompt-tip }
+{: .prompt-tip }
 
 You are given an integer array `nums` and an integer `k`.
 
@@ -181,7 +181,7 @@ public int maxOperations(int[] nums, int k) {
 
 > **Pro Tip:**
 > You can skip the description portion if you already know the problem.
-> {: .prompt-tip }
+{: .prompt-tip }
 
 Given an integer array nums, return all the triplets `[nums[i], nums[j], nums[k]]` such that `i != j`, `i != k`, and
 `j != k`, and `nums[i] + nums[j] + nums[k] == 0`.
