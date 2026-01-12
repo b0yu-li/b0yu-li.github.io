@@ -4,5 +4,11 @@ icon: fas fa-info-circle
 order: 4
 ---
 
-> Add Markdown syntax content to file `_tabs/about.md`{: .filepath } and it will show up on this page.
-{: .prompt-tip }
+Hi I am Boyu, and I am interested in:
+
++ **Coding**:
+  + Java
+  + Angular
++ **Music**:
+  + DJ. Currently, a Traktor Pro fan.
+  + EDM Production. Specifically Trance genre. I use Logic Pro as my DAW.
