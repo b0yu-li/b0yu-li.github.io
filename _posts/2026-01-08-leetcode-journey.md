@@ -108,7 +108,7 @@ public int maxOperations(int[] nums, int k) {
 + In the worst case (e.g., `[1, 2, 3, 4]` with `k=100`), no pairs are found, and every single number is stored in the
   map.
 
-##### How I Approach It (Solution #2 - The Matchmaker Analogy)
+##### How I Approach It (Solution #2 - The Matchmaker Analogy) {#two-pointers}
 
 + Say I am a **matchmaker** trying to pair people up so their combined "score" equals exactly `k`.
 + Since I CANNOT easily spot pairs in a chaotic crowd. So, before I do anything, I yell: "Everyone line up!" (I must
@@ -227,3 +227,116 @@ not matter.
 - `-10^5 <= nums[i] <= 10^5`
 
 </details>
+
+##### How I approach it (The "Zen Team" Building Analogy)
+
+This problem is actually just an enhanced version of **Problem No. 1679 (Max Number of K-Sum Pairs)**.
+
+The key is to shift the perspective. Previously, we were looking for **2** numbers. Now, we need **3**. 
+So naturally, I thought: _'What if I just pin down one number as my anchor?'_ 
+That simple idea is all we need to get started.
+
+**The Analogy**: **The "Zen Team" Building**. Imagine I am a manager trying to form **perfectly balanced teams of 3 people** for a project.
+
++ **Negative Numbers (-)** are "Pessimists" (drain energy).
++ **Positive Numbers (+)** are "Optimists" (add energy).
++ **Zero (0)** is a "Realist".
+
+A perfect team sums to exactly **Zero**. If I pick randomly, it’s chaos. So, I can use a system:
+
+1. The Line-Up (`Arrays.sort`).  First, I line up all candidates in a single row from **Most Pessimistic** (left) to **Most Optimistic** (right).
+
+> _Why?_
+> Now I don't have to guess. If a team is "too negative," I know exactly where to look for more positivity (to the right).
+{: .prompt-tip }
+
+2. The Anchor (`for int a ...`). I walk down the line and pick the first person, let's call him **Captain A** (This is `nums[a]`).
+
+   + Say **Captain A** is a **-4** (Pessimist).
+   + To balance him out, I need the other two members to sum to exactly **+4**. This is my `target`.
+
+3. The Recruiters (The Two Pointers), please refer to [this section](#two-pointers).
+
+4. The "Magic Clipboard" (The `HashSet`). If I try to write down a team that is already on the list, the clipboard
+   automatically dissolves the ink. I don't need to manually check for duplicates; the data structure does the dirty
+   work for me.
+
+<img src="/assets/images/leetcode-journey-15-zen-team-building-analogy.svg" alt="LeetCode Journey: No. 15, The Zen Team Building Analogy" width="600">
+
+##### Solution Snippet
+
+```java
+public List<List<Integer>> threeSum(int[] nums) {
+  // The "Magic Clipboard" automatically handles duplicates for us
+  final Set<List<Integer>> validTeams = new HashSet<>();
+
+  // Step 1: The Line-Up (Sorting)
+  Arrays.sort(nums);
+
+  // Step 2: The Captain (Iterate through every possible team leader)
+  for (int i = 0; i < nums.length - 2; i++) {
+
+    // The Captain's value (e.g., -4)
+    // We need the other two members to sum to exactly +4
+    final int target = -nums[i];
+
+    int left = i + 1;            // "Lefty" starts at the next person
+    int right = nums.length - 1; // "Righty" starts at the end
+
+    while (left < right) {
+      final int currentSum = nums[left] + nums[right];
+
+      // Case I: Perfect Match! (Team Balanced)
+      if (currentSum == target) {
+        validTeams.add(List.of(nums[i], nums[left], nums[right]));
+        left++;
+        right--;
+        continue;
+      }
+
+      // Case II: Too Quiet/Negative? (Sum is too small)
+      // Lefty is too negative, so we try the next person
+      if (currentSum < target) {
+        left++;
+        continue;
+      }
+
+      // Case III: Too Loud/Positive? (Sum is too big)
+      // Righty is too positive, so we try the previous person
+      if (currentSum > target) {
+        right--;
+      }
+    }
+  }
+
+  return new ArrayList<>(validTeams);
+}
+
+```
+
+###### **Time Complexity Analysis: O(N²)**
+
++ **Sorting:** The initial `Arrays.sort` costs **O(N log N)**.
++ **Two Pointers:** The nested loop structure (outer `for` + inner `while`) iterates through the array in **O(N²)**
+  time. This dominates the sorting cost.
+
+###### **Space Complexity Analysis: O(N) to O(N²)** (Dependent on solution size)
+
++ **Sorting Stack:** **O(log N)** for the Dual-Pivot Quicksort stack.
++ **Auxiliary Space:** We use a `HashSet` to de-duplicate results. In the worst case (many valid triplets), the set size
+  can grow up to **O(N²)**.
+  + The O(N²) comes from the fact that with the right numbers, you can form a "web" of solutions where almost everyone
+    matches with everyone else.
+
+```text
+Array: [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
+
+If a = -5 (Need +5): [-5, 0, 5], [-5, 1, 4], [-5, 2, 3]  (3 solutions)
+If a = -4 (Need +4): [-4, -1, 5], [-4, 0, 4], [-4, 1, 3] (3 solutions)
+If a = -3 (Need +3): [-3, -2, 5], [-3, -1, 4], ...       (Many solutions)
+...
+Total Solutions = Sum of all these rows ≈ N²
+```
+
++ *Note:* A purely iterative solution with manual duplicate skipping would achieve **O(1)** auxiliary space, but my
+  implementation prioritizes readability.
