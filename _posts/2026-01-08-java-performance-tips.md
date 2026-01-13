@@ -11,11 +11,32 @@ redirect_from:
 
 This is an evolving tips list (or a cheatsheet) for common Java performance optimizations.
 
+
+### Time Optimization
+
++ **Skip the Stream Pipeline for Conversions**: Don't build a complex pipeline just to pour a bucket of water.
+
+```java
+// ⚠️
+return validTeams.stream().toList();
+// Spins up a full Stream pipeline (Spliterator, ReferencePipeline, etc.) just to copy data.
+// - 🐢 High Overhead: Allocates temporary objects that increase Garbage Collection pressure.
+// - 🔒 Rigid: Returns an Immutable List (read-only), which creates runtime errors if modified.
+
+// ✅
+return new ArrayList<>(validTeams);
+// "Teleports" data using System.arraycopy internally.
+// - ⚡ Low Overhead: Zero temporary object allocation; blazing fast memory copy.
+// - 🛠️ Flexible: Returns a standard Mutable List that is compatible with all Java versions.
+```
+
+---
+
 ### Space Optimization
 
 + **Optimize Sorting with In-Place Implementation**
 
-``` Java
+```java
 // ⚠️
 final int[] sorted = Arrays.stream(nums).sorted().toArray(); 
 // This spikes space usage to O(N) because it allocates a new array and creates stream objects.
