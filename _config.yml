@@ -14,16 +14,16 @@ timezone: Asia/Hong_Kong
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-title: Boyu's Blog Zone
+title: Rooby Studio
 
-tagline: Thoughts on tech and life # it will display as the subtitle
+tagline: Welcome to Rooby Studio! # it will display as the subtitle
 
 description: >- # used by seo meta and the atom feed
-  Boyu's thoughts on tech and life.
+  Rooby Studio is my cyber home hosting my thoughts and share-able-s.
 
 # Fill in the protocol & hostname for your site.
 # E.g. 'https://username.github.io', note that it does not end with a '/'.
-url: ""
+url: "https://roobystudio.com"
 
 github:
   username: b0yu-li
