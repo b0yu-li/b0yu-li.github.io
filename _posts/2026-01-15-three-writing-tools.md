@@ -65,7 +65,7 @@ didn't make sense to you.
 ```mermaid
 flowchart TD
     A[1. What Happened?] --> B(2. What it Meant?)
-    B -.-> |The Reframe| C{3. What it Revealed?}
+    B -.-> |The Reframe| C(3. What it Revealed?)
     C --> D(4. What it Taught?)
     D --> E[5. Call to Action]
 ```
