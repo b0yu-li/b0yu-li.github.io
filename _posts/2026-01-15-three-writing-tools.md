@@ -113,6 +113,7 @@ extra 10 hours a week.
 of the office. I will build a ladder that *I* own.
 
 > **The Takeaway**
+> 
 > Reframing didn't change the bonus check. But it changed my strategy. It turned a moment of defeat into a pivot point
 > for freedom.
 {: .prompt-tip }
