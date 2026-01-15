@@ -3,8 +3,10 @@ layout: post
 title: "Why I Favor Early Return"
 author: boyu
 date: 2026-01-14 17:40:00 +0800
-categories: tech
+categories: [ tech ]
 tags: [ tech, clean-code, refactoring, best-practices, java ]
+image: /assets/images/headers/early-return.jpg
+description: "Stop writing nested 'Arrow Code'. Learn how the Early Return pattern (Guard Clauses) simplifies logic, eliminates indentation, and cleans up your Java code."
 ---
 
 We've all seen (or written) code that looks like a sideways pyramid. You know, the kind where you need a widescreen
@@ -68,6 +70,50 @@ public void processUser(final User user) {
   sendWeeklyNewsletter(user);
 }
 ```
+
+### 🤔 So, Should I Ban `else`?
+
+You might notice a pattern in the "Bouncer" example above: **there is not a single `else` keyword.**
+
+There is a concept in strict coding exercises (like *Object Calisthenics*) that challenges you to avoid `else` entirely.
+While we don't need to be dogmatic, there is a logic to it.
+
+When you use `else`, you are telling the reader: *"These two outcomes are equally likely."*
+
+```java
+// The "Coin Toss" Approach
+public boolean canUserDoSomething() {
+  if (isValid) {
+    return true;
+  } else {
+    return false; // ❌ This keyword is actually redundant!
+  }
+}
+```
+
+But when you use **Early Return**, you are saying: _"Here is the exception handling. Done? Okay, now here is
+the **standard** behavior."_
+
+Since the `if` block contains a `return` (or a `throw`), the code execution stops there. The rest of the function **is**
+the `else` block, implicitly. You don't need to wrap it in braces.
+
+```java
+// The "Clean" Approach
+public boolean canUserDoSomething() {
+  if (isValid) {
+    return true;
+  }
+
+  // We don't need 'else' because we would have left the method already!
+  return false;
+}
+```
+
+> **The Rule of Thumb:**
+> 
+> If your `if` block ends with a `return`, `throw`, or `break`, you never need an `else`. Delete it, un-indent the next
+> block, and enjoy the clean vertical line of code.
+{: .prompt-tip }
 
 ### Why I Favor "Early Return"
 
