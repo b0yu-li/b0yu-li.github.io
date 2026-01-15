@@ -3,6 +3,7 @@ layout: post
 title: "3 Writing Tools for When Life Gets Loud"
 author: boyu
 date: 2026-01-15 16:02:00 +0800
+mermaid: true
 categories: [ growth, productivity ]
 tags: [ journaling, career, growth, mental-health ]
 image: /assets/images/headers/3-writing-tools.jpg
