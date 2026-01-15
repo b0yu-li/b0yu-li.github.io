@@ -110,9 +110,9 @@ public boolean canUserDoSomething() {
 ```
 
 > **The Rule of Thumb:**
-> 
-> If your `if` block ends with a `return`, `throw`, or `break`, you never need an `else`. Delete it, un-indent the next
-> block, and enjoy the clean vertical line of code.
+>
+> If your `if` block ends with a `return`, `throw`, `break`, or `continue`, you never need an `else`. Delete it,
+> un-indent the next block, and enjoy the clean vertical line of code.
 {: .prompt-tip }
 
 ### Why I Favor "Early Return"
