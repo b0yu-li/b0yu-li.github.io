@@ -1,7 +1,33 @@
 ---
-layout: archives
-title: Journal
+layout: page
 icon: fas fa-pen-fancy
 order: 4
-category: Journal
+title: Journal
 ---
+
+<div id="archives" class="pl-xl-3">
+  {% assign journal_posts = site.categories.Journal %}
+  {% assign current_year = "" %}
+
+{% for post in journal_posts %}
+{% capture post_year %}{{ post.date | date: "%Y" }}{% endcapture %}
+
+    {% if post_year != current_year %}
+      {% unless forloop.first %}</ul>{% endunless %}
+      <span class="lead">{{ post_year }}</span>
+      <ul class="list-unstyled">
+      {% assign current_year = post_year %}
+    {% endif %}
+
+    <li>
+      <div>
+        <span class="date day">{{ post.date | date: "%d" }}</span>
+        <span class="date month small text-muted">{{ post.date | date: "%b" }}</span>
+        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+      </div>
+    </li>
+
+    {% if forloop.last %}</ul>{% endif %}
+
+{% endfor %}
+</div>
