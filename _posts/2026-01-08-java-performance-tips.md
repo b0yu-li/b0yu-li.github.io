@@ -7,6 +7,7 @@ categories: [ Tech, Java ]
 tags: [ tech, java, performance, tips, cheatsheet ]
 redirect_from:
   - /tech/2026/01/08/java-performance-tips.html
+pin: true
 ---
 
 This is an evolving tips list (or a cheatsheet) for common Java performance optimizations.
