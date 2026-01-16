@@ -3,30 +3,37 @@ layout: page
 ---
 
 <style>
-  /* 1. Ensure the Year text behaves like a block for positioning */
+  /* Ensure the Year is a block context */
   #archives .lead {
     display: block !important;
     position: relative;
     margin-bottom: 10px;
+    list-style: none; /* Safety check against stray bullets */
   }
 
-  /* 2. Manually draw the Dot */
+  /* Draw the Hollow Ring Dot */
   #archives .lead::before {
     content: "";
     display: block;
-    width: 10px; /* Dot size */
-    height: 10px;
-    border-radius: 50%; /* Make it round */
-    background-color: #6c757d; /* Standard grey color */
 
-    /* 3. Position it exactly on the line */
+    /* Size */
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+
+    /* THE RING EFFECT */
+    background-color: #1b1b1b; /* Matches the dark background (Hollow look) */
+    border: 3px solid #6c757d; /* The Grey Ring */
+
+    /* Perfect Positioning */
     position: absolute;
-    left: -20px; /* Adjust this if it's slightly off-center */
-    top: 8px; /* Align vertically with text */
-    z-index: 1; /* Sit on top of the line */
+    left: -21px; /* Tweaked to center on the line */
+    top: 50%; /* Move to vertical middle */
+    transform: translateY(-50%); /* Pull back up by half its height */
+    z-index: 1;
 
-    /* 4. Add a tiny border to match the theme style (optional) */
-    border: 2px solid #1b1b1b; /* Matches dark background to create 'gap' effect */
+    /* Remove default generic border if any */
+    box-shadow: none;
   }
 </style>
 
