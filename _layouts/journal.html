@@ -2,6 +2,14 @@
 layout: page
 ---
 
+<style>
+  /* Force the year to be a block so the dot can attach to it */
+  #archives .lead {
+    display: block;
+    position: relative;
+  }
+</style>
+
 <div id="archives" class="pl-xl-3">
 
   {% assign journal_posts = site.categories.Journal %}
@@ -13,7 +21,7 @@ layout: page
   {% if post_year != current_year %}
   {% unless forloop.first %}</ul>{% endunless %}
 
-  <span class="lead">{{ post_year }}</span>
+  <div class="lead">{{ post_year }}</div>
 
   <ul class="list-unstyled">
     {% assign current_year = post_year %}
