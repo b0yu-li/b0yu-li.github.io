@@ -7,33 +7,44 @@ layout: page
   #archives .lead {
     display: block !important;
     position: relative;
-    margin-bottom: 10px;
-    list-style: none; /* Safety check against stray bullets */
+    margin-bottom: 15px; /* Give it some breathing room from the list */
+    list-style: none;
   }
 
-  /* Draw the Hollow Ring Dot */
+  /* The Hollow Ring Dot */
   #archives .lead::before {
     content: "";
     display: block;
 
-    /* Size */
+    /* Shape */
     width: 12px;
     height: 12px;
     border-radius: 50%;
 
-    /* THE RING EFFECT */
-    background-color: #1b1b1b; /* Matches the dark background (Hollow look) */
-    border: 3px solid #6c757d; /* The Grey Ring */
+    /* Colors */
+    background-color: #1b1b1b; /* Matches background */
+    border: 3px solid #6c757d; /* Grey Ring */
 
-    /* Perfect Positioning */
+    /* POSITIONING (The Critical Fix) */
     position: absolute;
-    left: -21px; /* Tweaked to center on the line */
-    top: 50%; /* Move to vertical middle */
-    transform: translateY(-50%); /* Pull back up by half its height */
-    z-index: 1;
+    left: 12.5px; /* Moved closer to text (was -21px) */
 
-    /* Remove default generic border if any */
-    box-shadow: none;
+    top: 50%;
+    transform: translateY(-50%); /* Perfectly centered vertically */
+    z-index: 2; /* Sit on top of the line */
+  }
+
+  /* Optional: A subtle vertical line connector if the gap is too big */
+  #archives .lead::after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: -7px; /* Center of the line */
+    top: 50%;
+    height: 100%; /* Extend down */
+    width: 1px;
+    background-color: #3b4045; /* Line color */
+    z-index: 0;
   }
 </style>
 
@@ -62,9 +73,7 @@ layout: page
       </div>
     </li>
 
-    {% if forloop.last %}
-  </ul>
-  {% endif %}
+    {% if forloop.last %}</ul>{% endif %}
   {% endfor %}
 
 </div>
