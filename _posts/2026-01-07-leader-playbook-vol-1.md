@@ -4,7 +4,7 @@ title: "Leader Playbook Vol.1: Influence Beyond Carrots and Sticks"
 author: boyu
 date: 2026-01-07 13:33:00 +0800
 mermaid: true
-categories: lead
+categories: [ Journal, Leadership ]
 tags: [ lead, strategy, playbook, influence ]
 redirect_from:
   - /lead/2026/01/07/leader-playbook-vol-1.html

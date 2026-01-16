@@ -3,7 +3,7 @@ layout: post
 title: "What Are Diatonic Chords?"
 author: boyu
 date: 2026-01-12 11:15:00 +0800
-categories: music
+categories: [ Music, Theory ]
 tags: [ music, music-theory, chord, producer ]
 ---
 

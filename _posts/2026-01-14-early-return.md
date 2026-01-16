@@ -3,7 +3,7 @@ layout: post
 title: "Why I Favor Early Return"
 author: boyu
 date: 2026-01-14 17:40:00 +0800
-categories: [ tech ]
+categories: [ Tech, Best Practices ]
 tags: [ tech, clean-code, refactoring, best-practices, java ]
 image: /assets/images/headers/early-return.jpg
 description: "Stop writing nested 'Arrow Code'. Learn how the Early Return pattern (Guard Clauses) simplifies logic, eliminates indentation, and cleans up your Java code."

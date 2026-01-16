@@ -3,7 +3,7 @@ layout: post
 title: "I Asked Gemini: Could you prove that God exists with your own logic?"
 author: boyu
 date: 2026-01-12 16:25:00 +0800
-categories: [ anecdote ]
+categories: [ Journal, Thoughts ]
 tags: [ AI, God, philosophy ]
 ---
 

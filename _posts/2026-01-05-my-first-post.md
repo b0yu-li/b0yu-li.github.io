@@ -3,7 +3,7 @@ layout: post
 title: "Hi! I am Boyu and nice to meet you."
 author: boyu
 date: 2026-01-05 17:29:00 +0800
-categories: update
+categories: [ Journal, Life ]
 tags: [ introduction, life ]
 redirect_from:
   - /update/2026/01/05/my-first-post.html
