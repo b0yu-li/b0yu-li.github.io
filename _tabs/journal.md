@@ -14,7 +14,7 @@ title: Journal
 
     {% if post_year != current_year %}
       {% unless forloop.first %}</ul>{% endunless %}
-      <span class="lead">{{ post_year }}</span>
+      <div class="lead">{{ post_year }}</div>
       <ul class="list-unstyled">
       {% assign current_year = post_year %}
     {% endif %}
