@@ -3,7 +3,7 @@ layout: post
 title: "Tracking Traffic Without Spying: Setting up GoatCounter Analytics"
 author: boyu
 date: 2026-01-06 14:45:00 +0800
-categories: tech
+categories: [ Tech, Tutorial ]
 tags: [ analytics, blog, goat-counter, privacy, tutorial ]
 redirect_from:
   - /tech/2026/01/06/goat-analytics.html

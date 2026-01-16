@@ -3,7 +3,7 @@ layout: post
 title: "The Modern Narrative Trap: Why You Feel Stuck"
 author: boyu
 date: 2026-01-15 11:11:00 +0800
-categories: [ growth ]
+categories: [ Journal, Philosophy ]
 tags: [ consumerism, economics, thoughts, growth ]
 image: /assets/images/headers/consumerism-trap.jpg
 description: "Are you truly busy, or is your time just fragmented? A look at how modern narratives trap us in a cycle of distraction and spending."

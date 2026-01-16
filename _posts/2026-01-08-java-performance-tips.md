@@ -3,7 +3,7 @@ layout: post
 title: "Java Performance Tips"
 author: boyu
 date: 2026-01-08 15:38:00 +0800
-categories: tech
+categories: [ Tech, Java ]
 tags: [ tech, java, performance, tips, cheatsheet ]
 redirect_from:
   - /tech/2026/01/08/java-performance-tips.html

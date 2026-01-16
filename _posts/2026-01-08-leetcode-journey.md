@@ -3,8 +3,8 @@ layout: post
 title: "LeetCode Journey: Digest LeetCode 75"
 author: boyu
 date: 2026-01-08 11:36:00 +0800
-categories: tech
-tags: [ leetcode, java, journey ]
+categories: [ Tech, Interview ]
+tags: [ leetcode, java, journey, interview ]
 redirect_from:
   - /tech/2026/01/08/leetcode-journey.html
 ---
