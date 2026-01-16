@@ -7,6 +7,7 @@ categories: [ Tech, Java ]
 tags: [ tech, java, stream, utility, cheatsheet ]
 redirect_from:
   - /tech/2026/01/06/common-java-stream-operations.html
+pin: true
 ---
 
 This is an evolving cheatsheet for common Java Stream operations.
