@@ -5,6 +5,9 @@ author: boyu
 date: 2026-01-12 11:15:00 +0800
 categories: [ Music, Theory ]
 tags: [ music, music-theory, chord, producer ]
+image: /assets/images/headers/diatonic-chord.jpg
+description: "Confused by music theory? Discover the 'Crayon Box' analogy for Diatonic Chords and learn why they are the secret safety net for writing perfect Trance melodies in Logic Pro."
+pin: true
 ---
 
 > **More about me**
