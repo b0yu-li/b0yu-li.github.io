@@ -1,7 +1,6 @@
 ---
 layout: studio
 title: Studio
-# TODO: come up with a decent icon
-icon: fas fa-sliders-h
+icon: fas fa-headphones
 order: 2
 ---

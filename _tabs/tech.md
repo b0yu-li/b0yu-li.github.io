@@ -1,7 +1,6 @@
 ---
 layout: tech
 title: Tech
-icon: fas fa-microchip
+icon: fas fa-terminal
 order: 3
-category: Tech
 ---
