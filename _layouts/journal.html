@@ -5,10 +5,9 @@ layout: page
 <style>
   /* 1. THE CONTAINER (Draws the Vertical Line) */
   #journal-archives {
-    /* The Line */
-    border-left: 1px solid #3b4045; /* Dark grey line */
-    margin-left: 10px; /* Offset from screen edge */
-    padding-left: 30px; /* Space between line and text */
+    border-left: 1px solid #3b4045;
+    margin-left: 10px;
+    padding-left: 30px;
     position: relative;
   }
 
@@ -17,13 +16,12 @@ layout: page
     display: block;
     position: relative;
 
-    /* FIX 1: Make it BIG (matches Expected Screenshot) */
     font-size: 1.7rem;
     font-weight: 400;
-    color: var(--heading-color, #c9d1d9); /* Uses theme header color */
+    color: var(--heading-color, #c9d1d9);
 
-    margin-top: 3rem; /* Spacing above */
-    margin-bottom: 1.5rem; /* Spacing below */
+    margin-top: 3rem;
+    margin-bottom: 2rem; /* Increased slightly for balance */
     line-height: 1;
   }
 
@@ -31,23 +29,16 @@ layout: page
   .journal-year::before {
     content: "";
     position: absolute;
-
-    /* FIX 2: Ensure it appears on the line */
-    /* Calculation: -30px (padding) - 6px (half dot) - 0.5px (half line) */
     left: -36.5px;
-
-    /* Center Vertically on the text */
     top: 50%;
     transform: translateY(-50%);
 
-    /* Visuals: Hollow Ring Style */
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    background-color: #1b1b1b; /* Matches dark background */
-    border: 3px solid #6c757d; /* Grey Ring */
-
-    z-index: 2; /* Force it on top of the line */
+    background-color: #1b1b1b;
+    border: 3px solid #6c757d;
+    z-index: 2;
   }
 
   /* 4. THE POST LIST */
@@ -57,24 +48,29 @@ layout: page
   }
 
   .journal-list li {
-    margin-bottom: 15px;
-    font-size: 1rem;
+    /* CHANGE 1: More breathing room between posts */
+    margin-bottom: 25px;
+
+    /* CHANGE 2: Bigger Text Size */
+    font-size: 1.15rem;
+
     position: relative;
+    line-height: 1.5; /* Better readability for wrapping titles */
   }
 
-  /* 5. THE POST DOTS (Small grey dots) */
+  /* 5. THE POST DOTS */
   .journal-list li::before {
     content: "";
     position: absolute;
+    left: -33.5px;
 
-    /* Align with the main line */
-    left: -33.5px; /* -30px padding - 2.5px half dot - 0.5px line */
-    top: 10px; /* Nudge down to align with text */
+    /* CHANGE 3: Adjusted top to align with larger text */
+    top: 12px;
 
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background-color: #6c757d; /* Solid grey */
+    background-color: #6c757d;
     z-index: 2;
   }
 </style>
@@ -97,7 +93,7 @@ layout: page
     {% endif %}
 
     <li>
-      <span class="text-muted" style="font-size: 0.85rem; width: 50px; display: inline-block;">
+      <span class="text-muted" style="font-size: 0.85rem; width: 55px; display: inline-block;">
         {{ post.date | date: "%d %b" }}
       </span>
       <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
