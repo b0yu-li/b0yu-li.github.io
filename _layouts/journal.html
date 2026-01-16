@@ -3,52 +3,83 @@ layout: page
 ---
 
 <style>
-  /* Ensure the Year is a block context */
-  #archives .lead {
-    display: block !important;
+  /* 1. THE CONTAINER (Draws the Vertical Line) */
+  #journal-archives {
+    /* The Line */
+    border-left: 1px solid #3b4045; /* Dark grey line */
+    margin-left: 10px; /* Offset from screen edge */
+    padding-left: 30px; /* Space between line and text */
     position: relative;
-    margin-bottom: 15px; /* Give it some breathing room from the list */
-    list-style: none;
   }
 
-  /* The Hollow Ring Dot */
-  #archives .lead::before {
-    content: "";
+  /* 2. THE YEAR (2026) */
+  .journal-year {
     display: block;
+    position: relative;
 
-    /* Shape */
+    /* FIX 1: Make it BIG (matches Expected Screenshot) */
+    font-size: 1.7rem;
+    font-weight: 400;
+    color: var(--heading-color, #c9d1d9); /* Uses theme header color */
+
+    margin-top: 3rem; /* Spacing above */
+    margin-bottom: 1.5rem; /* Spacing below */
+    line-height: 1;
+  }
+
+  /* 3. THE YEAR DOT (The Hollow Ring) */
+  .journal-year::before {
+    content: "";
+    position: absolute;
+
+    /* FIX 2: Ensure it appears on the line */
+    /* Calculation: -30px (padding) - 6px (half dot) - 0.5px (half line) */
+    left: -36.5px;
+
+    /* Center Vertically on the text */
+    top: 50%;
+    transform: translateY(-50%);
+
+    /* Visuals: Hollow Ring Style */
     width: 12px;
     height: 12px;
     border-radius: 50%;
-
-    /* Colors */
-    background-color: #1b1b1b; /* Matches background */
+    background-color: #1b1b1b; /* Matches dark background */
     border: 3px solid #6c757d; /* Grey Ring */
 
-    /* POSITIONING (The Critical Fix) */
-    position: absolute;
-    left: 12.5px; /* Moved closer to text (was -21px) */
-
-    top: 50%;
-    transform: translateY(-50%); /* Perfectly centered vertically */
-    z-index: 2; /* Sit on top of the line */
+    z-index: 2; /* Force it on top of the line */
   }
 
-  /* Optional: A subtle vertical line connector if the gap is too big */
-  #archives .lead::after {
+  /* 4. THE POST LIST */
+  .journal-list {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .journal-list li {
+    margin-bottom: 15px;
+    font-size: 1rem;
+    position: relative;
+  }
+
+  /* 5. THE POST DOTS (Small grey dots) */
+  .journal-list li::before {
     content: "";
-    display: block;
     position: absolute;
-    left: -7px; /* Center of the line */
-    top: 50%;
-    height: 100%; /* Extend down */
-    width: 1px;
-    background-color: #3b4045; /* Line color */
-    z-index: 0;
+
+    /* Align with the main line */
+    left: -33.5px; /* -30px padding - 2.5px half dot - 0.5px line */
+    top: 10px; /* Nudge down to align with text */
+
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #6c757d; /* Solid grey */
+    z-index: 2;
   }
 </style>
 
-<div id="archives" class="pl-xl-3">
+<div id="journal-archives">
 
   {% assign journal_posts = site.categories.Journal %}
   {% assign current_year = "" %}
@@ -59,21 +90,22 @@ layout: page
   {% if post_year != current_year %}
   {% unless forloop.first %}</ul>{% endunless %}
 
-  <span class="lead">{{ post_year }}</span>
+  <span class="journal-year">{{ post_year }}</span>
 
-  <ul class="list-unstyled">
+  <ul class="journal-list">
     {% assign current_year = post_year %}
     {% endif %}
 
     <li>
-      <div>
-        <span class="date day">{{ post.date | date: "%d" }}</span>
-        <span class="date month small text-muted">{{ post.date | date: "%b" }}</span>
-        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-      </div>
+      <span class="text-muted" style="font-size: 0.85rem; width: 50px; display: inline-block;">
+        {{ post.date | date: "%d %b" }}
+      </span>
+      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
     </li>
 
-    {% if forloop.last %}</ul>{% endif %}
+    {% if forloop.last %}
+  </ul>
+  {% endif %}
   {% endfor %}
 
 </div>
