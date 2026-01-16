@@ -2,6 +2,34 @@
 layout: page
 ---
 
+<style>
+  /* 1. Ensure the Year text behaves like a block for positioning */
+  #archives .lead {
+    display: block !important;
+    position: relative;
+    margin-bottom: 10px;
+  }
+
+  /* 2. Manually draw the Dot */
+  #archives .lead::before {
+    content: "";
+    display: block;
+    width: 10px; /* Dot size */
+    height: 10px;
+    border-radius: 50%; /* Make it round */
+    background-color: #6c757d; /* Standard grey color */
+
+    /* 3. Position it exactly on the line */
+    position: absolute;
+    left: -20px; /* Adjust this if it's slightly off-center */
+    top: 8px; /* Align vertically with text */
+    z-index: 1; /* Sit on top of the line */
+
+    /* 4. Add a tiny border to match the theme style (optional) */
+    border: 2px solid #1b1b1b; /* Matches dark background to create 'gap' effect */
+  }
+</style>
+
 <div id="archives" class="pl-xl-3">
 
   {% assign journal_posts = site.categories.Journal %}
