@@ -8,6 +8,7 @@ tags: [ strudel, live-coding ]
 strudel: true
 # TODO: - Add image
 # TODO: - Add description
+pin: true
 ---
 
 I used to click MIDI notes. Now I type them.
