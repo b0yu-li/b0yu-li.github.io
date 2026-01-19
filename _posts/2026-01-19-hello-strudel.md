@@ -16,7 +16,7 @@ Click the **Play** button below to hear it right now.
 
 <div style="
   position: relative; 
-  height: 400px; 
+  height: 270px; 
   width: 100%; 
   overflow: hidden; 
   border: 1px solid #3b4045; 
