@@ -1,7 +1,18 @@
+<script>
+  if (window.navigator && navigator.serviceWorker) {
+    navigator.serviceWorker.getRegistrations()
+      .then(function (registrations) {
+        for (let registration of registrations) {
+          console.log('Exorcising Service Worker:', registration);
+          registration.unregister();
+        }
+      });
+  }
+</script>
+
 <script
   type="module"
-  src="https://jspm.dev/@strudel/web-component"
-  crossorigin="anonymous"
+  src="https://cdn.jsdelivr.net/npm/@strudel/web-component@latest/+esm"
 ></script>
 
 <style>
