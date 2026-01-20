@@ -26,7 +26,7 @@
   }
 
   .like-button:hover {
-    border-color: #e06c75; /* Reddish */
+    border-color: #e06c75;
     color: #e06c75;
   }
 
@@ -40,12 +40,11 @@
 <script>
   (function () {
     const WORKER_URL = "https://rooby-likes.rooby.workers.dev";
-    const slug = "{{ page.url | slugify }}"; // Unique ID for this post
+    const slug = "{{ page.url | slugify }}";
     const btn = document.getElementById('like-btn');
     const countSpan = document.getElementById('like-count');
     const storageKey = 'liked_' + slug;
 
-    // 2. Fetch current likes on load
     fetch(`${WORKER_URL}/${slug}`)
       .then(res => res.json())
       .then(data => {
@@ -53,22 +52,18 @@
       })
       .catch(err => countSpan.innerText = "0");
 
-    // 3. Check if user already liked (Local Storage)
     if (localStorage.getItem(storageKey)) {
       btn.classList.add('liked');
-      btn.disabled = true; // Prevent spamming
+      btn.disabled = true;
     }
 
-    // 4. Handle Click
     btn.addEventListener('click', () => {
       if (btn.classList.contains('liked')) return;
 
-      // Optimistic UI update (Make it feel fast)
       let current = parseInt(countSpan.innerText) || 0;
       countSpan.innerText = current + 1;
       btn.classList.add('liked');
 
-      // Send to server
       fetch(`${WORKER_URL}/${slug}`, {method: 'POST'})
         .then(() => {
           localStorage.setItem(storageKey, 'true');
@@ -76,7 +71,6 @@
         })
         .catch(err => {
           console.error('Like failed', err);
-          // Revert if failed
           countSpan.innerText = current;
           btn.classList.remove('liked');
         });
