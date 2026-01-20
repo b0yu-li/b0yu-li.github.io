@@ -6,7 +6,11 @@
 </div>
 
 <style>
-  .like-wrapper { margin-top: 2rem; text-align: center; }
+  .like-wrapper {
+    margin-top: 2rem;
+    text-align: center;
+  }
+
   .like-button {
     background: transparent;
     border: 2px solid #3b4045;
@@ -20,10 +24,12 @@
     align-items: center;
     gap: 8px;
   }
+
   .like-button:hover {
     border-color: #e06c75; /* Reddish */
     color: #e06c75;
   }
+
   .like-button.liked {
     background: rgba(224, 108, 117, 0.1);
     border-color: #e06c75;
@@ -32,8 +38,7 @@
 </style>
 
 <script>
-  (function() {
-    // 1. Configuration
+  (function () {
     const WORKER_URL = "https://rooby-likes.rooby.workers.dev";
     const slug = "{{ page.url | slugify }}"; // Unique ID for this post
     const btn = document.getElementById('like-btn');
@@ -64,7 +69,7 @@
       btn.classList.add('liked');
 
       // Send to server
-      fetch(`${WORKER_URL}/${slug}`, { method: 'POST' })
+      fetch(`${WORKER_URL}/${slug}`, {method: 'POST'})
         .then(() => {
           localStorage.setItem(storageKey, 'true');
           btn.disabled = true;
