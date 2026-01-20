@@ -10,41 +10,49 @@
   .like-wrapper {
     display: flex;
     flex-direction: column;
-
     align-items: flex-end;
-
-    height: 100%;
-
     margin-left: 1rem;
+    margin-bottom: 3px;
+  }
 
-    .placeholder {
-      flex-grow: 1;
-    }
+  .like-wrapper .placeholder {
+    flex-grow: 1;
   }
 
   .like-button {
-    background: transparent;
-    border: 2px solid #3b4045;
-    border-radius: 50px;
-    padding: 10px 20px;
-    color: #c9d1d9;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-size: 1.1rem;
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    padding: 10px 20px;
+
+    background: var(--card-bg, #ffffff);
+
+    border: 1px solid var(--btn-border-color, #e1e4e8);
+
+    color: var(--text-color, #24292e);
+
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1.1rem;
+    line-height: 1;
   }
 
   .like-button:hover {
-    border-color: #e06c75;
-    color: #e06c75;
+    border-color: var(--link-color); /* Turns Blue/Accent color */
+    color: var(--link-color);        /* Text turns Blue/Accent */
+    transform: translateY(-2px);     /* Lifts up slightly */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Stronger shadow */
   }
 
   .like-button.liked {
     background: rgba(224, 108, 117, 0.1);
     border-color: #e06c75;
     color: #e06c75;
+  }
+
+  .like-button i {
+    font-size: 1.1em;
   }
 </style>
 
