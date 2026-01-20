@@ -1,0 +1,80 @@
+<div class="like-wrapper">
+  <button id="like-btn" class="like-button" aria-label="Like this post">
+    <i class="fas fa-heart"></i>
+    <span id="like-count">...</span>
+  </button>
+</div>
+
+<style>
+  .like-wrapper { margin-top: 2rem; text-align: center; }
+  .like-button {
+    background: transparent;
+    border: 2px solid #3b4045;
+    border-radius: 50px;
+    padding: 10px 20px;
+    color: #c9d1d9;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .like-button:hover {
+    border-color: #e06c75; /* Reddish */
+    color: #e06c75;
+  }
+  .like-button.liked {
+    background: rgba(224, 108, 117, 0.1);
+    border-color: #e06c75;
+    color: #e06c75;
+  }
+</style>
+
+<script>
+  (function() {
+    // 1. Configuration
+    const WORKER_URL = "https://rooby-likes.rooby.workers.dev";
+    const slug = "{{ page.url | slugify }}"; // Unique ID for this post
+    const btn = document.getElementById('like-btn');
+    const countSpan = document.getElementById('like-count');
+    const storageKey = 'liked_' + slug;
+
+    // 2. Fetch current likes on load
+    fetch(`${WORKER_URL}/${slug}`)
+      .then(res => res.json())
+      .then(data => {
+        countSpan.innerText = data.count;
+      })
+      .catch(err => countSpan.innerText = "0");
+
+    // 3. Check if user already liked (Local Storage)
+    if (localStorage.getItem(storageKey)) {
+      btn.classList.add('liked');
+      btn.disabled = true; // Prevent spamming
+    }
+
+    // 4. Handle Click
+    btn.addEventListener('click', () => {
+      if (btn.classList.contains('liked')) return;
+
+      // Optimistic UI update (Make it feel fast)
+      let current = parseInt(countSpan.innerText) || 0;
+      countSpan.innerText = current + 1;
+      btn.classList.add('liked');
+
+      // Send to server
+      fetch(`${WORKER_URL}/${slug}`, { method: 'POST' })
+        .then(() => {
+          localStorage.setItem(storageKey, 'true');
+          btn.disabled = true;
+        })
+        .catch(err => {
+          console.error('Like failed', err);
+          // Revert if failed
+          countSpan.innerText = current;
+          btn.classList.remove('liked');
+        });
+    });
+  })();
+</script>
