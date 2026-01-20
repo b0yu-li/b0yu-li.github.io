@@ -1,4 +1,5 @@
 <div class="like-wrapper">
+  <div class="placeholder"></div>
   <button id="like-btn" class="like-button" aria-label="Like this post">
     <i class="fas fa-heart"></i>
     <span id="like-count">...</span>
@@ -7,8 +8,18 @@
 
 <style>
   .like-wrapper {
-    margin-top: 2rem;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+
+    align-items: flex-end;
+
+    height: 100%;
+
+    margin-left: 1rem;
+
+    .placeholder {
+      flex-grow: 1;
+    }
   }
 
   .like-button {
