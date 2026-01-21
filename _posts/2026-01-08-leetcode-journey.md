@@ -7,6 +7,9 @@ categories: [ Tech, Interview ]
 tags: [ leetcode, java, journey, interview ]
 redirect_from:
   - /tech/2026/01/08/leetcode-journey.html
+image: /assets/images/headers/leetcode-75.jpg
+description: "A digestible journey through the LeetCode 75 Study Plan. This post dives into the Two-Pointers pattern, exploring intuitive solutions and visual analogies for problems like 'Max Number of K-Sum Pairs' (1679) and '3Sum' (15)."
+pin: true
 ---
 
 This is an evolving blog documenting how I approached the problems
