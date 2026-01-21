@@ -43,3 +43,10 @@ Beyond the screen and speakers:
 ### Connect
 Want to talk about code, collab on a track, or simply chat?
 [Email Me](mailto:boyu_l@icloud.com)
+
+--- 
+
+> Curious about how this site was built?
+> 
+> Check out [The Tech Stack](/stack/).
+{: .prompt-tip }
