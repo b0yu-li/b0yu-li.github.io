@@ -5,6 +5,8 @@ author: boyu
 date: 2026-01-08 15:38:00 +0800
 categories: [ Tech, Java ]
 tags: [ tech, java, performance, tips, cheatsheet ]
+description: "An evolving cheatsheet of practical Java performance tips to boost your application's speed and efficiency. Learn simple yet effective optimizations for time and space complexity, from avoiding unnecessary stream overhead to mastering in-place operations."
+image: /assets/images/headers/java-performance-tips.jpg
 redirect_from:
   - /tech/2026/01/08/java-performance-tips.html
 pin: true
