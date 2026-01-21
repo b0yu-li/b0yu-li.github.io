@@ -6,18 +6,26 @@ date: 2026-01-19 11:53:00 +0800
 categories: [ Studio, Code ]
 tags: [ strudel, live-coding ]
 strudel: true
-# TODO: - Add image
+image: /assets/images/headers/hello-strudel.jpg
 # TODO: - Add description
 pin: true
 ---
 
 I used to click MIDI notes. Now I type them.
 
-Click the **Play** button below to hear it right now.
+Let's have a look at an example on how we build a Trance example.
+
+## Round I: Create The Driving Pulse
+
+Trance is built on "4-on-the-floor."
+This means the Bass Drum (Kick) hits on every single beat of the measure: 1, 2, 3, 4.
+
+> Click the **Play** button below to hear it right now.
+{: .prompt-tip }
 
 <div style="
   position: relative; 
-  height: 270px; 
+  height: 390px; 
   width: 100%; 
   overflow: hidden; 
   border: 1px solid #3b4045; 
@@ -26,7 +34,7 @@ Click the **Play** button below to hear it right now.
   background: #1b1b1b;
 ">
   <iframe 
-    src="https://strudel.cc/#CiQ6IHMoIltiZCA8aGggaGggaGggb2g%2BXSo0IikuYmFuaygidHI5MDkiKS5kZWMoLjQpOw%3D%3D" 
+    src="https://strudel.cc/#CnNldGNwbSgxMzgvNCkKLy8gNCBvbiB0aGUgZmxvb3IKcygiYmQqNCIpCiAgLmJhbmsoInRyOTA5IikKICAuZ2FpbigiMSAwLjcgMC45IDAuNiIpCiAgLl9wdW5jaGNhcmQoKQ%3D%3D" 
     width="100%" 
     height="100%" 
     style="border: none;" 
