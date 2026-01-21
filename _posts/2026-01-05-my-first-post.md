@@ -7,6 +7,7 @@ categories: [ Journal, Life ]
 tags: [ introduction, life ]
 redirect_from:
   - /update/2026/01/05/my-first-post.html
+description: "Meet Boyu, a creator blending code and music. From implementing serverless features and live-coding environments to conquering Hollow Knight: Silksong, here is a glimpse into my world."
 ---
 
 ## Who am I?
