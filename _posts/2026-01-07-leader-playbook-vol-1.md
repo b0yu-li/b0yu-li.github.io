@@ -8,6 +8,8 @@ categories: [ Journal, Leadership ]
 tags: [ lead, strategy, playbook, influence ]
 redirect_from:
   - /lead/2026/01/07/leader-playbook-vol-1.html
+description: "How do you lead effectively when you have no leverage? Discover the playbook for 'Pure Influence'—moving beyond carrots and sticks to motivate teams through purpose, autonomy, and skill growth."
+image: /assets/images/headers/leadership-influence.jpg
 ---
 
 I have always wondered: **How do you lead effectively when you have no leverage?**
