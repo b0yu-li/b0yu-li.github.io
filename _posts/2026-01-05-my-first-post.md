@@ -7,6 +7,7 @@ categories: [ Journal, Life ]
 tags: [ introduction, life ]
 redirect_from:
   - /update/2026/01/05/my-first-post.html
+image: /assets/images/headers/hello.png
 description: "Meet Boyu, a creator blending code and music. From implementing serverless features and live-coding environments to conquering Hollow Knight: Silksong, here is a glimpse into my world."
 ---
 
@@ -16,6 +17,7 @@ I am Boyu, I like creating stuff (whether it be code or music thingy).
 
 ## Recent Updates
 
++ **Jan 21, 2026:** Included a [tech stack page](/stack/) documenting how I built this site.
 + **Jan 20, 2026:** Implemented a serverless "Like" button using Cloudflare Workers and KV storage. Now you can give me validation without logging in!
 + **Jan 19, 2026:** Integrated the Strudel live-coding environment directly into the blog. I can now ship code that makes sound.
 + **Jan 18, 2026:** Putting out my cover of Taylor Swift's _All Too Well_, but "roo-imagined" (get it?).
