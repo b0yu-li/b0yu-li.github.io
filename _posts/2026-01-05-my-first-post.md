@@ -17,6 +17,7 @@ I am Boyu, I like creating stuff (whether it be code or music thingy).
 
 ## Recent Updates
 
++ **Jan 23, 2026:** Published my [set](https://www.youtube.com/watch?v=ieDyNV1uRJY) (3 Picks from _The Life of a Showgirl_) on YouTube.
 + **Jan 21, 2026:** Included a [tech stack page](/stack/) documenting how I built this site.
 + **Jan 20, 2026:** Implemented a serverless "Like" button using Cloudflare Workers and KV storage. Now you can give me validation without logging in!
 + **Jan 19, 2026:** Integrated the Strudel live-coding environment directly into the blog. I can now ship code that makes sound.
