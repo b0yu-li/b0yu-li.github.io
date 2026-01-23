@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Hello World: My First Strudel Loop"
+title: "Hello Strudel: I Can CODE Music?"
 author: boyu
 date: 2026-01-19 11:53:00 +0800
 categories: [ Studio, Code ]
@@ -11,7 +11,7 @@ image: /assets/images/headers/hello-strudel.jpg
 pin: true
 ---
 
-I used to click MIDI notes. Now I type them.
+I used to click MIDI notes. Now I can code them!
 
 Let's have a look at an example on how we build a Trance example.
 
