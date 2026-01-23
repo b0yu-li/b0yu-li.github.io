@@ -1,5 +1,9 @@
 #  The contact options.
 
+- type: youtube
+  icon: "fa-brands fa-youtube"
+  url: https://youtube.com/@dj-rooby
+
 - type: github
   icon: "fab fa-github"
 
