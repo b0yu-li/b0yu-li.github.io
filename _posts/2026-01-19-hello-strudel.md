@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Hello Strudel: I Can CODE Music?"
+title: "Hello Strudel: Wait, I Can CODE Music Now?"
 author: boyu
 date: 2026-01-19 11:53:00 +0800
 categories: [ Studio, Code ]
@@ -49,7 +49,7 @@ The Hat must play only on the off-beats.
 
 <div style="
   position: relative; 
-  height: 390px; 
+  height: 420px; 
   width: 100%; 
   overflow: hidden; 
   border: 1px solid #3b4045; 
@@ -72,7 +72,7 @@ machine-gun rhythm. So I made the off-beat hats steady and loud (`.gain(0.9)`).
 
 <div style="
   position: relative; 
-  height: 390px; 
+  height: 450px; 
   width: 100%; 
   overflow: hidden; 
   border: 1px solid #3b4045; 
