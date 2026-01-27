@@ -212,7 +212,7 @@ public void moveBirds(List<Moveable> birds) {
     + **Identify the Intent**: Why am I checking if it's a `Penguin`? I want it to move.
     + **Rename the Method**: `fly()` is too specific. `slideOnBelly()` is too specific. Change the parent method to `move()` or `performAction()`.
     + **Push the Logic Down**: Move the "how" into the specific classes. Implement the `move()` method in `Penguin`, and actually make it `slideOnBelly()`
-  + Sometimes I can't generalize. For example, `playMusic()` vs `layEgg()`. They aren't the same "type" of action. If I find myself downcasting in that situation, it usually means my list is too generic. I should split the `List<Object> things` (contains `Duck`, `Radio`, `Car`) into `List<Animal> animals` and `List<Device> devices`.
+  + _Note:_ Sometimes I can't generalize. For example, `playMusic()` vs `layEgg()`. They aren't the same "type" of action. If I find myself downcasting in that situation, it usually means my list is too generic. I should split the `List<Object> things` (contains `Duck`, `Radio`, `Car`) into `List<Animal> animals` and `List<Device> devices`.
 
 ```java
 // The "Smell" of Downcasting
@@ -231,7 +231,7 @@ for (Bird bird : birds) {
 
 + **No Surprises**: A `List<Bird>` should behave like a list of birds. I shouldn't have to worry about one of them being a grenade (or a Penguin).
 + **Maintainability**: I can add new "Good" birds forever without breaking the `moveBirds` method.
-+ In a No QA environment, LSP is critical. If I create a subclass that throws unexpected errors, no QA tester will catch it. It will crash in production when a user triggers that specific edge case.
++ **Safety**: In a No QA environment, LSP is critical. If I create a subclass that throws unexpected errors, no QA tester will catch it. It will crash in production when a user triggers that specific edge case.
 
 ---
 
