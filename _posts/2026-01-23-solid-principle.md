@@ -2,7 +2,7 @@
 layout: post
 title: "SOLID Principle Brochure"
 author: boyu
-date: 2026-01-23 14:30:00 +0800
+date: 2026-01-28 14:30:00 +0800
 categories: [ Tech, Design ]
 tags: [ tech, solid, principle, design ]
 description: "SOLID principle helps us write better code."
@@ -111,7 +111,127 @@ class PaymentProcessor {
 
 ## Liskov Substitution
 
-TODO: - Coming soon...
+> _"Subtypes must be substitutable for their base types without altering the correctness of the program."_
+
+Let me put it in a very simple way.
+If I have a parent class `Parent` and a child class `Child`, I should be able to **replace `Parent` with `Child` everywhere** in my code, and **nothing should explode**.
+
+### The Analogy: The Mechanical Duck
+
+![The Mechanical Duck Analogy](/assets/images/mechanical-duck-analogy.png){: width="330" height="180" .w-40 .right}
+
+If it looks like a duck, swims like a duck, and quacks like a duck, but it **needs batteries** to function, we have a problem.
+
+Imagine I have a pond simulator. It holds a collection of `Duck` objects.
+
++ **Real Duck**: Eats bread, swims, quacks.
++ **Mechanical Duck**: Eats... batteries? Breaks if put in water?
+
+If my code treats them both as generic `Duck`s, and I try to feed the Mechanical Duck a piece of bread, it might jam the gears and crash the system.
+The Mechanical Duck **violates** the Liskov Substitution Principle because it cannot seamlessly replace a Real Duck, even though they share the same name.
+
+### Examples
+
+#### Bad Example (The Violation)
+
+I create a `Bird` class with a `fly()` method. Everyone loves birds. Then I add a `Penguin`. Penguins are birds, right? So `Penguin` extends `Bird`.
+
+```java
+class Bird {
+    public void fly() {
+        System.out.println("I believe I can fly...");
+    }
+}
+
+class Sparrow extends Bird {
+    // Inherits fly() - Works great.
+}
+
+class Penguin extends Bird {
+    @Override
+    public void fly() {
+        // ERROR: Penguins can't fly!
+        throw new UnsupportedOperationException("I can't fly!");
+    }
+}
+
+// The Client Code
+public void moveBirds(List<Bird> birds) {
+    for (Bird bird : birds) {
+        // If I pass a Penguin here, my program CRASHES.
+        // This means Penguin is NOT a safe substitute for Bird.
+        bird.fly(); 
+    }
+}
+```
+
+#### Good Example (The Fix)
+
+The problem isn't the Penguin; the problem is my abstraction.
+Not all birds fly.
+I should separate the capabilities (Interfaces) from the biology.
+
+```java
+// Capability 1: Moving
+interface Moveable {
+    void move();
+}
+
+// Capability 2: Flying (Only for flying birds)
+interface Flyable {
+    void fly();
+}
+
+class Sparrow implements Moveable, Flyable {
+    public void move() { System.out.println("Hopping..."); }
+    public void fly() { System.out.println("Flying high!"); }
+}
+
+class Penguin implements Moveable {
+    // Penguin only implements Moveable, NOT Flyable.
+    public void move() { System.out.println("Running fast!"); }
+}
+
+// The Client Code
+public void moveBirds(List<Moveable> birds) {
+    for (Moveable bird : birds) {
+        // Safe! Both Sparrow and Penguin can move.
+        // I don't need to ask "Are you a Penguin?"
+        bird.move();
+    }
+}
+```
+
+### Watch out for these smells
+
++ **Refused Bequest**: Does my child class override a method just to throw `NotImplementedException` or do nothing? That's a red flag.
++ **Type Checking**: Do I see code like `if (item instanceof Penguin)`? That usually means my abstraction is leaky.
++ **Downcasting**: Am I constantly casting a generic object down to a specific type to get it to work? To fix downcasting, look for the common intent behind the specific actions. If a `Penguin` _slides_ and a `Sparrow` _flies_, the common intent is _movement_. Create a generic `move()` method and let each class handle its own implementation details.
+  + **Why it is dangerous**: If I add a new bird (e.g., `Ostrich`), I have to hunt down every single `if (instanceof ...)` statement in my entire codebase and update it. If I miss one, I get a runtime crash. That is the opposite of "Closed for Modification."
+  + **How to fix it: Generalize the Action**
+    + **Identify the Intent**: Why am I checking if it's a `Penguin`? I want it to move.
+    + **Rename the Method**: `fly()` is too specific. `slideOnBelly()` is too specific. Change the parent method to `move()` or `performAction()`.
+    + **Push the Logic Down**: Move the "how" into the specific classes. Implement the `move()` method in `Penguin`, and actually make it `slideOnBelly()`
+  + Sometimes I can't generalize. For example, `playMusic()` vs `layEgg()`. They aren't the same "type" of action. If I find myself downcasting in that situation, it usually means my list is too generic. I should split the `List<Object> things` (contains `Duck`, `Radio`, `Car`) into `List<Animal> animals` and `List<Device> devices`.
+
+```java
+// The "Smell" of Downcasting
+for (Bird bird : birds) {
+    if (bird instanceof Penguin) {
+        // I have to cast it (Downcast) to make it do what I want.
+        // This implies 'Bird' is a leaky abstraction.
+        ((Penguin) bird).slideOnBelly(); 
+    } else {
+        bird.fly();
+    }
+}
+```
+
+### Why this principle?
+
++ **No Surprises**: A `List<Bird>` should behave like a list of birds. I shouldn't have to worry about one of them being a grenade (or a Penguin).
++ **Maintainability**: I can add new "Good" birds forever without breaking the `moveBirds` method.
++ In a No QA environment, LSP is critical. If I create a subclass that throws unexpected errors, no QA tester will catch it. It will crash in production when a user triggers that specific edge case.
 
 ---
 
