@@ -31,7 +31,8 @@
     "boyu",
     "Cheatsheet",
     "Liskov",
-    "oneline"
+    "oneline",
+    "Pydantic"
   ],
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
