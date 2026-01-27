@@ -32,5 +32,8 @@
     "Cheatsheet",
     "Liskov",
     "oneline"
-  ]
+  ],
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  }
 }
