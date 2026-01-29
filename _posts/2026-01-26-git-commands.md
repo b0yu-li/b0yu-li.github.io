@@ -90,6 +90,12 @@ git restore --staged .
 git commit --amend --no-edit
 ```
 
++ **Edit Last Commit Message** _Only for local commits that haven't been pushed yet_.
+
+```shell
+git commit --amend -m "new message"
+```
+
 ## 5. Patching (The Manual Move)
 
 Sometimes I just need to move a commit physically (via email or file) without pushing.
