@@ -96,6 +96,16 @@ git commit --amend --no-edit
 git commit --amend -m "new message"
 ```
 
++ **Edit Older Commit Messages** _Opens an interactive editor. Change `pick` to `reword` next to the commit I want to fix._
+
+```shell
+# HEAD~2 means "the last 2 commits"
+git rebase -i HEAD~2
+```
+
+> Just like `amend`, never do this if you have already pushed these commits to a shared branch, as it rewrites history.
+{: .prompt-warning }
+
 ## 5. Patching (The Manual Move)
 
 Sometimes I just need to move a commit physically (via email or file) without pushing.
