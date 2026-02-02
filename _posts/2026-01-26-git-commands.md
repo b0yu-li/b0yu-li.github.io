@@ -136,3 +136,13 @@ git format-patch abc1234..HEAD
 ```shell
 git apply git apply /path/to/file.patch
 ```
+
+## 6. Branching
+
++ **Create New Branch from Base** _Creates and switches to a new branch based on a specific existing branch (instead of the current HEAD)_.
+
+```shell
+git checkout -b <new_branch_name> <base_branch_name>
+# Example: Create 'feature-login' starting from 'main'
+git checkout -b feature-login main
+```
