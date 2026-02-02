@@ -17,6 +17,10 @@ I am Boyu, I like creating stuff (whether it be code or music thingy).
 
 ## Recent Updates
 
++ **Late Jan to early Feb, 2026:**
+  + Working on a React app that I use daily. Check out the [Interactive Demo: Exp-Z Expense Tracker](/posts/demo-exp-z/).
+  + Kinda obsessed with _Stardew Valley_—spent some quality time on it over the weekend.
+  + Having a blast with my Traktor X1 MK3 + Z1 MK2 combo (the new DJ gear).
 + **Jan 23, 2026:** Published my [set](https://www.youtube.com/watch?v=ieDyNV1uRJY) (3 Picks from _The Life of a Showgirl_) on YouTube.
 + **Jan 21, 2026:** Included a [tech stack page](/stack/) documenting how I built this site.
 + **Jan 20, 2026:** Implemented a serverless "Like" button using Cloudflare Workers and KV storage. Now you can give me validation without logging in!
@@ -26,6 +30,6 @@ I am Boyu, I like creating stuff (whether it be code or music thingy).
 + **Jan 5, 2026:** Been working on a DJ set (picks from Taylor Swift's _The Life of a Showgirl_ album), finally got it out.
 + **Dec 2025:** Been playing the video game _Hollow Knight: Silksong_, it's hard no doubt, I love the challenges, still hustling in that beautiful world (_Pharloom_ to be specific).
 
-## Say Hi!
+## Say Hi
 
 Welcome and very nice to meet you 🫶
