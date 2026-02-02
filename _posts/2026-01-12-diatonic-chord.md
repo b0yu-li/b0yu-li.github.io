@@ -7,7 +7,7 @@ categories: [ Studio, Theory ]
 tags: [ music, music-theory, chord, producer ]
 image: /assets/images/headers/diatonic-chord.jpg
 description: "Confused by music theory? Discover the 'Crayon Box' analogy for Diatonic Chords and learn why they are the secret safety net for writing perfect Trance melodies in Logic Pro."
-pin: true
+# pin: true
 ---
 
 > **More about me**
@@ -50,10 +50,11 @@ I used an AI tool to visualize this crayon analogy.
    diatonic progressions instantly.
 
 > **If you're interested, here is a practice:**
+>
 > 1. Open Logic Pro.
 > 2. Load a synthesizer (try Retro Synth).
-> 3. Add the **MIDI FX "Chord Trigger"** before the synth. 
+> 3. Add the **MIDI FX "Chord Trigger"** before the synth.
 > 4. Select the preset **"Single > Major Scale Chords"**.
-> 
+>
 > Play the white keys. You are now playing strictly **Diatonic chords**. Do they sound good?
 {: .prompt-tip }
