@@ -9,11 +9,10 @@ description: "An evolving cheatsheet of practical Java performance tips to boost
 image: /assets/images/headers/java-performance-tips.jpg
 redirect_from:
   - /tech/2026/01/08/java-performance-tips.html
-pin: true
+# pin: true
 ---
 
 This is an evolving tips list (or a cheatsheet) for common Java performance optimizations.
-
 
 ### Time Optimization
 

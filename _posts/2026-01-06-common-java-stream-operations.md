@@ -9,7 +9,7 @@ image: /assets/images/headers/java-stream-operations.jpg
 description: "An evolving cheatsheet for essential Java Stream operations. Stop searching for syntax and grab quick solutions for tasks like creating frequency maps with Collectors.groupingBy."
 redirect_from:
   - /tech/2026/01/06/common-java-stream-operations.html
-pin: true
+# pin: true
 ---
 
 This is an evolving cheatsheet for common Java Stream operations.
