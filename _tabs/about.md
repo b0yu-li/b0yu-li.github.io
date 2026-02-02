@@ -10,15 +10,23 @@ I am a Software Engineer by trade and a Trance Producer by passion. I love build
 
 This site, **Rooby Studio**, is my digital garden—a place where I document my journey in solving technical problems and crafting electronic music.
 
+---
+
 ## 💻 The Engineer
 
 I specialize in building robust applications and exploring creative coding. My stack includes:
 
-* **Core:** Java, Angular
+* **Core:** Java, React, Angular
 * **Creative:** Live Coding (Strudel/TidalCycles), Web Audio API
 * **Infrastructure:** Cloudflare Workers (Serverless), Jekyll
 
 I believe code is more than just utility; it's a medium for expression. Lately, I've been experimenting with **Micro-Frontends** to bring DAW-like experiences into the browser.
+
+### Demos
+
+* [Interactive Demo: Exp-Z Expense Tracker](/posts/demo-exp-z/)
+
+---
 
 ## 🎹 The Producer
 
@@ -31,6 +39,8 @@ When the terminal closes, the DAW opens. My musical heart beats at 138 BPM.
 
 I am currently working on "Rooby-imagined" covers—taking pop anthems and rebuilding them from the ground up.
 
+---
+
 ## 🎮 The Human
 
 Beyond the screen and speakers:
@@ -40,13 +50,14 @@ Beyond the screen and speakers:
 
 ---
 
-### Connect
+## Connect
+
 Want to talk about code, collab on a track, or simply chat?
 [Email Me](mailto:boyu_l@icloud.com)
 
---- 
+---
 
 > Curious about how this site was built?
-> 
+>
 > Check out [The Tech Stack](/stack/).
 {: .prompt-tip }
