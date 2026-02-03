@@ -78,6 +78,12 @@ git push origin main
 
 ## 4. Undo & Corrections
 
++ **Undo Last Commit (Soft Reset)** _Undoes the last commit but keeps the changes **staged** (ready to be committed again)._
+
+```shell
+git reset --soft HEAD~1
+```
+
 + **Restore Staged Files** _Un-stages files (removes them from the index) but keeps my changes_.
 
 ```shell
