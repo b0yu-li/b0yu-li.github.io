@@ -2,7 +2,7 @@
 layout: post
 title: "SOLID Principle Brochure"
 author: boyu
-date: 2026-01-28 14:30:00 +0800
+date: 2026-01-23 14:30:00 +0800
 categories: [ Tech, Design ]
 tags: [ tech, solid, principle, design ]
 description: "SOLID principle helps us write better code."
@@ -16,7 +16,95 @@ This brochure consolidates everything I need to know about the **SOLID** princip
 
 ## Single Responsibility
 
-TODO: - Coming soon...
+> _"A class should have one, and only one, reason to change."_
+
+This doesn't mean a class should only have one _method_. It means a class should be responsible for only one _part_ of the system's functionality.
+
+If I have to change a class because of a **Database** change, AND I have to change the _same_ class because of a **Business Logic** change, that class has too many responsibilities.
+
+### The Analogy: The Swiss Army Knife
+
+![The Swiss Army Knife Analogy](/assets/images/swiss-army-knife.png){: width="360" height="180" .w-50 .right}
+
++ **The Violation**: A Swiss Army Knife tries to be a knife, a spoon, a saw, a corkscrew, and a toothpick. It does everything, but it does nothing _great_. If the corkscrew mechanism jams, the whole knife might become useless. It is heavy, clunky, and hard to clean.
++ **The Ideal**: A dedicated Chef's Knife. It has one job: cutting. It does it perfectly. If I need to open a wine bottle, I get a corkscrew. If I want to fix the database (or a loose screw), I get a screwdriver. Each tool changes independently.
+
+### Examples
+
+#### Bad Example (The "God" Class)
+
+Meet the `User` class. It manages state, talks to the database, and even sends emails.
+
+```java
+class User {
+  private String username;
+
+  // Responsibility 1: Data Management
+  public String getUsername() { return username; }
+
+  // Responsibility 2: Database Operations
+  public void saveToDatabase() {
+    Connection conn = database.getConnection();
+    // ... SQL logic ...
+  }
+
+  // Responsibility 3: Notification Logic
+  public void sendWelcomeEmail() {
+    EmailClient client = new EmailClient();
+    client.send(this.email, "Welcome!");
+  }
+}
+```
+
+**The Problem:**
+
++ If the **CTO** changes the Database from MySQL to PostgreSQL, I touch this class.
+
++ If **Marketing** wants to change the email subject line, I touch _the same_ class.
+
++ **Shared State:** If the class uses shared variables (like a global `dbConnection`), a bug in the email logic might leave that connection in a bad state, causing the Login logic to fail subsequently.
+
+#### Good Example (Delegation)
+
+We split the responsibilities into focused classes.
+
+```java
+// 1. The Entity (Data only)
+class User {
+  private String username;
+  public String getUsername() { return username; }
+}
+
+// 2. The Repository (Database only)
+class UserRepository {
+  public void save(User user) {
+    // ... Database logic ...
+  }
+}
+
+// 3. The Service (Notification only)
+class EmailService {
+  public void sendWelcomeEmail(User user) {
+    // ... Email logic ...
+  }
+}
+```
+
+### Watch out for these smells
+
++ **The "And" Keyword**: If I describe what a class does and I use the word "and" multiple times (e.g., "This class parses the file **AND** validates the data **AND** saves it"), it likely breaks SRP.
+
++ **God Classes**: Classes named `UserManager`, `SystemHandler`, or `CentralController` are often dumping grounds for unrelated logic.
+
++ **Imports from Everywhere**: If a class imports `java.sql.*` (Database) AND `java.net.*` (Network) AND `javax.swing.*` (UI), it is definitely doing too much.
+
+### Why this principle?
+
++ **Lower Coupling**: Changes in the database layer won't break my email logic.
+
++ **Fewer Merge Conflicts**: The backend engineer works on `UserRepository` while the frontend engineer updates `EmailService`. They don't fight over the same file.
+
++ **Reusability**: I can use that `EmailService` for other things (like "Forgot Password") without dragging along the entire User Database logic.
 
 ---
 
