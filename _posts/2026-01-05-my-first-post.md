@@ -18,6 +18,7 @@ I am Boyu, I like creating stuff (whether it be code or music thingy).
 ## Recent Updates
 
 + **Late Jan to early Feb, 2026:**
+  + Hosted the **hybrid** New Year Event (Jan 30) across 4 offices. It combined offline gathering spaces with online streaming. Over 800 people were there—the energy was incredible!
   + Working on a React app that I use daily. Check out the [Interactive Demo: Exp-Z Expense Tracker](/posts/demo-exp-z/).
   + Kinda obsessed with _Stardew Valley_—spent some quality time on it over the weekend.
   + Having a blast with my Traktor X1 MK3 + Z1 MK2 combo (the new DJ gear).
