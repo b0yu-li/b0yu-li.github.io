@@ -5,23 +5,21 @@ author: boyu
 date: 2026-02-05 11:06:00 +0800
 categories: [ Tech, React ]
 tags: [ tech, react, battle-card, cheatsheet ]
-# TODO: add a cover image
-# image: /assets/images/headers/react-battle-card.png
-# TODO: polish description
-description: "Have this battle card if you ever need to have a React interview"
+image: /assets/images/headers/react-battle-card.jpg
+description: "A concentrated cheat sheet for React interviews and daily development. Covers essential patterns, architectural decisions (Derived State), and the philosophy of 'Forced Simplicity'."
 ---
 
 ### 🧠 The Philosophy: "Forced Simplicity"
 
 - **Do not over-engineer.** If a simple `useState` works, don't use `useReducer`
-- **Declarative > Imperative.** Describe _what_ I want (`map`), not _how_ to get it (`for` loop).
+- **Declarative > Imperative.** Describe _what_ I want (`map`), not _how_ to get it (`for` loop)
 - **Talk while I type.** "I'm keeping this simple first..."
 
 ---
 
 ### 🛠️ Coding Patterns (Syntax)
 
-**1. Create Arrays (The "Clean" Way)** Don't use `for` loops. Use `Array.from`.
+**1. Create Arrays (The "Clean" Way)** Don't use `for` loops. Use `Array.from`
 
 ```typescript
 // Good for Star Ratings, Pagination, Lists
@@ -36,7 +34,7 @@ const items = Array.from({ length: 5 }, (_, i) => i + 1);
 ))}
 ```
 
-**3. Controlled Inputs** Never let an input manage itself. Bind `value` and `onChange`.
+**3. Controlled Inputs** Never let an input manage itself. Bind `value` and `onChange`
 
 ```typescript
 <input 
@@ -45,7 +43,7 @@ const items = Array.from({ length: 5 }, (_, i) => i + 1);
 />
 ```
 
-**4. Thread-Safe Updates** When toggling or incrementing, use the **Functional Update**.
+**4. Thread-Safe Updates** When toggling or incrementing, use the **Functional Update**
 
 ```typescript
 // BAD: setValue(!value)  -> Might be stale
@@ -69,7 +67,7 @@ const items = Array.from({ length: 5 }, (_, i) => i + 1);
 - `[prop]` = **Update** (Run when `prop` changes).
 - `(missing)` = **Every Render** (Danger ⚠️).
 
-**7. Performance Optimization** Use `useMemo` for expensive derived state (like filtering a big list).
+**7. Performance Optimization** Use `useMemo` for expensive derived state (like filtering a big list)
 
 ```typescript
 const filtered = useMemo(() => {
@@ -81,7 +79,7 @@ const filtered = useMemo(() => {
 
 ### 🧪 Testing & Quality
 
-**8. Testing Hooks** I cannot test hooks directly. Use the `renderHook` helper.
+**8. Testing Hooks** I cannot test hooks directly. Use the `renderHook` helper
 
 ```typescript
 import { renderHook, act } from "@testing-library/react";
