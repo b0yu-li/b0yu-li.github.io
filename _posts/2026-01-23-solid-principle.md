@@ -2,12 +2,12 @@
 layout: post
 title: "SOLID Principle Brochure"
 author: boyu
-date: 2026-01-23 14:30:00 +0800
+date: 2026-02-10 14:30:00 +0800
 categories: [ Tech, Design ]
 tags: [ tech, solid, principle, design ]
 description: "SOLID principle helps us write better code."
 image: /assets/images/headers/solid-principle.jpg
-published: false
+# published: false
 ---
 
 This brochure consolidates everything I need to know about the **SOLID** principle.
@@ -325,7 +325,93 @@ for (Bird bird : birds) {
 
 ## Interface Segregation
 
-TODO: - Coming soon...
+> _"Clients should not be forced to depend upon interfaces that they do not use."_
+
+Please let me interpret it in simpler terms: **Don't force a class to sign a contract it can't fulfill.**
+If I have a massive interface (a "Fat" interface), and a class only needs _one_ small part of it, I shouldn't force that class to implement the rest just to make the compiler happy.
+
+### The Analogy: The Universal Remote vs. The Dedicated Button
+
+![The Remote Analogy](/assets/images/remote-analogy.png){: width="330" height="180" .w-40 .right}
+
++ **The Violation:** Imagine a TV remote that also has buttons to control the Microwave, the Garage Door, and the AC. If I just want to change the channel, I still have to hold this massive, heavy brick. Worse, if the "Microwave" button shorts out, I might have to replace the whole remote, even though the TV part works fine.
+
++ **The Ideal:** Small, focused controls. I have a TV remote for the TV. I have a wall switch for the Garage. If I am a "TV Watcher," I don't need to carry the "Garage Opener" dependency.
+
+### Examples
+
+#### Bad Example (The "Fat" Interface)
+
+I have a `Worker` interface. It seems logical: workers work, and they need to take breaks to eat.
+
+```java
+interface Worker {
+    void work();
+    void eat();
+}
+
+class HumanWorker implements Worker {
+    public void work() { System.out.println("Working..."); }
+    public void eat() { System.out.println("Eating lunch..."); }
+}
+
+class RobotWorker implements Worker {
+    public void work() { System.out.println("Beep boop, working..."); }
+
+    // PROBLEM: Robots don't eat!
+    // I am forced to implement this method just to satisfy the interface.
+    public void eat() {
+        throw new UnsupportedOperationException("I don't eat!");
+    }
+}
+```
+
+**The Issue:** The `RobotWorker` depends on `eat()`, even though it doesn't use it.
+If the definition of `eat()` changes (e.g., requires `calories` parameter), I have to update the Robot class, which is absurd.
+
+#### Good Example (Segregated Interfaces)
+
+I split the "Fat" interface into smaller, capability-based interfaces (Role Interfaces).
+
+```java
+// Capability 1: Working
+interface Workable {
+    void work();
+}
+
+// Capability 2: Eating
+interface Feedable {
+    void eat();
+}
+
+// Human needs both
+class HumanWorker implements Workable, Feedable {
+    public void work() { System.out.println("Working..."); }
+    public void eat() { System.out.println("Eating lunch..."); }
+}
+
+// Robot only needs one
+class RobotWorker implements Workable {
+    public void work() { System.out.println("Beep boop, working..."); }
+    // No eat() method here. Clean.
+}
+```
+
+### Watch out for these smells
+
++ **"Not Implemented" Exceptions**: If I see a class override a method just to throw `new UnsupportedOperationException()`, it's a screaming sign of an ISP violation.
+
++ **Empty Methods**: Implementing a method with an empty body `{ }` just to satisfy the compiler.
+
++ **Fat Interfaces**: Interfaces with names like `Service`, `Manager`, or `Util` that have 20+ unrelated methods.
+
+### Why this principle?
+
++ **Leaner Mocks**: When I write unit tests, I don't want to mock 50 methods for a "God Interface" when I only test one behavior. Segregated interfaces make testing trivial.
+
++ **Safety**: I can't accidentally call `robot.eat()` and crash the system at runtime, because the method simply doesn't exist on the API level.
+
++ **Decoupling**: Changes to the "Eating" logic never touch the "Robot" file.
 
 ---
 
