@@ -2,12 +2,11 @@
 layout: post
 title: "SOLID Principle Brochure"
 author: boyu
-date: 2026-02-10 12:10:00 +0800
+date: 2026-02-10 14:38:00 +0800
 categories: [ Tech, Design ]
 tags: [ tech, solid, principle, design ]
 description: "SOLID principle helps us write better code."
 image: /assets/images/headers/solid-principle.jpg
-# published: false
 ---
 
 This brochure consolidates everything I need to know about the **SOLID** principle.
