@@ -417,7 +417,102 @@ class RobotWorker implements Workable {
 
 ## Dependency Inversion
 
-TODO: - Coming soon...
+> _"High-level modules should not depend on low-level modules. Both should depend on abstractions."_
+
+Let's translate that into English: **Don't solder the lamp directly to the electrical wiring.**
+
+If I build a house and I wire the lamp directly into the wall, I can never move it. I can never replace it with a fan. I am stuck.
+Instead, I install a **Socket** (Interface). The lamp depends on the socket. The electrical wiring depends on the socket.
+Now, I can plug _anything_ in.
+
+### The Analogy: The Wall Socket
+
+![The Wall Socket Analogy](/assets/images/wall-socket.png){: width="320" height="180" .w-50 .right}
+
++ **The Violation (Soldering)**: Imagine if my laptop charger was permanently welded to the nuclear power plant. If the plant goes down, I can't just switch to solar. If I want to move to a coffee shop, I have to drag the power plant with me.
++ **The Ideal (The Socket)**: My laptop plug (High Level) doesn't care if the electricity comes from a Nuclear Plant, a Wind Farm, or a Hamster Wheel (Low Level). It only cares that it fits the **Standard 2-Prong Socket** (Abstraction).
+
+### Examples
+
+#### Bad Example (Hard Dependencies)
+
+I have a `NotificationService` (High Level) that needs to send messages. I hardcode the `EmailSender` (Low Level) inside it.
+
+```java
+class EmailSender {
+    public void sendEmail(String msg) {
+        System.out.println("Sending email: " + msg);
+    }
+}
+
+class NotificationService {
+    private EmailSender sender;
+
+    public NotificationService() {
+        // ERROR: I am creating the dependency myself ("New is Glue").
+        // I am now stuck with EmailSender forever.
+        this.sender = new EmailSender();
+    }
+
+    public void promote() {
+        sender.sendEmail("50% OFF!");
+    }
+}
+```
+
+**The Problem:** If I want to change from **Email** to **SMS**, I have to rewrite the `NotificationService`. I have violated the Open/Closed principle because my high-level logic depends on the low-level detail of "Email."
+
+#### Good Example (Dependency Injection)
+
+I flip the dependency. I ask for an _interface_ in the constructor.
+
+```java
+// 1. The Abstraction (The Socket)
+interface MessageSender {
+    void sendMessage(String msg);
+}
+
+// 2. The Low-Level Modules (The Plugs)
+class EmailSender implements MessageSender {
+    public void sendMessage(String msg) { System.out.println("Email: " + msg); }
+}
+
+class SmsSender implements MessageSender {
+    public void sendMessage(String msg) { System.out.println("SMS: " + msg); }
+}
+
+// 3. The High-Level Module
+class NotificationService {
+    private MessageSender sender;
+
+    // "Inject" the dependency.
+    // I don't care if it's Email or SMS, as long as it fits the interface.
+    public NotificationService(MessageSender sender) {
+        this.sender = sender;
+    }
+
+    public void promote() {
+        sender.sendMessage("50% OFF!");
+    }
+}
+```
+
+### Watch out for these smells
+
++ **"New is Glue"**: If I see `new ConcreteClass()` inside a high-level business logic class, I am coupling them together.
+
++ **Static Calls**: Static methods like `Database.save()` are global and permanent. I cannot replace them with a mock object during testing, which forces my test suite to depend on a real, slow, and fragile database connection.
+
+### Why this principle?
+
++ **Swappability**: I can switch from `MySQL` to `PostgreSQL` without changing a single line of my business logic.
+
++ **Testing**: This is the #1 reason we do this. If I hardcode `EmailSender`, my unit tests will spam real emails. If I use Dependency Inversion, I can inject a `FakeSender` that just logs "Email sent" to the console during tests.
+
+```java
+// Testing is easy now!
+NotificationService testService = new NotificationService(new FakeSender());
+```
 
 ---
 
