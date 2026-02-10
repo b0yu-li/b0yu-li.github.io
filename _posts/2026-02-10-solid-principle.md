@@ -157,14 +157,14 @@ interface PaymentMethod {
 class CreditCard implements PaymentMethod {
   public void pay(final double amount) {
     // Logic specific to Credit Cards
-    log.info("Paid " + amount + " via Credit Card");
+    System.out.println("Paid " + amount + " via Credit Card");
   }
 }
 
 class PayPal implements PaymentMethod {
   public void pay(final double amount) {
     // Logic specific to PayPal
-    log.info("Paid " + amount + " via PayPal");
+    System.out.println("Paid " + amount + " via PayPal");
   }
 }
 
