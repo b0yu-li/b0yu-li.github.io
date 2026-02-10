@@ -421,6 +421,19 @@ TODO: - Coming soon...
 
 ---
 
+## 💡 LSP vs. ISP: Wait, aren't they the same?
+
+You might have noticed that the **Bad Examples** for Liskov Substitution (Penguin) and Interface Segregation (Robot) look almost identical. In both cases, the class throws an error because it can't do what it's asked to do.
+
+| **Principle**         | **Perspective**             | **The Complaint**                                                                                                                                                   |
+| --------------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Liskov (LSP)**      | **The User** (Client)       | _"I asked for a Bird, you gave me a Penguin, and now my code crashed because I tried to fly it. You broke my trust!"_                                               |
+| **Segregation (ISP)** | **The Class** (Implementer) | _"I am a Robot. Why do I have to import the 'Food' library and compile 'Nutrition' modules just to implement the 'Worker' interface? This is unnecessary baggage."_ |
+
+**The Relationship:** Often, **ISP is the tool used to fix an LSP violation.** If a `Penguin` cannot replace a `Bird` (LSP Violation), it is likely because the `Bird` interface is too "fat" and includes flying logic by default. By breaking `Bird` into `Flyable` and `Walkable` (applying ISP), you solve the substitution problem.
+
+---
+
 ## The Takeaway
 
 + At the end of the day, "SOLID" is a tool, not a religion.
