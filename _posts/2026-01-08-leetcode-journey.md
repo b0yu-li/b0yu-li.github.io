@@ -9,7 +9,7 @@ redirect_from:
   - /tech/2026/01/08/leetcode-journey.html
 image: /assets/images/headers/leetcode-75.jpg
 description: "A digestible journey through the LeetCode 75 Study Plan. This post dives into the Two-Pointers pattern, exploring intuitive solutions and visual analogies for problems like 'Max Number of K-Sum Pairs' (1679) and '3Sum' (15)."
-pin: true
+pin: false
 ---
 
 This is an evolving blog documenting how I approached the problems
@@ -71,10 +71,10 @@ Return _the maximum number of operations you can perform on the array_.
 
 ##### How I Approach It (Solution #1 - The Waiting Room Analogy)
 
-+ Imagine I am the **bouncer** at the door of a club.
-  + People (`nums`) arrive one by one.
-  + I have a "Waiting Room" (the `HashMap`).
-+ And I perform actions like this:
+- Imagine I am the **bouncer** at the door of a club.
+  - People (`nums`) arrive one by one.
+  - I have a "Waiting Room" (the `HashMap`).
+- And I perform actions like this:
 
 <img src="/assets/images/leetcode-journey-1679-waiting-room-analogy.svg" alt="LeetCode Journey: No. 1679, The Waiting Room Analogy" width="600">
 
@@ -103,20 +103,20 @@ public int maxOperations(int[] nums, int k) {
 
 ###### Time Complexity Analysis: _O(N)_
 
-+ I iterate through the array exactly once.
-+ HashMap operations (put, get, containsKey) are O(1) on average.
+- I iterate through the array exactly once.
+- HashMap operations (put, get, containsKey) are O(1) on average.
 
 ###### Space Complexity Analysis: _O(N)_ (worst-case scenario)
 
-+ In the worst case (e.g., `[1, 2, 3, 4]` with `k=100`), no pairs are found, and every single number is stored in the
+- In the worst case (e.g., `[1, 2, 3, 4]` with `k=100`), no pairs are found, and every single number is stored in the
   map.
 
 ##### How I Approach It (Solution #2 - The Matchmaker Analogy) {#two-pointers}
 
-+ Say I am a **matchmaker** trying to pair people up so their combined "score" equals exactly `k`.
-+ Since I CANNOT easily spot pairs in a chaotic crowd. So, before I do anything, I yell: "Everyone line up!" (I must
+- Say I am a **matchmaker** trying to pair people up so their combined "score" equals exactly `k`.
+- Since I CANNOT easily spot pairs in a chaotic crowd. So, before I do anything, I yell: "Everyone line up!" (I must
   sort the array first. This is the _cost of admission_ for this approach.)
-+ And I pair them up like this.
+- And I pair them up like this.
 
 <img src="/assets/images/leetcode-journey-1679-matchmaker-analogy.svg" alt="LeetCode Journey: No. 1679, The Matchmaker Analogy" width="800">
 
@@ -158,20 +158,20 @@ public int maxOperations(int[] nums, int k) {
 
 ###### Time Complexity Analysis: _O(N * logN)_
 
-+ **Sorting:** `Arrays.sort(nums)` uses Dual-Pivot Quicksort for primitive arrays. This runs in O(N * logN) on average.
+- **Sorting:** `Arrays.sort(nums)` uses Dual-Pivot Quicksort for primitive arrays. This runs in O(N * logN) on average.
 
-+ **Two Pointers:** The `while` loop performs a single pass through the array, touching each element at most once. This
+- **Two Pointers:** The `while` loop performs a single pass through the array, touching each element at most once. This
   is O(N).
 
-+ **Total:** The sorting dominates the linear scan, so the final complexity is **O(N * logN)**.
+- **Total:** The sorting dominates the linear scan, so the final complexity is **O(N * logN)**.
 
 ###### Space Complexity Analysis: _O(logN)_
 
-+ I am sorting **in-place**.
-  + There is no new array allocated on the heap.
-  + Note: We say O(logN) (instead of pure O(1)) to account for the stack space used by the recursive calls inside the
+- I am sorting **in-place**.
+  - There is no new array allocated on the heap.
+  - Note: We say O(logN) (instead of pure O(1)) to account for the stack space used by the recursive calls inside the
     Quicksort algorithm.
-  + _In an interview_: You can state, "It uses **O(1) auxiliary space** excluding the recursion stack," which is often
+  - _In an interview_: You can state, "It uses **O(1) auxiliary space** excluding the recursion stack," which is often
     what
     they are looking for.
 
@@ -235,15 +235,15 @@ not matter.
 
 This problem is actually just an enhanced version of **Problem No. 1679 (Max Number of K-Sum Pairs)**.
 
-The key is to shift the perspective. Previously, we were looking for **2** numbers. Now, we need **3**. 
-So naturally, I thought: _'What if I just pin down one number as my anchor?'_ 
+The key is to shift the perspective. Previously, we were looking for **2** numbers. Now, we need **3**.
+So naturally, I thought: _'What if I just pin down one number as my anchor?'_
 That simple idea is all we need to get started.
 
 **The Analogy**: **The "Zen Team" Building**. Imagine I am a manager trying to form **perfectly balanced teams of 3 people** for a project.
 
-+ **Negative Numbers (-)** are "Pessimists" (drain energy).
-+ **Positive Numbers (+)** are "Optimists" (add energy).
-+ **Zero (0)** is a "Realist".
+- **Negative Numbers (-)** are "Pessimists" (drain energy).
+- **Positive Numbers (+)** are "Optimists" (add energy).
+- **Zero (0)** is a "Realist".
 
 A perfect team sums to exactly **Zero**. If I pick randomly, it’s chaos. So, I can use a system:
 
@@ -253,14 +253,14 @@ A perfect team sums to exactly **Zero**. If I pick randomly, it’s chaos. So, I
 > Now I don't have to guess. If a team is "too negative," I know exactly where to look for more positivity (to the right).
 {: .prompt-tip }
 
-2. The Anchor (`for int a ...`). I walk down the line and pick the first person, let's call him **Captain A** (This is `nums[a]`).
+1. The Anchor (`for int a ...`). I walk down the line and pick the first person, let's call him **Captain A** (This is `nums[a]`).
 
-   + Say **Captain A** is a **-4** (Pessimist).
-   + To balance him out, I need the other two members to sum to exactly **+4**. This is my `target`.
+   - Say **Captain A** is a **-4** (Pessimist).
+   - To balance him out, I need the other two members to sum to exactly **+4**. This is my `target`.
 
-3. The Recruiters (The Two Pointers), please refer to [this section](#two-pointers).
+2. The Recruiters (The Two Pointers), please refer to [this section](#two-pointers).
 
-4. The "Magic Clipboard" (The `HashSet`). If I try to write down a team that is already on the list, the clipboard
+3. The "Magic Clipboard" (The `HashSet`). If I try to write down a team that is already on the list, the clipboard
    automatically dissolves the ink. I don't need to manually check for duplicates; the data structure does the dirty
    work for me.
 
@@ -319,16 +319,16 @@ public List<List<Integer>> threeSum(int[] nums) {
 
 ###### **Time Complexity Analysis: O(N²)**
 
-+ **Sorting:** The initial `Arrays.sort` costs **O(N log N)**.
-+ **Two Pointers:** The nested loop structure (outer `for` + inner `while`) iterates through the array in **O(N²)**
+- **Sorting:** The initial `Arrays.sort` costs **O(N log N)**.
+- **Two Pointers:** The nested loop structure (outer `for` + inner `while`) iterates through the array in **O(N²)**
   time. This dominates the sorting cost.
 
 ###### **Space Complexity Analysis: O(N) to O(N²)** (Dependent on solution size)
 
-+ **Sorting Stack:** **O(log N)** for the Dual-Pivot Quicksort stack.
-+ **Auxiliary Space:** We use a `HashSet` to de-duplicate results. In the worst case (many valid triplets), the set size
+- **Sorting Stack:** **O(log N)** for the Dual-Pivot Quicksort stack.
+- **Auxiliary Space:** We use a `HashSet` to de-duplicate results. In the worst case (many valid triplets), the set size
   can grow up to **O(N²)**.
-  + The O(N²) comes from the fact that with the right numbers, you can form a "web" of solutions where almost everyone
+  - The O(N²) comes from the fact that with the right numbers, you can form a "web" of solutions where almost everyone
     matches with everyone else.
 
 ```text
@@ -341,5 +341,5 @@ If a = -3 (Need +3): [-3, -2, 5], [-3, -1, 4], ...       (Many solutions)
 Total Solutions = Sum of all these rows ≈ N²
 ```
 
-+ *Note:* A purely iterative solution with manual duplicate skipping would achieve **O(1)** auxiliary space, but my
+- _Note:_ A purely iterative solution with manual duplicate skipping would achieve **O(1)** auxiliary space, but my
   implementation prioritizes readability.
