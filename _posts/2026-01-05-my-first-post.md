@@ -17,6 +17,7 @@ I am Boyu, I like creating stuff (whether it be code or music thingy).
 
 ## Recent Updates
 
++ **Feb 10, 2026:** I beat _Raging Conchfly_ in _Hollow Knight: Silksong_ on my 33rd attempt.
 + **Late Jan to early Feb, 2026:**
   + Hosted the **hybrid** New Year Event (Jan 30) across 4 offices. It combined offline gathering spaces with online streaming. Over 800 people were there—the energy was incredible!
   + Working on a React app that I use daily. Check out the [Interactive Demo: Exp-Z Expense Tracker](/posts/demo-exp-z/).
