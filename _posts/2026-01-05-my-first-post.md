@@ -17,6 +17,12 @@ I am Boyu, I like creating stuff (whether it be code or music thingy).
 
 ## Recent Updates
 
++ **Feb 24, 2026:** The DS has arrived! So many happy hours on this console years ago. The DS system ages fantastically and I am absolutely loving it.
++ **Feb 21, 2026:** I ordered a pink Nintendo DSi with the battery replaced.
++ **Mid Feb 2026:**
+  + I beat _Father of the Flame_ in _Hollow Knight: Silksong_ on my 24th attempt.
+  + I beat _Disgraced Chef Lugoli_ in _Hollow Knight: Silksong_ on my 23rd attempt.
+  + I beat _Broodmother_ in _Hollow Knight: Silksong_ on my 17th attempt.
 + **Feb 10, 2026:** I beat _Raging Conchfly_ in _Hollow Knight: Silksong_ on my 33rd attempt.
 + **Late Jan to early Feb, 2026:**
   + Hosted the **hybrid** New Year Event (Jan 30) across 4 offices. It combined offline gathering spaces with online streaming. Over 800 people were there—the energy was incredible!
