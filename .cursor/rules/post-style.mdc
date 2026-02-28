@@ -1,0 +1,68 @@
+---
+description: Writing style and Markdown conventions for blog posts
+globs: _posts/*.md
+alwaysApply: false
+---
+
+# Blog Post Style Guide
+
+## Voice & Tone
+
+- First-person throughout — "I", "my", "me"
+- Conversational but confident — write like explaining to a smart colleague, not lecturing
+- Lead with a concrete analogy or scenario before introducing the concept
+- End with a "Takeaway" or reflection that lands the point — no trailing off
+
+## Structure
+
+- Open with a hook — a quote, a scenario, or a provocative question
+- Use `##` for top-level sections; `###` for sub-sections within them
+- For tech posts: number the sections (`## 1. What is X`, `## 2. The Analogy`, `## 3. The Example`)
+- For journal/philosophy posts: use descriptive headings (`## The Analyst vs. The Builder`)
+- Separate major topic shifts with `---`; don't use it between every section
+
+## Lists
+
+- Use `+` for unordered bullet points — not `-` or `*`
+- Use `1.` with nested `    ` (4-space indent) for ordered steps with sub-points
+- Bold the lead phrase in list items when the item has a label: `+ **Risk Reduction:** explanation`
+
+## Emphasis
+
+- `**bold**` for key terms being introduced, or the punchline of a sentence
+- `_italic_` for subtle stress or titles within prose
+- Em dashes `—` (not `--`) for asides and pivots
+
+## Analogies
+
+- Every tech concept gets a real-world analogy — restaurant, traffic lights, cake, skeleton, etc.
+- Name the characters in examples (e.g., "Bob", "Boyu") — keeps it grounded
+- State the analogy explicitly before mapping it to the tech: "REST is the set meal. GraphQL is ordering à la carte."
+
+## Code & Technical Content
+
+- Always include a language identifier on code fences: ` ```json `, ` ```graphql `, ` ```java `
+- Use comparison tables for "X vs. Y" sections — keep column headers bolded
+- Follow a code block with a plain-English sentence explaining what it shows
+
+## Blockquotes & Callouts
+
+- Use `>` blockquotes for memorable one-liners or direct quotes
+- Use bold standalone lines for punchy conclusions: `**The best code is no code.**`
+
+## Images
+
+```markdown
+![alt text](/assets/images/<name>.jpg){: width="700" height="400" .normal }
+```
+
+- Header image is declared in front matter, not embedded in the body
+- In-body images go in `/assets/images/` (not `/headers/`)
+
+## Internal Links
+
+```markdown
+[descriptive text](/posts/slug/)
+```
+
+- Link to related posts by slug path, not full URL

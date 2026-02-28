@@ -1,0 +1,58 @@
+---
+description: Project-wide facts and conventions for Rooby Studio
+alwaysApply: true
+---
+
+# Rooby Studio — Project Overview
+
+## What This Is
+
+A personal Jekyll blog hosted on GitHub Pages at **https://roobystudio.com**.
+
+- **Theme:** `jekyll-theme-chirpy` v7.4+
+- **Stack:** Jekyll (Ruby), Liquid templates, Kramdown + Rouge
+- **Deployment:** GitHub Actions → GitHub Pages (`.github/workflows/pages-deploy.yml`)
+- **Comments:** Giscus (GitHub Discussions)
+- **Analytics:** GoatCounter (`id: boyu`)
+- **PWA:** enabled with offline cache
+
+## Directory Structure
+
+| Path | Purpose |
+|------|---------|
+| `_posts/` | All blog posts (`YYYY-MM-DD-slug.md`) |
+| `_tabs/` | Nav tabs — `tech`, `studio`, `journal`, `archives`, `categories`, `tags`, `about` |
+| `_layouts/` | Custom Jekyll layouts |
+| `_includes/` | Liquid partials |
+| `_data/` | YAML data files (authors, contact, share) |
+| `_plugins/` | Jekyll plugins |
+| `assets/images/headers/` | Post header images (one per post, named after the slug) |
+| `assets/images/` | In-body images |
+| `assets/demos/` | Embedded interactive demos (e.g. Exp-Z) |
+| `pages/` | Standalone pages (e.g. `stack.md`) |
+| `tools/` | Build/utility scripts (excluded from Jekyll build) |
+
+## Content Tracks
+
+The site has two main tracks, reflected in categories and nav tabs:
+
+| Track | Tab | Typical Categories |
+|-------|-----|--------------------|
+| Tech | `tech` | Tech, Java, API, Design, Demo, Agile |
+| Life & Music | `studio` / `journal` | Studio, Journal, Thoughts, Philosophy, Leadership |
+
+## Key Config Facts
+
+- **Permalink:** `/posts/:title/`
+- **Timezone:** `Asia/Hong_Kong` (`+0800`)
+- **Author default:** `boyu` (set globally in `_config.yml`)
+- **Syntax highlighting:** Rouge, with line numbers enabled on blocks
+- **Pagination:** 10 posts per page
+- **Plugin:** `jekyll-redirect-from` (for legacy URL redirects)
+- **TOC:** enabled globally for all posts
+
+## What NOT to Touch
+
+- `_site/` — auto-generated, never edit directly
+- `*.gemspec`, `package*.json`, `purgecss.js` — excluded from Jekyll build
+- `tools/` — build utilities, not site content

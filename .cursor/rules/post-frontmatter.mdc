@@ -1,0 +1,47 @@
+---
+description: Front matter schema and conventions for blog posts
+globs: _posts/*.md
+alwaysApply: false
+---
+
+# Blog Post Front Matter
+
+All posts in `_posts/` follow this schema. Always generate front matter in this exact order:
+
+```yaml
+---
+layout: post
+title: "Title in quotes"
+author: boyu
+date: YYYY-MM-DD HH:MM:SS +0800
+categories: [ PascalCase, PascalCase ]
+tags: [ lowercase, lowercase ]
+description: "SEO-friendly sentence describing the post."
+image: /assets/images/headers/<slug>.<ext>
+---
+```
+
+## Field Rules
+
+- **layout**: always `post`, never omit
+- **title**: always double-quoted
+- **author**: always `boyu`
+- **date**: `+0800` timezone offset (Hong Kong), use actual publish time not midnight
+- **categories**: PascalCase, 1–2 values — e.g. `[ Tech, API ]`, `[ Journal, Thoughts ]`
+- **tags**: all lowercase, 3–6 values — e.g. `[ tech, graphql, api, rest ]`
+- **description**: double-quoted, 1–2 sentences, written for SEO
+- **image**: path to `/assets/images/headers/<slug>.jpg` (or `.png`); omit only for casual journal posts
+
+## Common Categories
+
+| Track | Examples |
+|-------|---------|
+| Tech  | Tech, Java, API, Design, Demo, Agile |
+| Life  | Journal, Thoughts, Life, Leadership |
+| Music | Studio |
+
+## Slug → Image Path
+
+The image filename matches the post slug exactly:
+- Post: `2026-02-27-graphql.md` → `image: /assets/images/headers/graphql.jpg`
+- Post: `2026-02-10-solid-principle.md` → `image: /assets/images/headers/solid-principle.jpg`
