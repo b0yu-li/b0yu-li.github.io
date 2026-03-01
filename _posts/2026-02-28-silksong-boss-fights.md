@@ -66,7 +66,7 @@ Real challenges don't have a retry button, but the mental shape is the same:
 
 + Navigating a difficult conversation I don't know how to start.
 + Solving a technical problem I can't see the solution to yet.
-Chasing a goal that keeps feeling just out of reach.
++ Chasing a goal that keeps feeling just out of reach.
 
 The Silksong loop taught me that the early attempts aren't failures — they're **data collection**. I'm not losing. I'm learning the pattern. And at some point, the pattern will be in my hands.
 
