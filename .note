@@ -1,0 +1,18 @@
+Kubernetes is like a theater’s stage crew. The audience sees the actors (your app). They never see the crew replacing a burnt-out spotlight mid-scene (healing a crashed pod). 🎭
+
+I wrote about how K8s works, its core components, and why its invisibility is the whole point. 👇
+[Link to post]
+
+
+The best infrastructure is the kind you forget exists.
+
+In my latest post, I break down Kubernetes using the analogy of a theater stage crew. We often talk about K8s in terms of Pods, Deployments, and Control Planes (and I cover those!), but the real magic of Kubernetes is its shift to declarative infrastructure.
+
+You don't script the recovery; you declare the state, and the system quietly closes the gap.
+
+If you've ever found K8s intimidating, this one is for you. I break down:
+🛠️ What Pods & Services actually do
+🧠 How the Control Plane acts as the "brain"
+⚠️ Why this invisibility becomes a liability when things break
+
+Check out the full breakdown and diagrams here: [Link to post]
