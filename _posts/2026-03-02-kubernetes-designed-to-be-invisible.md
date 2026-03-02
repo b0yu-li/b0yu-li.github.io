@@ -12,7 +12,7 @@ mermaid: true
 
 ## 1. What Is Kubernetes?
 
-Kubernetes (K8s) is a **container orchestration platform**. I give it a containerized app, and it decides where that app runs, how many copies of it exist, what happens when it crashes, and how traffic finds it — without me having to think about any of those details.
+Kubernetes (K8s) is a **container orchestration platform**. I tell it what I want — which app to run, how many copies — and it takes care of where they run, what happens when one crashes, and how traffic finds them.
 
 It was originally built at Google, open-sourced in 2014, and is now the de facto standard for running containers in production at scale.
 
