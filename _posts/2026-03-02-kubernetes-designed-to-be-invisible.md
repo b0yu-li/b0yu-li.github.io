@@ -115,9 +115,9 @@ flowchart TD
 
         subgraph "Deployment (Replicas: 3)"
             direction LR
-            P1[Pod 1<br/>IP: 172.17.0.2]
-            P2[Pod 2<br/>IP: 172.17.0.3]
-            P3[Pod 3<br/>IP: 172.17.0.4]
+            P1[Pod 1<br/>IP: 10.244.0.2]
+            P2[Pod 2<br/>IP: 10.244.0.3]
+            P3[Pod 3<br/>IP: 10.244.0.4]
         end
 
         Svc -->|Routes to| P1
@@ -158,7 +158,7 @@ flowchart TD
         API <-->|Reconciles State| CM[Controller Manager<br/>The Watchdog]
     end
 
-    API <-->|Instructs and Monitors| Nodes[[Worker Nodes<br/>The Stage]]
+    Nodes[[Worker Nodes<br/>The Stage]] -->|Kubelet watches and reports| API
 
     classDef api fill:#326ce5,stroke:#fff,stroke-width:2px,color:#fff;
     classDef comp fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#333;
