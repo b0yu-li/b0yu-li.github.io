@@ -11,11 +11,11 @@ image: /assets/images/headers/kubernetes-designed-to-be-invisible.jpg
 
 ## 1. What Is Kubernetes?
 
-Kubernetes (K8s) is a **container orchestration platform**. It takes your containerized app and decides where it runs, how many copies of it exist, what happens when it crashes, and how traffic finds it — without you having to think about any of those details.
+Kubernetes (K8s) is a **container orchestration platform**. I give it a containerized app, and it decides where that app runs, how many copies of it exist, what happens when it crashes, and how traffic finds it — without me having to think about any of those details.
 
 It was originally built at Google, open-sourced in 2014, and is now the de facto standard for running containers in production at scale.
 
-The name comes from the Greek word for _helmsman_ — the person who steers the ship. That's an honest metaphor: Kubernetes steers your application fleet so you don't have to.
+The name comes from the Greek word for _helmsman_ — the person who steers the ship. That's an honest metaphor: Kubernetes steers my application fleet so I don't have to.
 
 ---
 
@@ -29,7 +29,7 @@ What the audience doesn't see: the stage crew working in the wings. They move se
 
 **Kubernetes is the stage crew.**
 
-Your app is the performance. Your users are the audience. They never see Kubernetes. They see your app — available, responsive, doing its job. The fact that a pod crashed and got replaced in 8 seconds, that traffic was rerouted when a node went down, that a new version rolled out without a blip — none of that is visible from the outside.
+My app is the performance. My users are the audience. They never see Kubernetes. They see my app — available, responsive, doing its job. The fact that a pod crashed and got replaced in 8 seconds, that traffic was rerouted when a node went down, that a new version rolled out without a blip — none of that is visible from the outside.
 
 That's not an accident. That's the design goal.
 
@@ -137,7 +137,7 @@ The stage crew never takes a bow. That's the point.
 | **Crash recovery** | Automatic — pod replaced in seconds | Manual or requires custom tooling |
 | **Rolling updates** | Built-in rolling deploy strategy | Manual blue/green or scheduled downtime |
 | **Service discovery** | DNS-based, built-in | Hardcoded IPs or external configuration |
-| **Developer visibility** | Low — by design | High — you feel every failure |
+| **Developer visibility** | Low — by design | High — developers feel every failure |
 
 The **developer visibility** row is the one that matters most to me. Low visibility in this context isn't ignorance — it's trust. The system handles the failures before they become my problem. That's not a bug. **That's the product.**
 
