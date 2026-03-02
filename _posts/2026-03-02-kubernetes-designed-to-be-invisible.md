@@ -180,7 +180,7 @@ There are two kinds of nodes in a Kubernetes cluster:
 + **Worker nodes** — the machines that run application pods. My containers run here. Each worker node runs a small agent called the **kubelet**, which watches the API server for pods assigned to that node, starts the containers, monitors their health, and reports status back up to the control plane.
 + **Control plane nodes** — the machines that run the Kubernetes brain itself. They manage the cluster but never run application workloads.
 
-When I define `replicas: 3`, the scheduler picks three worker nodes and places one pod on each. The kubelet on each node takes it from there — pulling the image, starting the container, and keeping it running. The pods run on the workers. The decisions happen on the control plane.
+When I define `replicas: 3`, the scheduler places those three pods across the available worker nodes based on resources — it might be one pod per node, two on one node and one on another, or all three on the same node if that's what the cluster allows. Once the scheduler has made its placement decision, the kubelet on each assigned node takes over — pulling the image, starting the container, and keeping it running. The pods run on the workers. The decisions happen on the control plane.
 
 ### The Control Plane — The Brain Behind It All
 
