@@ -271,7 +271,7 @@ It's abstraction all the way down, and I never see any of it.
 | **Service discovery** | DNS-based, built-in | Hardcoded IPs or external configuration |
 | **Developer visibility** | Low — by design | High — developers feel every failure |
 
-The **developer visibility** row is the one that matters most to me. Low visibility in this context isn't ignorance — it's trust. The system handles the failures before they become my problem. That's not a bug. **That's the product.**
+The **developer visibility** row is the one that intrigues me. Low visibility in this context isn't ignorance — it's trust. The system handles the failures before they become my problem. That's not a bug. **That's the product.**
 
 ---
 
