@@ -2,7 +2,7 @@
 layout: post
 title: "Kubernetes: Designed to Be Invisible"
 author: boyu
-date: 2026-03-02 09:00:00 +0800
+date: 2026-03-02 09:52:00 +0800
 categories: [ Tech, Backend ]
 tags: [ tech, kubernetes, devops, infrastructure, backend, platform ]
 description: "Kubernetes is a container orchestration platform that manages your apps so silently you barely notice it's there. Here's what it does, how to think about it, and why that invisibility is the whole point."
@@ -105,6 +105,19 @@ spec:
 
 Now any other service in the cluster can reach my app at `http://my-app-service` — regardless of how many pods are running or where they are sitting in the cluster.
 
+### The Control Plane — The Brain Behind It All
+
+All of this reconciliation — "pod crashed, restart it", "I want 3 replicas but only 2 are running, schedule one more" — has to happen somewhere. That somewhere is the **control plane**.
+
+The control plane is a set of components Kubernetes runs to manage the cluster. As a developer I never talk to them directly, but they're always running in the background:
+
++ **API Server** — the front door. Every command I run (`kubectl apply`, `kubectl get pods`) goes through the API server. It's the single entry point for all cluster management.
++ **Scheduler** — when a new pod needs to run, the scheduler decides which machine (node) to place it on, based on available resources.
++ **Controller Manager** — the watchdog. It runs a continuous loop: compare the desired state to the actual state, and act to close the gap. This is the thing that notices a pod died and triggers a replacement.
++ **etcd** — the cluster's memory. A key-value store that holds the entire state of the cluster. If the API server is the front door, etcd is the filing cabinet behind it.
+
+I declare what I want. The controller manager makes it happen. Kubernetes keeps score in etcd. None of this is visible to me — which is exactly the point.
+
 ---
 
 ## 4. Why Developers Don't Notice It
@@ -128,7 +141,22 @@ The stage crew never takes a bow. That's the point.
 
 ---
 
-## 5. Kubernetes vs. Managing Servers Manually
+## 5. Managed Kubernetes: The Invisibility Goes Deeper
+
+Here's something that surprised me when I first understood it: most developers don't actually run Kubernetes directly. They use a managed service — **Amazon EKS**, **Google GKE**, or **Azure AKS** — where the cloud provider runs the control plane for them.
+
+This means the invisibility has two layers:
+
++ **Layer 1:** Kubernetes hides the servers from me. I don't think about which node my pod runs on, or what happens when that node goes down.
++ **Layer 2:** The cloud provider hides Kubernetes itself from me. I don't think about keeping the API server healthy, scaling etcd, or upgrading the control plane version.
+
+I log into GKE, create a cluster, point `kubectl` at it, and start deploying. The entire Kubernetes control plane — scheduler, API server, etcd — is someone else's problem.
+
+It's abstraction all the way down, and I never see any of it.
+
+---
+
+## 6. Kubernetes vs. Managing Servers Manually
 
 | | **Kubernetes** | **Bare VMs / Manual** |
 |---|---|---|
@@ -143,7 +171,23 @@ The **developer visibility** row is the one that matters most to me. Low visibil
 
 ---
 
-## 6. The Takeaway
+## 7. The Flip Side: When It Fails, It's Hard to See
+
+The same abstraction that protects me in normal operations obscures me when something goes wrong.
+
+A few things that are genuinely hard to debug in Kubernetes:
+
++ **A pod that never starts.** It sits in `Pending` or `CrashLoopBackOff` with a vague error. I have to run `kubectl describe pod` and read through the events section to understand what actually happened.
++ **A Service that routes to nothing.** If my Service's `selector` label doesn't match the labels on my pods — a typo, a mismatch — traffic silently goes nowhere. No error. No alert. Requests just time out, and I have to figure out why.
++ **Resource limits that silently kill pods.** If I set a memory limit too low, Kubernetes quietly OOM-kills the pod and restarts it. The app looks flaky. The real cause is invisible unless I check `kubectl top` or dig through pod events.
+
+The stage crew analogy holds here too: when the crew is good, the audience never thinks about them. But when something breaks backstage, the audience doesn't see _what_ broke — they just see the actor miss their cue.
+
+The invisibility is a feature in normal operations. It becomes a liability when I need to understand _why_ something isn't working. The tools are there — `kubectl describe`, `kubectl logs`, `kubectl get events` — but it takes practice to know where to look.
+
+---
+
+## 8. The Takeaway
 
 Kubernetes is a bet on **declarative operations**. Instead of scripting every action — "start this, stop that, reroute this traffic" — I describe the world I want and let the system chase it.
 
