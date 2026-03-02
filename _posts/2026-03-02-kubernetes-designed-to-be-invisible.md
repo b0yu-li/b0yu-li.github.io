@@ -104,7 +104,7 @@ spec:
       targetPort: 8080
 ```
 
-Now any other service in the cluster can reach my app at `http://my-app-service` — regardless of how many pods are running or where they are sitting in the cluster.
+Now any other service in the cluster can reach my app at `http://my-app-service` — regardless of how many pods are running or where they are sitting in the cluster. Here's how that traffic routing looks in practice:
 
 ```mermaid
 flowchart TD
@@ -131,6 +131,8 @@ flowchart TD
     class P1,P2,P3 pod;
 ```
 
+But traffic routing is only one piece. The question is: who decides where pods run in the first place, when to restart them, or how to handle a node going down? That's the job of the control plane.
+
 ### The Control Plane — The Brain Behind It All
 
 All of this reconciliation — "pod crashed, restart it", "I want 3 replicas but only 2 are running, schedule one more" — has to happen somewhere. That somewhere is the **control plane**.
@@ -141,6 +143,8 @@ The control plane is a set of components Kubernetes runs to manage the cluster. 
 + **Scheduler** — when a new pod needs to run, the scheduler decides which machine (node) to place it on, based on available resources.
 + **Controller Manager** — the watchdog. It runs a continuous loop: compare the desired state to the actual state, and act to close the gap. This is the thing that notices a pod died and triggers a replacement.
 + **etcd** — the cluster's memory. A key-value store that holds the entire state of the cluster. If the API server is the front door, etcd is the filing cabinet behind it.
+
+Here's how those components connect:
 
 ```mermaid
 flowchart TD
