@@ -111,15 +111,15 @@ flowchart TD
     Traffic([Incoming Traffic]) --> Svc
 
     subgraph "Kubernetes Cluster"
-        Svc[<b>Service</b><br/>Stable IP: 10.0.0.50<br/>DNS: my-app-service]
-        
+        Svc[Service<br/>Stable IP: 10.0.0.50<br/>DNS: my-app-service]
+
         subgraph "Deployment (Replicas: 3)"
             direction LR
-            P1[<b>Pod 1</b><br/>IP: 172.17.0.2]
-            P2[<b>Pod 2</b><br/>IP: 172.17.0.3]
-            P3[<b>Pod 3</b><br/>IP: 172.17.0.4]
+            P1[Pod 1<br/>IP: 172.17.0.2]
+            P2[Pod 2<br/>IP: 172.17.0.3]
+            P3[Pod 3<br/>IP: 172.17.0.4]
         end
-        
+
         Svc -->|Routes to| P1
         Svc -->|Routes to| P2
         Svc -->|Routes to| P3
@@ -141,6 +141,31 @@ The control plane is a set of components Kubernetes runs to manage the cluster. 
 + **Scheduler** — when a new pod needs to run, the scheduler decides which machine (node) to place it on, based on available resources.
 + **Controller Manager** — the watchdog. It runs a continuous loop: compare the desired state to the actual state, and act to close the gap. This is the thing that notices a pod died and triggers a replacement.
 + **etcd** — the cluster's memory. A key-value store that holds the entire state of the cluster. If the API server is the front door, etcd is the filing cabinet behind it.
+
+```mermaid
+flowchart TD
+    User([Developer / kubectl]) -->|Applies YAML| API
+
+    subgraph "Control Plane (The Brain)"
+        API[API Server<br/>The Front Door]
+
+        API <-->|Reads / Writes State| ETCD[(etcd<br/>The Filing Cabinet)]
+        API <-->|Watches and Assigns Pods| Sched[Scheduler<br/>Decides Placement]
+        API <-->|Reconciles State| CM[Controller Manager<br/>The Watchdog]
+    end
+
+    API <-->|Instructs and Monitors| Nodes[[Worker Nodes<br/>The Stage]]
+
+    classDef api fill:#326ce5,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef comp fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#333;
+    classDef db fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#333;
+    classDef ext fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px,color:#333;
+
+    class API api;
+    class Sched,CM comp;
+    class ETCD db;
+    class User,Nodes ext;
+```
 
 I declare what I want. The controller manager makes it happen. Kubernetes keeps score in etcd. None of this is visible to me — which is exactly the point.
 
