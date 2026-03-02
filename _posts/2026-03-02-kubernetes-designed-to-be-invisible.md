@@ -7,6 +7,7 @@ categories: [ Tech, Backend ]
 tags: [ tech, kubernetes, devops, infrastructure, backend, platform ]
 description: "Kubernetes is a container orchestration platform that manages your apps so silently you barely notice it's there. Here's what it does, how to think about it, and why that invisibility is the whole point."
 image: /assets/images/headers/kubernetes-designed-to-be-invisible.jpg
+mermaid: true
 ---
 
 ## 1. What Is Kubernetes?
@@ -105,6 +106,31 @@ spec:
 
 Now any other service in the cluster can reach my app at `http://my-app-service` — regardless of how many pods are running or where they are sitting in the cluster.
 
+```mermaid
+flowchart TD
+    Traffic([Incoming Traffic]) --> Svc
+
+    subgraph "Kubernetes Cluster"
+        Svc[<b>Service</b><br/>Stable IP: 10.0.0.50<br/>DNS: my-app-service]
+        
+        subgraph "Deployment (Replicas: 3)"
+            direction LR
+            P1[<b>Pod 1</b><br/>IP: 172.17.0.2]
+            P2[<b>Pod 2</b><br/>IP: 172.17.0.3]
+            P3[<b>Pod 3</b><br/>IP: 172.17.0.4]
+        end
+        
+        Svc -->|Routes to| P1
+        Svc -->|Routes to| P2
+        Svc -->|Routes to| P3
+    end
+
+    classDef service fill:#326ce5,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef pod fill:#fff,stroke:#326ce5,stroke-width:2px,color:#333;
+    class Svc service;
+    class P1,P2,P3 pod;
+```
+
 ### The Control Plane — The Brain Behind It All
 
 All of this reconciliation — "pod crashed, restart it", "I want 3 replicas but only 2 are running, schedule one more" — has to happen somewhere. That somewhere is the **control plane**.
@@ -173,7 +199,7 @@ The **developer visibility** row is the one that matters most to me. Low visibil
 
 ## 7. The Flip Side: When It Fails, It's Hard to See
 
-The same abstraction that protects me in normal operations obscures me when something goes wrong.
+The same abstraction that protects me in normal operations blinds me (or obscures the root cause) when something goes wrong.
 
 A few things that are genuinely hard to debug in Kubernetes:
 
