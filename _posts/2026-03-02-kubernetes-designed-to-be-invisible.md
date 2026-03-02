@@ -38,7 +38,43 @@ That's not an accident. That's the design goal.
 
 ## 3. The Core Concepts
 
-To understand why Kubernetes feels invisible, I need to understand what it's actually managing on my behalf.
+To understand why Kubernetes feels invisible, I need to understand what it's actually managing on my behalf. Before diving into each piece, here's how they all relate:
+
+```mermaid
+flowchart TB
+    Traffic([Incoming Traffic]) --> Svc
+
+    subgraph Cluster["Kubernetes Cluster"]
+        Svc[Service<br/>selector: app=my-app]
+        Dep[Deployment<br/>replicas: 3]
+
+        subgraph N1[Node 1]
+            P1[Pod 1<br/>app: my-app]
+            P2[Pod 2<br/>app: my-app]
+        end
+
+        subgraph N2[Node 2]
+            P3[Pod 3<br/>app: my-app]
+        end
+
+        Dep -->|ensures| P1
+        Dep -->|ensures| P2
+        Dep -->|ensures| P3
+        Svc -->|routes to| P1
+        Svc -->|routes to| P2
+        Svc -->|routes to| P3
+    end
+
+    classDef service fill:#326ce5,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef deployment fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#333;
+    classDef pod fill:#fff,stroke:#326ce5,stroke-width:2px,color:#333;
+
+    class Svc service;
+    class Dep deployment;
+    class P1,P2,P3 pod;
+```
+
+A **Deployment** tells Kubernetes how many pods to keep running, and makes sure that count is always met. A **Service** gives those pods a stable address and routes incoming traffic to whichever pods are currently healthy — regardless of which node they're sitting on. The sections below explain each piece in detail.
 
 ### Pods — The Unit of Deployment
 
@@ -241,7 +277,7 @@ The **developer visibility** row is the one that matters most to me. Low visibil
 
 ## 7. The Flip Side: When It Fails, It's Hard to See
 
-The same abstraction that protects me in normal operations blinds me (or obscures the root cause) when something goes wrong.
+The same abstraction that protects me in normal operations obscures the root cause when something goes wrong.
 
 A few things that are genuinely hard to debug in Kubernetes:
 
