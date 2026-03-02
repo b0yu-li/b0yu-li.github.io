@@ -133,6 +133,19 @@ flowchart TD
 
 But traffic routing is only one piece. The question is: who decides where pods run in the first place, when to restart them, or how to handle a node going down? That's the job of the control plane.
 
+### Nodes — Where Pods Actually Run
+
+Before getting to the control plane, there's one more term worth defining: a **node**.
+
+A node is simply a machine in the cluster — a physical server or a VM. This is where pods actually execute. A real cluster has multiple nodes, so pods are spread across several machines. If one node goes down, Kubernetes reschedules its pods onto the remaining healthy ones.
+
+There are two kinds of nodes in a Kubernetes cluster:
+
++ **Worker nodes** — the machines that run application pods. My containers run here. Each worker node runs a small agent called the **kubelet**, which watches the API server for pods assigned to that node, starts the containers, monitors their health, and reports status back up to the control plane.
++ **Control plane nodes** — the machines that run the Kubernetes brain itself. They manage the cluster but never run application workloads.
+
+When I define `replicas: 3`, the scheduler picks three worker nodes and places one pod on each. The kubelet on each node takes it from there — pulling the image, starting the container, and keeping it running. The pods run on the workers. The decisions happen on the control plane.
+
 ### The Control Plane — The Brain Behind It All
 
 All of this reconciliation — "pod crashed, restart it", "I want 3 replicas but only 2 are running, schedule one more" — has to happen somewhere. That somewhere is the **control plane**.
