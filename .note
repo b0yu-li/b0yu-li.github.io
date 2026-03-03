@@ -1,18 +1,46 @@
-Kubernetes is like a theater’s stage crew. The audience sees the actors (your app). They never see the crew replacing a burnt-out spotlight mid-scene (healing a crashed pod). 🎭
+### 🟦 LinkedIn Post (The "Pragmatic Senior" Angle)
 
-I wrote about how K8s works, its core components, and why its invisibility is the whole point. 👇
-[Link to post]
+**Strategy:** Start with a bold hook that challenges typical tutorials. Use a screenshot of code (code snippets perform exceptionally well on LinkedIn).
 
+**The Post:** Most API design guides stop at "use nouns, not verbs."
 
-The best infrastructure is the kind you forget exists.
+That is fine for Day 1. But it doesn't prepare you for Day 100—when your DB is under load, clients are retrying aggressively, and a breaking change has to land without taking down your users.
 
-In my latest post, I break down Kubernetes using the analogy of a theater stage crew. We often talk about K8s in terms of Pods, Deployments, and Control Planes (and I cover those!), but the real magic of Kubernetes is its shift to declarative infrastructure.
+An API is a promise. Every rough edge is a promise you’ll have to keep forever.
 
-You don't script the recovery; you declare the state, and the system quietly closes the gap.
+I just wrote a breakdown of the 5 backend API design tips I wish someone had drilled into me earlier. These are the things that separate "tutorial APIs" from "production-ready APIs":
 
-If you've ever found K8s intimidating, this one is for you. I break down:
-🛠️ What Pods & Services actually do
-🧠 How the Control Plane acts as the "brain"
-⚠️ Why this invisibility becomes a liability when things break
+1️⃣ **Killing the N+1 Problem:** If you are looping and calling the database inside the loop, you have a problem. Bulk fetch instead. 2️⃣ **Cursor vs. Offset Pagination:** Why offset pagination breaks under concurrent writes, and when to use cursors. 3️⃣ **Idempotency Keys:** How to stop a network timeout from double-charging a user. 4️⃣ **RFC 9457 for Errors:** Designing errors as first-class citizens so clients can actually handle them. 5️⃣ **Day-1 Versioning:** Version before you have a breaking change, not after.
 
-Check out the full breakdown and diagrams here: [Link to post]
+Link to the full deep-dive is in the comments! 👇
+
+What is the one API design mistake that haunts your production logs?
+
+_(Attach a screenshot of your "Bad vs. Good" N+1 code snippet here instead of just the blog header. Developers stop scrolling for code)._
+
+---
+
+### 🐦 X / Twitter (The "Punchy Thread" Angle)
+
+**Strategy:** X rewards contrast and quick hits. A short 3-part thread works best here.
+
+**Tweet 1:** API tutorials: "Use nouns instead of verbs! Return 201 Created!"
+
+Production reality: N+1 queries just melted the database, a network timeout double-charged a user, and a missing version header broke 3 client apps. 🧵👇
+
+**Tweet 2:** I wrote down the 5 API design tips I wish someone taught me earlier.
+
+1. Kill N+1 queries (batch your fetches)
+    
+2. Paginate lists (Cursor > Offset for feeds)
+    
+3. Idempotency keys (crucial for mutating endpoints)
+    
+4. RFC 9457 (Structured errors)
+    
+5. /v1/ from Day One
+    
+
+**Tweet 3:** A good API makes the right thing easy and the wrong thing hard.
+
+If you are building backends, stop returning `{ "message": "error" }` and read this: [Link to your blog post]
