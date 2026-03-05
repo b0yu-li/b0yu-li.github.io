@@ -2,7 +2,7 @@
 layout: post
 title: "Backend API Design Tips I Should've Known Earlier"
 author: boyu
-date: 2026-03-03 22:00:00 +0800
+date: 2026-03-05 09:00:00 +0800
 categories: [ Tech, API ]
 tags: [ tech, api, backend, design, performance, rest ]
 description: "Five practical backend API design tips — from avoiding N+1 queries to idempotency and error contracts — that separate production-ready APIs from the rest."
