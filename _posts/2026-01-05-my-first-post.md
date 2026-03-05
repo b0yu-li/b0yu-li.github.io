@@ -17,7 +17,8 @@ I am Boyu, I like creating stuff (whether it be code or music thingy).
 
 ## Recent Updates
 
-+ **Feb 24, 2026:** The DS has arrived! So many happy hours on this console years ago. The DS system ages fantastically and I am absolutely loving it.
++ **Mar 4, 2026:** I beat _First Sinner_ in _Hollow Knight: Silksong_ on my 11th attempt.
++ **Feb 24, 2026:** The DS has arrived! So many happy hours on this console years ago. The DS system ages fantastically and I am absolutely loving it. I am also fascinated about the 640x480 photos it takes, it just has the retro-vibe and takes very little storage space, I feel absolutely no guilt taking a bunch of photos.
 + **Feb 21, 2026:** I ordered a pink Nintendo DSi with the battery replaced.
 + **Mid Feb 2026:**
   + I beat _Father of the Flame_ in _Hollow Knight: Silksong_ on my 24th attempt.
