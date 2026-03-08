@@ -11,9 +11,9 @@ image: /assets/images/headers/leadership-clarity.jpg
 
 A common trap in our industry is confusing **seniority** with **authority**. 
 
-We often assume that as we climb the ladder, our job becomes telling people what to do. But as we explored in the first volume of this playbook, using authority ("carrots and sticks") is the weakest form of leadership. 
+We often assume that as we climb the ladder, our job becomes telling people what to do. But as we explored in the first volume of this playbook, using authority ("carrots and sticks") is **the weakest form of leadership**. 
 
-The true mark of a senior contributor or leader is not how many people report to them, nor how loudly they can dictate architecture. The true mark of seniority is the ability to walk into a room full of ambiguity, panic, or conflicting requirements, and walk out with **clarity**.
+> The true mark of a senior contributor or leader is not how many people report to them, nor how loudly they can dictate architecture. It is the ability to walk into a room full of ambiguity, panic, or conflicting requirements, and walk out with **clarity**.
 
 
 ### The Myth of Authority
@@ -28,18 +28,18 @@ When you rely on authority, you are commanding. And if you approach your team wi
 
 **Seniority is an exercise in translation**. It is the process of taking chaos—vague client requests, shifting business goals, tangled legacy code—and distilling it into a path forward. 
 
-Clarity is King. If a task is confusing, people will procrastinate because they don't know where to start. A senior's primary job is to remove that confusion.
+**Clarity is King.** If a task is confusing, people will procrastinate because they don't know where to start. A senior's primary job is to remove that confusion.
 
 #### How to Bring Clarity to Your Team
 
 **1. Define the Real Problem**
-Junior engineers answer questions. Senior engineers question the answers. Before writing a line of code or assigning a task, the senior leader ensures everyone understands *why* they are doing it. They anchor everything in "The Why".
+**Junior engineers answer questions. Senior engineers question the answers.** Before writing a line of code or assigning a task, the senior leader ensures everyone understands *why* they are doing it. They anchor everything in "The Why".
 
 **2. Absorb Ambiguity, Project Focus**
 The business side is inherently messy. A senior leader acts as a buffer. They absorb the stress of changing deadlines and conflicting stakeholder opinions, and they output clean, actionable priorities for the team. 
 
 **3. Set the "Definition of Done"**
-Ambiguity kills motivation. A senior leader ensures everyone knows exactly what a successful outcome looks like so energy isn't wasted guessing. They define the "What" and leave the "How" to the team (providing Autonomy).
+**Ambiguity kills motivation.** A senior leader ensures everyone knows exactly what a successful outcome looks like so energy isn't wasted guessing. They define the "What" and leave the "How" to the team (providing Autonomy).
 
 **4. Break Things Down**
 When faced with a massive, intimidating project, the senior leader steps in to create micro-goals. They turn the "big thing" into comically small, achievable steps so the team can build momentum.
@@ -68,7 +68,7 @@ A product manager walks in: "We need a notification system. Clients are complain
 
 + **The Clarity Response:** The lead absorbs the ambiguity and returns to the team with this: "The real problem is that users don't know when their order status changes. Here's what _done_ looks like for V1 — an email is sent within 60 seconds when an order is confirmed, shipped, or delivered. We'll use our existing event bus. SMS and push are out of scope until Q3." The team starts building on day one.
 
-The authority-driven leader passed the chaos straight through to the team. The clarity-driven leader _absorbed_ it and gave back a focused, achievable mission. That is the difference.
+The authority-driven leader passed the chaos straight through to the team. The clarity-driven leader _absorbed_ it and gave back **a focused, achievable mission**. That is the difference.
 
 ---
 
@@ -83,6 +83,6 @@ The authority-driven leader passed the chaos straight through to the team. The c
 
 ### The Takeaway
 
-Authority forces compliance. Clarity creates alignment. 
+> Authority forces compliance. Clarity creates alignment. 
 
-If you want to step into a senior role—whether as an engineer, a designer, or a manager—stop worrying about how to get people to listen to your orders. Instead, focus on becoming the person who makes the next step obvious for everyone around you.
+If you want to step into a senior role—whether as an engineer, a designer, or a manager—stop worrying about how to get people to listen to your orders. Instead, focus on becoming **the person who makes the next step obvious** for everyone around you.
