@@ -65,6 +65,8 @@ mermaid: true      # only if post will contain Mermaid diagrams
 strudel: true      # only if post embeds Strudel live-coding players
 ```
 
+**Diagram check:** If the post introduces a framework, a contrast (X vs. Y), or a multi-step flow, include `mermaid: true` and stub a diagram placeholder early in the body (after the thesis, before the deep-dive). See the Mermaid Diagrams section in the post style guide for formatting conventions.
+
 Then stub the body based on track:
 
 ### Tech post body stub

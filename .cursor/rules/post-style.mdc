@@ -45,9 +45,27 @@ alwaysApply: false
 - Use comparison tables for "X vs. Y" sections — keep column headers bolded
 - Follow a code block with a plain-English sentence explaining what it shows
 
+## Highlighting Key Sentences
+
+- Bold the punchline or core argument of each major section so skimmers catch the point
+- Use `>` blockquotes to bookend the post — one near the top for the thesis, one near the bottom for the takeaway
+- Candidate sentences for bold: definitions ("**Seniority is an exercise in translation**"), one-liners ("**Ambiguity kills motivation.**"), and quotable contrasts ("**Junior engineers answer questions. Senior engineers question the answers.**")
+- Don't over-bold — aim for one highlighted sentence per section, not every paragraph
+
+## Mermaid Diagrams
+
+- Add a Mermaid diagram when the post introduces a framework, contrast, or flow that benefits from a visual anchor
+- Place diagrams early (after the thesis, before the deep-dive) so readers get the mental model upfront
+- Use `graph TD` for top-down flows; keep node count under ~10 for readability
+- Style for dark mode: white fills (`fill:#fff`), colored strokes to distinguish categories, `color:#000` for text
+- Use dashed strokes (`stroke-dasharray: 5 5`) for intermediate steps; solid strokes for endpoints
+- Use HTML in labels: `<b>` for headings, `<br/>` for line breaks, `<i>` for subtitles
+- Escape double quotes as `&quot;` inside node labels
+- Add `mermaid: true` to front matter when a diagram is included
+
 ## Blockquotes & Callouts
 
-- Use `>` blockquotes for memorable one-liners or direct quotes
+- Use `>` blockquotes for memorable one-liners or direct quotes (see also "Highlighting Key Sentences" above)
 - Use bold standalone lines for punchy conclusions: `**The best code is no code.**`
 
 ## Images
