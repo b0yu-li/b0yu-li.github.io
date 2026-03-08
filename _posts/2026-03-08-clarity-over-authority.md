@@ -3,6 +3,7 @@ layout: post
 title: "Leader Playbook Vol.2: Seniority is About Clarity, Not Authority"
 author: boyu
 date: 2026-03-08 16:08:00 +0800
+mermaid: true
 categories: [ Journal, Leadership ]
 tags: [ lead, strategy, playbook, clarity, seniority ]
 description: "The true mark of a senior engineer or leader isn't the ability to give orders. It's the ability to absorb ambiguity and project clarity."
@@ -15,6 +16,35 @@ We often assume that as we climb the ladder, our job becomes telling people what
 
 > The true mark of a senior contributor or leader is not how many people report to them, nor how loudly they can dictate architecture. It is the ability to walk into a room full of ambiguity, panic, or conflicting requirements, and walk out with **clarity**.
 
+```mermaid
+graph TD
+    Input[<b>The Trigger</b><br/>Ambiguity · Panic · Conflicting Requirements]
+
+    Input --> A[<b>Authority Path</b><br/><i>&quot;Do this because I said so&quot;</i>]
+    Input --> C[<b>Clarity Path</b><br/><i>&quot;Here's the problem and the plan&quot;</i>]
+
+    A --> A1[Commands & Controls]
+    A1 --> A2[Team Stops Thinking]
+    A2 --> AOut[<b>Compliance</b><br/>Fragile · Dependent · Slow]
+
+    C --> C1[Translates & Simplifies]
+    C1 --> C2[Team Moves Independently]
+    C2 --> COut[<b>Alignment</b><br/>Resilient · Empowered · Fast]
+
+    classDef trigger fill:#fff,stroke:#906,stroke-width:3px,color:#000;
+    classDef auth fill:#fff,stroke:#c62828,stroke-width:2px,stroke-dasharray: 5 5,color:#000;
+    classDef clarity fill:#fff,stroke:#0277bd,stroke-width:2px,stroke-dasharray: 5 5,color:#000;
+    classDef bad fill:#fff,stroke:#c62828,stroke-width:3px,color:#000;
+    classDef good fill:#fff,stroke:#0277bd,stroke-width:3px,color:#000;
+
+    class Input trigger;
+    class A,A1,A2 auth;
+    class C,C1,C2 clarity;
+    class AOut bad;
+    class COut good;
+```
+
+---
 
 ### The Myth of Authority
 
