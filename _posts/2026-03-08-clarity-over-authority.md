@@ -63,15 +63,19 @@ When you rely on authority, you are commanding. And if you approach your team wi
 #### How to Bring Clarity to Your Team
 
 **1. Define the Real Problem**
+
 **Junior engineers answer questions. Senior engineers question the answers.** Before writing a line of code or assigning a task, the senior leader ensures everyone understands *why* they are doing it. They anchor everything in "The Why".
 
 **2. Absorb Ambiguity, Project Focus**
+
 The business side is inherently messy. A senior leader acts as a buffer. They absorb the stress of changing deadlines and conflicting stakeholder opinions, and they output clean, actionable priorities for the team. 
 
 **3. Set the "Definition of Done"**
+
 **Ambiguity kills motivation.** A senior leader ensures everyone knows exactly what a successful outcome looks like so energy isn't wasted guessing. They define the "What" and leave the "How" to the team (providing Autonomy).
 
 **4. Break Things Down**
+
 When faced with a massive, intimidating project, the senior leader steps in to create micro-goals. They turn the "big thing" into comically small, achievable steps so the team can build momentum.
 
 ### Clarity in Action
