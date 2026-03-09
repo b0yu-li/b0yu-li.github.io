@@ -115,4 +115,9 @@ The authority-driven leader passed the chaos straight through to the team. The c
 
 > Authority forces compliance. Clarity creates alignment. 
 
+> **Compliance** means people do what they're told — they follow the letter of the instruction, but they stop there. If the instruction is wrong, they follow it anyway. If a gap appears, they wait for the next order. The team moves, but only because it was pushed.
+>
+> **Alignment** means people understand the destination — they can make judgment calls, fill gaps on their own, and course-correct without asking permission. The team moves because it _wants to reach the same place_.
+{: .prompt-tip }
+
 If you want to step into a senior role—whether as an engineer, a designer, or a manager—stop worrying about how to get people to listen to your orders. Instead, focus on becoming **the person who makes the next step obvious** for everyone around you.
