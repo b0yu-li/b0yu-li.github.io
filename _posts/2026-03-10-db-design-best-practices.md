@@ -12,7 +12,7 @@ image: /assets/images/headers/db-design-best-practices.jpg
 
 > A bad API can be versioned. A bad database schema haunts you forever.
 
-Your database is the foundation of your application. Code can be refactored, APIs can be versioned, frontends can be rebuilt — but a poorly designed database will slowly poison everything that touches it. Migrations are risky, data is hard to move, and by the time you realize the schema is wrong, half your codebase has grown around its shape.
+I've learned this the hard way: the database is the foundation of everything. I can refactor code, version my APIs, rebuild the frontend — but a poorly designed database will slowly poison everything that touches it. Migrations are risky, data is hard to move, and by the time I realize the schema is wrong, half my codebase has grown around its shape.
 
 These are the principles and practices I keep coming back to.
 
@@ -20,9 +20,9 @@ These are the principles and practices I keep coming back to.
 
 ## 1. The Three Normal Forms — Your Database's Backbone
 
-**Normalization** is the process of structuring your tables so that data is stored cleanly, without duplication or hidden dependencies. There are more than three normal forms, but in practice, **the first three are the ones that matter**. If your schema satisfies 3NF, you're ahead of most production databases I've seen.
+**Normalization** is the process of structuring tables so that data is stored cleanly, without duplication or hidden dependencies. There are more than three normal forms, but in practice, **the first three are the ones that matter**. If my schema satisfies 3NF, I'm ahead of most production databases I've seen.
 
-The analogy: imagine you're organizing a **filing cabinet** for a company. Every piece of information should live in exactly one folder, and every folder should be about exactly one thing. If you dump everything into one giant folder, you'll find the same customer's address scribbled on fifty invoices — and when they move, you'll have to find and fix all fifty.
+The way I think about it: imagine organizing a **filing cabinet** for a company. Every piece of information should live in exactly one folder, and every folder should be about exactly one thing. If I dump everything into one giant folder, I'll find the same customer's address scribbled on fifty invoices — and when they move, I'll have to find and fix all fifty.
 
 ```mermaid
 graph LR
@@ -44,14 +44,14 @@ graph LR
 
 **First Normal Form** says: every column holds a single, atomic value. No comma-separated lists. No arrays crammed into a text field.
 
-Take a look at this table:
+I've seen this pattern more times than I'd like to admit:
 
 | order_id | customer | products |
 |---|---|---|
 | 1 | Alice | Widget, Gadget, Gizmo |
 | 2 | Bob | Widget |
 
-Seems compact and convenient. Now try to answer this: **how would you write a query to find all orders that contain "Gadget"?** You'd have to parse a comma-separated string — `LIKE '%Gadget%'` — which is fragile, can't use an index, and would also match a product called "SuperGadget". What about counting how many products each order has? More string splitting. The moment you need to _query_ the data inside that column, the design falls apart.
+Seems compact and convenient. Now try to answer this: **how would you write a query to find all orders that contain "Gadget"?** I'd have to parse a comma-separated string — `LIKE '%Gadget%'` — which is fragile, can't use an index, and would also match a product called "SuperGadget". What about counting how many products each order has? More string splitting. The moment I need to _query_ the data inside that column, the design falls apart.
 
 **Challenge:** before reading on, how would you redesign this table so that querying for a single product is straightforward?
 
@@ -64,13 +64,13 @@ The fix — give each product its own row, or (better) extract products into a s
 | 1 | Gizmo |
 | 2 | Widget |
 
-**The rule:** if you're tempted to store a comma-separated list in a column, you're violating 1NF. Stop and create a related table instead.
+**The rule I follow:** if I'm tempted to store a comma-separated list in a column, I'm violating 1NF. Stop and create a related table instead.
 
 ### 2NF: Every Column Depends on the Full Key
 
-**Second Normal Form** builds on 1NF and says: every non-key column must depend on _the entire_ primary key, not just part of it. This only matters when you have a **composite key** (a primary key made of two or more columns).
+**Second Normal Form** builds on 1NF and says: every non-key column must depend on _the entire_ primary key, not just part of it. This only matters when I have a **composite key** (a primary key made of two or more columns).
 
-Consider an `order_items` table. A single order can contain multiple products, and the same product can appear in multiple orders. Neither `order_id` nor `product_id` alone can uniquely identify a row — but _together_ they can. That combination is called a **composite key**: a primary key made of two or more columns. Here, the composite key is `(order_id, product_id)`:
+Let me walk through an example. Say I have an `order_items` table. A single order can contain multiple products, and the same product can appear in multiple orders. Neither `order_id` nor `product_id` alone can uniquely identify a row — but _together_ they can. That combination is called a **composite key**: a primary key made of two or more columns. Here, the composite key is `(order_id, product_id)`:
 
 | order_id | product_id | quantity | product_name | product_price |
 |---|---|---|---|---|
@@ -78,7 +78,7 @@ Consider an `order_items` table. A single order can contain multiple products, a
 | 1 | 102 | 1 | Gadget | 19.99 |
 | 2 | 101 | 5 | Widget | 9.99 |
 
-Looks reasonable at first glance. Now ask yourself: **what happens when the Widget's price changes to 12.99?** You'd have to find and update _every row_ where `product_id = 101` appears. Miss one, and your data contradicts itself — the same product with two different prices.
+Looks reasonable at first glance. Now ask yourself: **what happens when the Widget's price changes to 12.99?** I'd have to find and update _every row_ where `product_id = 101` appears. Miss one, and my data contradicts itself — the same product with two different prices.
 
 The root cause: `product_name` and `product_price` depend only on `product_id` — they have nothing to do with `order_id`. That's a **partial dependency**. These columns don't need the full composite key to be determined; they only need half of it.
 
@@ -107,7 +107,7 @@ Now each fact lives in exactly one place. Price changes happen in one row.
 
 **Third Normal Form** says: no **transitive dependencies**. A non-key column should depend on the primary key directly — not through another non-key column.
 
-Look at this `employees` table:
+Here's an `employees` table I once inherited:
 
 | employee_id | employee_name | department_id | department_name | department_head |
 |---|---|---|---|---|
@@ -115,7 +115,7 @@ Look at this `employees` table:
 | 2 | Bob | D10 | Engineering | Charlie |
 | 3 | Carol | D20 | Marketing | Diana |
 
-Everything looks correct. But now: **what happens when the Engineering department gets a new head?** You'd need to update every row where `department_id = D10`. And if Alice's row says the head is "Charlie" while Bob's row already says "Eve," which one is right? The same fact — who leads Engineering — is duplicated across rows, and duplicated facts eventually contradict each other.
+Everything looks correct. But now: **what happens when the Engineering department gets a new head?** I'd need to update every row where `department_id = D10`. And if Alice's row says the head is "Charlie" while Bob's row already says "Eve," which one is right? The same fact — who leads Engineering — is duplicated across rows, and duplicated facts eventually contradict each other.
 
 The root cause: `department_name` and `department_head` don't really depend on `employee_id`. They depend on `department_id`, which _itself_ depends on `employee_id`. The dependency chain is: `employee_id → department_id → department_name`. That's a **transitive dependency** — a column reaching the key only through a middle-man.
 
@@ -146,15 +146,15 @@ Both end with the same fix — extract columns into a new table. So what's actua
 
 **The 2NF problem — "I only need _part_ of your key."**
 
-The `order_items` table had a two-part key: `(order_id, product_id)`. But `product_name` didn't care about `order_id` at all. If you told it only the `product_id`, it could already give you the answer. It was sitting in a table whose key was _too big_ for it — it only needed half.
+The `order_items` table had a two-part key: `(order_id, product_id)`. But `product_name` didn't care about `order_id` at all. If I told it only the `product_id`, it could already give me the answer. It was sitting in a table whose key was _too big_ for it — it only needed half.
 
 > `product_name`: "You keep telling me the `order_id`, but I don't need it. Just give me the `product_id` and I'll tell you the name."
 
 **The 3NF problem — "I don't belong to _you_. I belong to that other column."**
 
-The `employees` table had a single key: `employee_id`. If I ask "what's the department name for employee 1?", you _can_ answer — look up Alice, see she's in D10, then recall that D10 is Engineering. But notice the two hops: you went from `employee_id` to `department_id`, and _then_ from `department_id` to `department_name`. You needed a middle-man.
+The `employees` table had a single key: `employee_id`. If I ask "what's the department name for employee 1?", I _can_ answer — look up Alice, see she's in D10, then recall that D10 is Engineering. But notice the two hops: I went from `employee_id` to `department_id`, and _then_ from `department_id` to `department_name`. I needed a middle-man.
 
-The tell: if I change Alice's department from D10 to D20, does "Engineering" still make sense in her row? No — because `department_name` was never really about Alice. It was about whatever `department_id` happened to be sitting next to it.
+Here's my litmus test: if I change Alice's department from D10 to D20, does "Engineering" still make sense in her row? No — because `department_name` was never really about Alice. It was about whatever `department_id` happened to be sitting next to it.
 
 > `department_name`: "You're asking me about employee 1, but I don't actually know anything about employees. Give me a `department_id` — _that's_ the question I answer."
 
@@ -168,15 +168,15 @@ The tell: if I change Alice's department from D10 to D20, does "Engineering" sti
 
 ### The Decomposition Framework
 
-The three normal forms give you the _why_. Here's the _how_ — a systematic method you can apply to any table, without relying on intuition.
+The three normal forms give me the _why_. Here's the _how_ — a systematic method I apply to any table, without relying on intuition.
 
 **Step 1: List every column and identify the primary key.**
 
-Write out all the columns. Determine what uniquely identifies a row — a single column or a composite key.
+I write out all the columns and determine what uniquely identifies a row — a single column or a composite key.
 
 **Step 2: For each non-key column, ask: "What is the _minimal_ set of columns that determines this value?"**
 
-This is the key question. Don't ask "is this column related to the table?" — ask "what do I need to _know_ to look up this column's value?" That minimal set is called the column's **determinant**.
+This is the key question. I don't ask "is this column related to the table?" — I ask "what do I need to _know_ to look up this column's value?" That minimal set is called the column's **determinant**.
 
 **Step 3: Group columns by their determinant.**
 
@@ -186,7 +186,7 @@ Columns that share the same determinant belong together. Each distinct determina
 
 The original table keeps only the columns whose determinant is its own primary key, plus foreign key references to the new tables.
 
-Let's walk through a messy table to see this in action. Imagine a `project_assignments` table:
+Let me walk through a messy table to show this in action. Imagine a `project_assignments` table:
 
 | employee_id | employee_name | project_id | project_name | project_budget | role | department_name |
 |---|---|---|---|---|---|---|
@@ -195,7 +195,7 @@ Let's walk through a messy table to see this in action. Imagine a `project_assig
 | 1 | Alice | P20 | Beacon | 200k | Dev | Engineering |
 | 3 | Carol | P20 | Beacon | 200k | Lead | Marketing |
 
-The composite key is `(employee_id, project_id)`. Now, apply step 2 — what determines each column?
+The composite key is `(employee_id, project_id)`. Now I apply step 2 — what determines each column?
 
 | Column | Determined by | Full key needed? |
 |---|---|---|
@@ -239,19 +239,19 @@ Step 4 — each group becomes a table:
 
 One bloated table became three focused, perpendicular tables — each one responsible for exactly one concept. No duplicated facts, no update anomalies.
 
-> Notice that `department_name` in the `employees` table still has a transitive dependency (it depends on a department, not on the employee directly). You could apply the framework one more level and extract a `departments` table. The method is recursive — keep going until every column depends on nothing but its table's key.
+> Notice that `department_name` in the `employees` table still has a transitive dependency (it depends on a department, not on the employee directly). I could apply the framework one more level and extract a `departments` table. The method is recursive — I keep going until every column depends on nothing but its table's key.
 {: .prompt-info }
 
-> **Normalize until it hurts, denormalize until it works.** The normal forms are your starting point. In practice, you may intentionally denormalize for read performance (caching a `total_amount` on an order, for instance). That's fine — as long as it's a conscious decision, not an accident.
+> **Normalize until it hurts, denormalize until it works.** The normal forms are my starting point. In practice, I may intentionally denormalize for read performance (caching a `total_amount` on an order, for instance). That's fine — as long as it's a conscious decision, not an accident.
 {: .prompt-tip }
 
 ---
 
 ## 2. Logical Foreign Keys Over Physical Foreign Keys
 
-This one trips up a lot of developers who learned database design from textbooks.
+This one tripped me up when I was learning database design from textbooks.
 
-A **physical foreign key** is a `FOREIGN KEY` constraint declared in your DDL. The database enforces referential integrity — if you try to insert an order with a `customer_id` that doesn't exist in the `customers` table, the database rejects it.
+A **physical foreign key** is a `FOREIGN KEY` constraint declared in the DDL. The database enforces referential integrity — if I try to insert an order with a `customer_id` that doesn't exist in the `customers` table, the database rejects it.
 
 ```sql
 CREATE TABLE orders (
@@ -263,7 +263,7 @@ CREATE TABLE orders (
 );
 ```
 
-A **logical foreign key** is the same column — `customer_id` referencing a customer — but without the database-level constraint. The relationship exists in your application code and documentation, not in the DDL.
+A **logical foreign key** is the same column — `customer_id` referencing a customer — but without the database-level constraint. The relationship exists in my application code and documentation, not in the DDL.
 
 ```sql
 CREATE TABLE orders (
@@ -273,17 +273,17 @@ CREATE TABLE orders (
 );
 ```
 
-**Why would you skip the constraint?** It feels dangerous. But in practice, many production systems at scale intentionally use logical foreign keys:
+**Why would I skip the constraint?** It felt dangerous to me at first. But in practice, many production systems at scale intentionally use logical foreign keys:
 
-+ **Cross-service boundaries.** In a microservices architecture, `orders` and `customers` might live in different databases entirely. You _can't_ declare a foreign key across databases. The `customer_id` in the orders DB is a logical reference — your code is responsible for ensuring it's valid.
++ **Cross-service boundaries.** In a microservices architecture, `orders` and `customers` might live in different databases entirely. I _can't_ declare a foreign key across databases. The `customer_id` in the orders DB is a logical reference — my code is responsible for ensuring it's valid.
 
 + **Schema migration pain.** Foreign keys make `ALTER TABLE` operations slower and riskier on large tables. Dropping and recreating constraints during a migration on a table with hundreds of millions of rows can lock the table for minutes. Many teams at scale (Shopify, GitHub, Meta) have documented moving away from physical foreign keys for this reason.
 
-+ **Soft deletes.** If your `customers` table uses soft deletes (`deleted_at IS NOT NULL` instead of actual `DELETE`), a foreign key constraint won't help — the row still exists. You need application-level checks anyway.
++ **Soft deletes.** If my `customers` table uses soft deletes (`deleted_at IS NOT NULL` instead of actual `DELETE`), a foreign key constraint won't help — the row still exists. I need application-level checks anyway.
 
-+ **Insert ordering.** Foreign keys enforce insert order — you must insert the parent before the child. In bulk imports or event-driven systems, records may arrive out of order. Logical foreign keys give you flexibility to insert records in any order and reconcile later.
++ **Insert ordering.** Foreign keys enforce insert order — I must insert the parent before the child. In bulk imports or event-driven systems, records may arrive out of order. Logical foreign keys give me the flexibility to insert records in any order and reconcile later.
 
-This doesn't mean "never use physical foreign keys." For a monolithic application with a single database and strong data integrity requirements (financial systems, for example), physical foreign keys are valuable. **The point is: understand the tradeoff.** Physical foreign keys give you database-enforced integrity. Logical foreign keys give you operational flexibility. Pick the one that matches your architecture.
+This doesn't mean "never use physical foreign keys." For a monolithic application with a single database and strong data integrity requirements (financial systems, for example), physical foreign keys are valuable. **The point is: understand the tradeoff.** Physical foreign keys give me database-enforced integrity. Logical foreign keys give me operational flexibility. I pick the one that matches my architecture.
 
 ```java
 // With logical foreign keys, your application layer enforces integrity
@@ -299,15 +299,15 @@ public Order createOrder(CreateOrderRequest request) {
 }
 ```
 
-**The rule:** use physical foreign keys when you have a single database with strict integrity requirements. Use logical foreign keys when crossing service boundaries, working at scale, or when operational flexibility matters more than database-level enforcement.
+**My rule:** use physical foreign keys when I have a single database with strict integrity requirements. Use logical foreign keys when crossing service boundaries, working at scale, or when operational flexibility matters more than database-level enforcement.
 
 ---
 
 ## 3. Taming the N+1 Query Problem
 
-I covered the N+1 problem from an API perspective in a [previous post](/posts/backend-api-design-tips/). Here I want to zoom into the **ORM layer** — specifically JPA/Hibernate — because that's where this problem most often hides.
+I covered the N+1 problem from an API perspective in a [previous post](/posts/backend-api-design-tips/). Here I want to zoom into the **ORM layer** — specifically JPA/Hibernate — because that's where this problem most often hides in my experience.
 
-The core issue: your ORM loads related entities **lazily by default**. That means fetching a list of orders doesn't load their customers until you _access_ each one. In a loop, that means N extra queries.
+The core issue: my ORM loads related entities **lazily by default**. That means fetching a list of orders doesn't load their customers until I _access_ each one. In a loop, that means N extra queries.
 
 ```java
 @Entity
@@ -361,9 +361,9 @@ public class Customer {
 }
 ```
 
-This won't eliminate the extra queries entirely, but it reduces N queries to roughly N/50. It's a pragmatic middle ground when you can't easily rewrite all your queries.
+This won't eliminate the extra queries entirely, but it reduces N queries to roughly N/50. It's a pragmatic middle ground when I can't easily rewrite all my queries.
 
-**The rule is the same as before:** if you're reading a list of entities and accessing their relationships in a loop, you probably have an N+1 problem. Profile your queries — Hibernate's `hibernate.show_sql=true` will make it painfully obvious.
+**The rule is the same as before:** if I'm reading a list of entities and accessing their relationships in a loop, I probably have an N+1 problem. I profile my queries — Hibernate's `hibernate.show_sql=true` makes it painfully obvious.
 
 ---
 
@@ -371,7 +371,7 @@ This won't eliminate the extra queries entirely, but it reduces N queries to rou
 
 ### Index What You Query
 
-An index on a column you never filter or sort by is wasted space and slows down writes. An _absent_ index on a column in your `WHERE` clause turns a millisecond lookup into a full table scan.
+An index on a column I never filter or sort by is wasted space and slows down writes. An _absent_ index on a column in my `WHERE` clause turns a millisecond lookup into a full table scan.
 
 ```sql
 -- If you frequently query orders by customer and status:
@@ -379,7 +379,7 @@ CREATE INDEX idx_orders_customer_status
     ON orders (customer_id, status);
 ```
 
-**The mental model:** indexes are like a book's index. You wouldn't put every word in the index — just the ones readers actually look up. Profile your slow queries, check your `WHERE` clauses, and index accordingly.
+**The mental model:** indexes are like a book's index. I wouldn't put every word in the index — just the ones readers actually look up. I profile my slow queries, check my `WHERE` clauses, and index accordingly.
 
 Composite indexes matter too: an index on `(customer_id, status)` serves queries that filter by `customer_id` alone _and_ queries that filter by both `customer_id` and `status`. But it does **not** serve queries that filter by `status` alone — index column order matters.
 
@@ -391,11 +391,11 @@ Instead of `DELETE FROM customers WHERE id = 42`, set a flag:
 UPDATE customers SET deleted_at = NOW() WHERE id = 42;
 ```
 
-+ You keep audit history
-+ You can recover accidentally deleted data
++ I keep audit history
++ I can recover accidentally deleted data
 + Foreign references don't break
 
-Add a default scope or a `WHERE deleted_at IS NULL` to your queries so deleted records are invisible by default. Most ORMs support this natively — JPA has `@Where`, Spring Data has `@SoftDelete`.
+I add a default scope or a `WHERE deleted_at IS NULL` to my queries so deleted records are invisible by default. Most ORMs support this natively — JPA has `@Where`, Spring Data has `@SoftDelete`.
 
 ### Always Add Audit Columns
 
@@ -412,11 +412,11 @@ CREATE TABLE orders (
 );
 ```
 
-You will need these. Every production debug session eventually becomes "when did this change, and who changed it?" Without audit columns, you're flying blind.
+I will always need these. Every production debug session eventually becomes "when did this change, and who changed it?" Without audit columns, I'm flying blind.
 
 ### Use Consistent Naming Conventions
 
-Pick a convention and enforce it ruthlessly:
+I pick a convention and enforce it ruthlessly:
 
 | Element | Convention | Example |
 |---|---|---|
@@ -428,7 +428,7 @@ Pick a convention and enforce it ruthlessly:
 | Booleans | `is_` prefix | `is_active` |
 | Timestamps | `_at` suffix | `created_at`, `deleted_at` |
 
-The specific convention matters less than consistency. When every table follows the same pattern, developers can navigate the schema without checking documentation.
+The specific convention matters less than consistency. When every table follows the same pattern, I can navigate the schema without checking documentation — and so can anyone who joins the team after me.
 
 ---
 
@@ -436,6 +436,6 @@ The specific convention matters less than consistency. When every table follows 
 
 Database design is not glamorous work. Nobody tweets about a well-normalized schema. But **every production nightmare I've debugged — data inconsistency, mysterious slowdowns, impossible migrations — traced back to a design decision made (or not made) in the first week**.
 
-The normal forms keep your data clean. Logical foreign keys keep your architecture flexible. Killing N+1 queries keeps your app fast. And the small practices — indexes, soft deletes, audit columns, naming conventions — compound into a schema that's a _pleasure_ to work with instead of a minefield.
+The normal forms keep my data clean. Logical foreign keys keep my architecture flexible. Killing N+1 queries keeps my app fast. And the small practices — indexes, soft deletes, audit columns, naming conventions — compound into a schema that's a _pleasure_ to work with instead of a minefield.
 
-> Design your database as if the next developer to work on it is a sleep-deprived version of you — because it will be.
+> I design my databases as if the next developer to work on them is a sleep-deprived version of me — because it will be.
