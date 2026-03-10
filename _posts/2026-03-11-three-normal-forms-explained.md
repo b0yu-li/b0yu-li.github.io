@@ -1,25 +1,18 @@
 ---
 layout: post
-title: "Database Design Best Practices Every Backend Dev Should Know"
+title: "The Three Normal Forms, Explained"
 author: boyu
-date: 2026-03-10 10:30:00 +0800
+date: 2026-03-11 10:00:00 +0800
 mermaid: true
 categories: [ Tech, Design ]
-tags: [ tech, database, design, normalization, sql, backend ]
-description: "From the three normal forms to logical foreign keys and the N+1 trap — the database design principles that separate clean schemas from production nightmares."
-image: /assets/images/headers/db-design-best-practices.jpg
-published: false
+tags: [ tech, database, design, normalization, sql ]
+description: "A practical walkthrough of the three normal forms (1NF, 2NF, 3NF) — with flawed tables, challenge questions, and a systematic decomposition framework for splitting any table into clean, perpendicular pieces."
+image: /assets/images/headers/three-normal-forms-explained.jpg
 ---
 
 > A bad API can be versioned. A bad database schema haunts you forever.
 
 I've learned this the hard way: the database is the foundation of everything. I can refactor code, version my APIs, rebuild the frontend — but a poorly designed database will slowly poison everything that touches it. Migrations are risky, data is hard to move, and by the time I realize the schema is wrong, half my codebase has grown around its shape.
-
-These are the principles and practices I keep coming back to.
-
----
-
-## 1. The Three Normal Forms — Your Database's Backbone
 
 **Normalization** is the process of structuring tables so that data is stored cleanly, without duplication or hidden dependencies. There are more than three normal forms, but in practice, **the first three are the ones that matter**. If my schema satisfies 3NF, I'm ahead of most production databases I've seen.
 
@@ -41,7 +34,9 @@ graph LR
     class C good;
 ```
 
-### 1NF: One Value, One Cell
+---
+
+## 1NF: One Value, One Cell
 
 **First Normal Form** says: every column holds a single, atomic value. No comma-separated lists. No arrays crammed into a text field.
 
@@ -67,7 +62,9 @@ The fix — give each product its own row, or (better) extract products into a s
 
 **The rule I follow:** if I'm tempted to store a comma-separated list in a column, I'm violating 1NF. Stop and create a related table instead.
 
-### 2NF: Every Column Depends on the Full Key
+---
+
+## 2NF: Every Column Depends on the Full Key
 
 **Second Normal Form** builds on 1NF and says: every non-key column must depend on _the entire_ primary key, not just part of it. This only matters when I have a **composite key** (a primary key made of two or more columns).
 
@@ -104,7 +101,9 @@ The fix — extract product info into its own table:
 
 Now each fact lives in exactly one place. Price changes happen in one row.
 
-### 3NF: No Middle-Men
+---
+
+## 3NF: No Middle-Men
 
 **Third Normal Form** says: no **transitive dependencies**. A non-key column should depend on the primary key directly — not through another non-key column.
 
@@ -141,7 +140,9 @@ The fix is the same pattern — extract the transitive dependency into its own t
 
 **The classic summary:** a column in 3NF depends on _the key, the whole key, and nothing but the key_ — so help me Codd.
 
-### Wait — How Is 3NF Different from 2NF?
+---
+
+## Wait — How Is 3NF Different from 2NF?
 
 Both end with the same fix — extract columns into a new table. So what's actually different? Let's go back to the two examples.
 
@@ -167,7 +168,9 @@ Here's my litmus test: if I change Alice's department from D10 to D20, does "Eng
 | **Can only happen with** | Composite keys (2+ columns) | Any key — single or composite |
 | **How to spot it** | A column ignores one part of the composite key | A column describes another non-key column, not the row itself |
 
-### The Decomposition Framework
+---
+
+## The Decomposition Framework
 
 The three normal forms give me the _why_. Here's the _how_ — a systematic method I apply to any table, without relying on intuition.
 
@@ -243,200 +246,15 @@ One bloated table became three focused, perpendicular tables — each one respon
 > Notice that `department_name` in the `employees` table still has a transitive dependency (it depends on a department, not on the employee directly). I could apply the framework one more level and extract a `departments` table. The method is recursive — I keep going until every column depends on nothing but its table's key.
 {: .prompt-info }
 
-> **Normalize until it hurts, denormalize until it works.** The normal forms are my starting point. In practice, I may intentionally denormalize for read performance (caching a `total_amount` on an order, for instance). That's fine — as long as it's a conscious decision, not an accident.
-{: .prompt-tip }
-
----
-
-## 2. Logical Foreign Keys Over Physical Foreign Keys
-
-This one tripped me up when I was learning database design from textbooks.
-
-A **physical foreign key** is a `FOREIGN KEY` constraint declared in the DDL. The database enforces referential integrity — if I try to insert an order with a `customer_id` that doesn't exist in the `customers` table, the database rejects it.
-
-```sql
-CREATE TABLE orders (
-    id          BIGINT PRIMARY KEY,
-    customer_id BIGINT NOT NULL,
-    total       DECIMAL(10,2),
-    CONSTRAINT fk_orders_customer
-        FOREIGN KEY (customer_id) REFERENCES customers(id)
-);
-```
-
-A **logical foreign key** is the same column — `customer_id` referencing a customer — but without the database-level constraint. The relationship exists in my application code and documentation, not in the DDL.
-
-```sql
-CREATE TABLE orders (
-    id          BIGINT PRIMARY KEY,
-    customer_id BIGINT NOT NULL,
-    total       DECIMAL(10,2)
-);
-```
-
-**Why would I skip the constraint?** It felt dangerous to me at first. But in practice, many production systems at scale intentionally use logical foreign keys:
-
-+ **Cross-service boundaries.** In a microservices architecture, `orders` and `customers` might live in different databases entirely. I _can't_ declare a foreign key across databases. The `customer_id` in the orders DB is a logical reference — my code is responsible for ensuring it's valid.
-
-+ **Schema migration pain.** Foreign keys make `ALTER TABLE` operations slower and riskier on large tables. Dropping and recreating constraints during a migration on a table with hundreds of millions of rows can lock the table for minutes. Many teams at scale (Shopify, GitHub, Meta) have documented moving away from physical foreign keys for this reason.
-
-+ **Soft deletes.** If my `customers` table uses soft deletes (`deleted_at IS NOT NULL` instead of actual `DELETE`), a foreign key constraint won't help — the row still exists. I need application-level checks anyway.
-
-+ **Insert ordering.** Foreign keys enforce insert order — I must insert the parent before the child. In bulk imports or event-driven systems, records may arrive out of order. Logical foreign keys give me the flexibility to insert records in any order and reconcile later.
-
-This doesn't mean "never use physical foreign keys." For a monolithic application with a single database and strong data integrity requirements (financial systems, for example), physical foreign keys are valuable. **The point is: understand the tradeoff.** Physical foreign keys give me database-enforced integrity. Logical foreign keys give me operational flexibility. I pick the one that matches my architecture.
-
-```java
-// With logical foreign keys, your application layer enforces integrity
-public Order createOrder(CreateOrderRequest request) {
-    Customer customer = customerRepo.findById(request.getCustomerId())
-        .orElseThrow(() -> new EntityNotFoundException(
-            "Customer not found: " + request.getCustomerId()));
-
-    Order order = new Order();
-    order.setCustomerId(customer.getId());
-    order.setTotal(request.getTotal());
-    return orderRepo.save(order);
-}
-```
-
-**My rule:** use physical foreign keys when I have a single database with strict integrity requirements. Use logical foreign keys when crossing service boundaries, working at scale, or when operational flexibility matters more than database-level enforcement.
-
----
-
-## 3. Taming the N+1 Query Problem
-
-I covered the N+1 problem from an API perspective in a [previous post](/posts/backend-api-design-tips/). Here I want to zoom into the **ORM layer** — specifically JPA/Hibernate — because that's where this problem most often hides in my experience.
-
-The core issue: my ORM loads related entities **lazily by default**. That means fetching a list of orders doesn't load their customers until I _access_ each one. In a loop, that means N extra queries.
-
-```java
-@Entity
-public class Order {
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
-}
-```
-
-```java
-List<Order> orders = orderRepo.findAll();
-for (Order order : orders) {
-    System.out.println(order.getCustomer().getName()); // fires a SELECT per order
-}
-```
-
-This silently generates 1 + N queries. Ten orders? Eleven queries. A thousand orders? A thousand and one queries hammering your database.
-
-### Fix 1: JOIN FETCH in JPQL
-
-The most direct solution — tell JPA to fetch the related entity in the same query:
-
-```java
-@Query("SELECT o FROM Order o JOIN FETCH o.customer")
-List<Order> findAllWithCustomers();
-```
-
-This generates a single `SELECT ... FROM orders JOIN customers ...` instead of 1 + N queries.
-
-### Fix 2: @EntityGraph
-
-If you prefer annotations over query strings:
-
-```java
-@EntityGraph(attributePaths = {"customer"})
-List<Order> findAll();
-```
-
-Same result — one query with a `JOIN` — but declared on the repository method rather than in JPQL.
-
-### Fix 3: Batch Fetching
-
-Hibernate can batch lazy loads. Instead of N individual `SELECT` queries, it issues `SELECT ... WHERE id IN (?, ?, ?, ...)` in chunks:
-
-```java
-@Entity
-@BatchSize(size = 50)
-public class Customer {
-    // ...
-}
-```
-
-This won't eliminate the extra queries entirely, but it reduces N queries to roughly N/50. It's a pragmatic middle ground when I can't easily rewrite all my queries.
-
-**The rule is the same as before:** if I'm reading a list of entities and accessing their relationships in a loop, I probably have an N+1 problem. I profile my queries — Hibernate's `hibernate.show_sql=true` makes it painfully obvious.
-
----
-
-## 4. More Practices Worth Adopting
-
-### Index What You Query
-
-An index on a column I never filter or sort by is wasted space and slows down writes. An _absent_ index on a column in my `WHERE` clause turns a millisecond lookup into a full table scan.
-
-```sql
--- If you frequently query orders by customer and status:
-CREATE INDEX idx_orders_customer_status
-    ON orders (customer_id, status);
-```
-
-**The mental model:** indexes are like a book's index. I wouldn't put every word in the index — just the ones readers actually look up. I profile my slow queries, check my `WHERE` clauses, and index accordingly.
-
-Composite indexes matter too: an index on `(customer_id, status)` serves queries that filter by `customer_id` alone _and_ queries that filter by both `customer_id` and `status`. But it does **not** serve queries that filter by `status` alone — index column order matters.
-
-### Soft Deletes Over Hard Deletes
-
-Instead of `DELETE FROM customers WHERE id = 42`, set a flag:
-
-```sql
-UPDATE customers SET deleted_at = NOW() WHERE id = 42;
-```
-
-+ I keep audit history
-+ I can recover accidentally deleted data
-+ Foreign references don't break
-
-I add a default scope or a `WHERE deleted_at IS NULL` to my queries so deleted records are invisible by default. Most ORMs support this natively — JPA has `@Where`, Spring Data has `@SoftDelete`.
-
-### Always Add Audit Columns
-
-Every table should have, at minimum:
-
-```sql
-CREATE TABLE orders (
-    id          BIGINT PRIMARY KEY,
-    -- ... business columns ...
-    created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_by  VARCHAR(100),
-    updated_by  VARCHAR(100)
-);
-```
-
-I will always need these. Every production debug session eventually becomes "when did this change, and who changed it?" Without audit columns, I'm flying blind.
-
-### Use Consistent Naming Conventions
-
-I pick a convention and enforce it ruthlessly:
-
-| Element | Convention | Example |
-|---|---|---|
-| Tables | `snake_case`, plural | `order_items` |
-| Columns | `snake_case` | `customer_id` |
-| Primary keys | `id` | `orders.id` |
-| Foreign keys | `<singular_table>_id` | `orders.customer_id` |
-| Indexes | `idx_<table>_<columns>` | `idx_orders_customer_id` |
-| Booleans | `is_` prefix | `is_active` |
-| Timestamps | `_at` suffix | `created_at`, `deleted_at` |
-
-The specific convention matters less than consistency. When every table follows the same pattern, I can navigate the schema without checking documentation — and so can anyone who joins the team after me.
-
 ---
 
 ## The Takeaway
 
-Database design is not glamorous work. Nobody tweets about a well-normalized schema. But **every production nightmare I've debugged — data inconsistency, mysterious slowdowns, impossible migrations — traced back to a design decision made (or not made) in the first week**.
+> **Normalize until it hurts, denormalize until it works.**
+{: .prompt-tip }
 
-The normal forms keep my data clean. Logical foreign keys keep my architecture flexible. Killing N+1 queries keeps my app fast. And the small practices — indexes, soft deletes, audit columns, naming conventions — compound into a schema that's a _pleasure_ to work with instead of a minefield.
+The normal forms are my starting point — not a religion. In practice, I may intentionally denormalize for read performance (caching a `total_amount` on an order, for instance). That's fine — as long as it's a conscious decision, not an accident.
 
-> I design my databases as if the next developer to work on them is a sleep-deprived version of me — because it will be.
+The framework makes it mechanical: list columns, find each one's determinant, group by determinant, split into tables. **If every column in every table depends on _the key, the whole key, and nothing but the key_, I'm in good shape.**
+
+The next time I'm staring at a table that feels "off" — duplicated data, awkward updates, unexplainable inconsistencies — I'll run through these four steps. The answer almost always falls out.
