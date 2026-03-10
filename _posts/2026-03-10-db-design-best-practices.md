@@ -53,6 +53,8 @@ Take a look at this table:
 
 Seems compact and convenient. Now try to answer this: **how would you write a query to find all orders that contain "Gadget"?** You'd have to parse a comma-separated string — `LIKE '%Gadget%'` — which is fragile, can't use an index, and would also match a product called "SuperGadget". What about counting how many products each order has? More string splitting. The moment you need to _query_ the data inside that column, the design falls apart.
 
+**Challenge:** before reading on, how would you redesign this table so that querying for a single product is straightforward?
+
 The fix — give each product its own row, or (better) extract products into a separate table:
 
 | order_id | product |
@@ -79,6 +81,8 @@ Consider an `order_items` table. A single order can contain multiple products, a
 Looks reasonable at first glance. Now ask yourself: **what happens when the Widget's price changes to 12.99?** You'd have to find and update _every row_ where `product_id = 101` appears. Miss one, and your data contradicts itself — the same product with two different prices.
 
 The root cause: `product_name` and `product_price` depend only on `product_id` — they have nothing to do with `order_id`. That's a **partial dependency**. These columns don't need the full composite key to be determined; they only need half of it.
+
+**Challenge:** how would you restructure this table so that a price change only requires updating a single row?
 
 The fix — extract product info into its own table:
 
@@ -114,6 +118,8 @@ Look at this `employees` table:
 Everything looks correct. But now: **what happens when the Engineering department gets a new head?** You'd need to update every row where `department_id = D10`. And if Alice's row says the head is "Charlie" while Bob's row already says "Eve," which one is right? The same fact — who leads Engineering — is duplicated across rows, and duplicated facts eventually contradict each other.
 
 The root cause: `department_name` and `department_head` don't really depend on `employee_id`. They depend on `department_id`, which _itself_ depends on `employee_id`. The dependency chain is: `employee_id → department_id → department_name`. That's a **transitive dependency** — a column reaching the key only through a middle-man.
+
+**Challenge:** how would you split this table so that department info lives in exactly one place, no matter how many employees belong to it?
 
 The fix is the same pattern — extract the transitive dependency into its own table:
 
