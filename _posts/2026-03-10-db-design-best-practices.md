@@ -68,7 +68,7 @@ The fix — give each product its own row, or (better) extract products into a s
 
 **Second Normal Form** builds on 1NF and says: every non-key column must depend on _the entire_ primary key, not just part of it. This only matters when you have a **composite key** (a primary key made of two or more columns).
 
-Consider an `order_items` table with a composite key of `(order_id, product_id)`:
+Consider an `order_items` table. A single order can contain multiple products, and the same product can appear in multiple orders. Neither `order_id` nor `product_id` alone can uniquely identify a row — but _together_ they can. That combination is called a **composite key**: a primary key made of two or more columns. Here, the composite key is `(order_id, product_id)`:
 
 | order_id | product_id | quantity | product_name | product_price |
 |---|---|---|---|---|
