@@ -140,6 +140,32 @@ The fix is the same pattern — extract the transitive dependency into its own t
 
 **The classic summary:** a column in 3NF depends on _the key, the whole key, and nothing but the key_ — so help me Codd.
 
+### Wait — How Is 3NF Different from 2NF?
+
+Both end with the same fix — extract columns into a new table. So what's actually different? Let's go back to the two examples.
+
+**The 2NF problem — "I only need _part_ of your key."**
+
+The `order_items` table had a two-part key: `(order_id, product_id)`. But `product_name` didn't care about `order_id` at all. If you told it only the `product_id`, it could already give you the answer. It was sitting in a table whose key was _too big_ for it — it only needed half.
+
+> `product_name`: "You keep telling me the `order_id`, but I don't need it. Just give me the `product_id` and I'll tell you the name."
+
+**The 3NF problem — "I don't belong to _you_. I belong to that other column."**
+
+The `employees` table had a single key: `employee_id`. If I ask "what's the department name for employee 1?", you _can_ answer — look up Alice, see she's in D10, then recall that D10 is Engineering. But notice the two hops: you went from `employee_id` to `department_id`, and _then_ from `department_id` to `department_name`. You needed a middle-man.
+
+The tell: if I change Alice's department from D10 to D20, does "Engineering" still make sense in her row? No — because `department_name` was never really about Alice. It was about whatever `department_id` happened to be sitting next to it.
+
+> `department_name`: "You're asking me about employee 1, but I don't actually know anything about employees. Give me a `department_id` — _that's_ the question I answer."
+
+**The one-line distinction:** 2NF says _"don't store me with a key that's bigger than I need."_ 3NF says _"don't store me with a key that isn't my real owner."_
+
+| | **2NF** | **3NF** |
+|---|---|---|
+| **The column says** | "I only need _part_ of your key" | "I belong to a _different_ column, not your key" |
+| **Can only happen with** | Composite keys (2+ columns) | Any key — single or composite |
+| **How to spot it** | A column ignores one part of the composite key | A column describes another non-key column, not the row itself |
+
 ### The Decomposition Framework
 
 The three normal forms give you the _why_. Here's the _how_ — a systematic method you can apply to any table, without relying on intuition.
