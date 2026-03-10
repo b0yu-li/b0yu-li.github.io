@@ -140,6 +140,82 @@ The fix is the same pattern — extract the transitive dependency into its own t
 
 **The classic summary:** a column in 3NF depends on _the key, the whole key, and nothing but the key_ — so help me Codd.
 
+### The Decomposition Framework
+
+The three normal forms give you the _why_. Here's the _how_ — a systematic method you can apply to any table, without relying on intuition.
+
+**Step 1: List every column and identify the primary key.**
+
+Write out all the columns. Determine what uniquely identifies a row — a single column or a composite key.
+
+**Step 2: For each non-key column, ask: "What is the _minimal_ set of columns that determines this value?"**
+
+This is the key question. Don't ask "is this column related to the table?" — ask "what do I need to _know_ to look up this column's value?" That minimal set is called the column's **determinant**.
+
+**Step 3: Group columns by their determinant.**
+
+Columns that share the same determinant belong together. Each distinct determinant group becomes its own table, with the determinant as its primary key.
+
+**Step 4: Link the tables.**
+
+The original table keeps only the columns whose determinant is its own primary key, plus foreign key references to the new tables.
+
+Let's walk through a messy table to see this in action. Imagine a `project_assignments` table:
+
+| employee_id | employee_name | project_id | project_name | project_budget | role | department_name |
+|---|---|---|---|---|---|---|
+| 1 | Alice | P10 | Atlas | 500k | Lead | Engineering |
+| 2 | Bob | P10 | Atlas | 500k | Dev | Engineering |
+| 1 | Alice | P20 | Beacon | 200k | Dev | Engineering |
+| 3 | Carol | P20 | Beacon | 200k | Lead | Marketing |
+
+The composite key is `(employee_id, project_id)`. Now, apply step 2 — what determines each column?
+
+| Column | Determined by | Full key needed? |
+|---|---|---|
+| `role` | `(employee_id, project_id)` | Yes — the full key |
+| `employee_name` | `employee_id` alone | No — partial |
+| `department_name` | `employee_id` alone | No — partial |
+| `project_name` | `project_id` alone | No — partial |
+| `project_budget` | `project_id` alone | No — partial |
+
+Step 3 — group by determinant:
+
++ **Group A** — determinant `(employee_id, project_id)`: `role`
++ **Group B** — determinant `employee_id`: `employee_name`, `department_name`
++ **Group C** — determinant `project_id`: `project_name`, `project_budget`
+
+Step 4 — each group becomes a table:
+
+**`project_assignments`** — key: `(employee_id, project_id)`
+
+| employee_id | project_id | role |
+|---|---|---|
+| 1 | P10 | Lead |
+| 2 | P10 | Dev |
+| 1 | P20 | Dev |
+| 3 | P20 | Lead |
+
+**`employees`** — key: `employee_id`
+
+| employee_id | employee_name | department_name |
+|---|---|---|
+| 1 | Alice | Engineering |
+| 2 | Bob | Engineering |
+| 3 | Carol | Marketing |
+
+**`projects`** — key: `project_id`
+
+| project_id | project_name | project_budget |
+|---|---|---|
+| P10 | Atlas | 500k |
+| P20 | Beacon | 200k |
+
+One bloated table became three focused, perpendicular tables — each one responsible for exactly one concept. No duplicated facts, no update anomalies.
+
+> Notice that `department_name` in the `employees` table still has a transitive dependency (it depends on a department, not on the employee directly). You could apply the framework one more level and extract a `departments` table. The method is recursive — keep going until every column depends on nothing but its table's key.
+{: .prompt-info }
+
 > **Normalize until it hurts, denormalize until it works.** The normal forms are your starting point. In practice, you may intentionally denormalize for read performance (caching a `total_amount` on an order, for instance). That's fine — as long as it's a conscious decision, not an accident.
 {: .prompt-tip }
 
