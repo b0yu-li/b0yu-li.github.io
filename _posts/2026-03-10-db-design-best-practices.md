@@ -44,14 +44,14 @@ graph LR
 
 **First Normal Form** says: every column holds a single, atomic value. No comma-separated lists. No arrays crammed into a text field.
 
-This is what a 1NF violation looks like:
+Take a look at this table:
 
 | order_id | customer | products |
 |---|---|---|
 | 1 | Alice | Widget, Gadget, Gizmo |
 | 2 | Bob | Widget |
 
-The `products` column holds multiple values. You can't query "find all orders containing Gadget" without string parsing. You can't count products without splitting strings. It's a trap.
+Seems compact and convenient. Now try to answer this: **how would you write a query to find all orders that contain "Gadget"?** You'd have to parse a comma-separated string — `LIKE '%Gadget%'` — which is fragile, can't use an index, and would also match a product called "SuperGadget". What about counting how many products each order has? More string splitting. The moment you need to _query_ the data inside that column, the design falls apart.
 
 The fix — give each product its own row, or (better) extract products into a separate table:
 
@@ -103,13 +103,17 @@ Now each fact lives in exactly one place. Price changes happen in one row.
 
 **Third Normal Form** says: no **transitive dependencies**. A non-key column should depend on the primary key directly — not through another non-key column.
 
+Look at this `employees` table:
+
 | employee_id | employee_name | department_id | department_name | department_head |
 |---|---|---|---|---|
 | 1 | Alice | D10 | Engineering | Charlie |
 | 2 | Bob | D10 | Engineering | Charlie |
 | 3 | Carol | D20 | Marketing | Diana |
 
-`department_name` and `department_head` depend on `department_id`, not on `employee_id`. The dependency chain is: `employee_id → department_id → department_name`. That's a transitive dependency.
+Everything looks correct. But now: **what happens when the Engineering department gets a new head?** You'd need to update every row where `department_id = D10`. And if Alice's row says the head is "Charlie" while Bob's row already says "Eve," which one is right? The same fact — who leads Engineering — is duplicated across rows, and duplicated facts eventually contradict each other.
+
+The root cause: `department_name` and `department_head` don't really depend on `employee_id`. They depend on `department_id`, which _itself_ depends on `employee_id`. The dependency chain is: `employee_id → department_id → department_name`. That's a **transitive dependency** — a column reaching the key only through a middle-man.
 
 The fix is the same pattern — extract the transitive dependency into its own table:
 
