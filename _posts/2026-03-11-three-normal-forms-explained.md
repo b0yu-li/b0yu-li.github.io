@@ -1,13 +1,14 @@
 ---
 layout: post
-title: "The Three Normal Forms, Explained"
+title: "DB Design: The Three Normal Forms"
 author: boyu
-date: 2026-03-11 10:00:00 +0800
+date: 2026-03-11 22:00:00 +0800
 mermaid: true
 categories: [ Tech, Design ]
 tags: [ tech, database, design, normalization, sql ]
-description: "A practical walkthrough of the three normal forms (1NF, 2NF, 3NF) — with flawed tables, challenge questions, and a systematic decomposition framework for splitting any table into clean, perpendicular pieces."
-image: /assets/images/headers/three-normal-forms-explained.jpg
+description: "A practical walkthrough of the three normal forms (1NF, 2NF, 3NF) — with flawed tables and challenge questions — plus a four-step decomposition framework for splitting any messy table into clean, perpendicular pieces."
+image: /assets/images/headers/db-three-normal-forms.jpg
+published: false
 ---
 
 > A bad API can be versioned. A bad database schema haunts you forever.
@@ -18,12 +19,21 @@ I've learned this the hard way: the database is the foundation of everything. I 
 
 The way I think about it: imagine organizing a **filing cabinet** for a company. Every piece of information should live in exactly one folder, and every folder should be about exactly one thing. If I dump everything into one giant folder, I'll find the same customer's address scribbled on fifty invoices — and when they move, I'll have to find and fix all fifty.
 
+> If this diagram doesn't make sense yet, don't worry — read on and come back to it after the examples. It'll click.
+{: .prompt-tip }
+
 ```mermaid
-graph LR
+graph TD
     U[<b>Unnormalized</b><br/>Everything in one table<br/>Duplicated data everywhere]
-    --> A[<b>1NF</b><br/>Atomic values<br/>No repeating groups]
-    --> B[<b>2NF</b><br/>No partial dependencies<br/>Every column depends on the full key]
-    --> C[<b>3NF</b><br/>No transitive dependencies<br/>Columns depend only on the key]
+
+    U -->|"Eliminate multi-value cells"| A
+    A[<b>1NF — Atomic Values</b><br/>One value per cell<br/><i>No comma-separated lists</i>]
+
+    A -->|"Eliminate partial dependencies"| B
+    B[<b>2NF — Full Key Dependence</b><br/>Every column needs the <i>whole</i> key<br/><i>Only possible with composite keys</i>]
+
+    B -->|"Eliminate transitive dependencies"| C
+    C[<b>3NF — Direct Dependence</b><br/>Every column depends on the key <i>directly</i><br/><i>No middle-men</i>]
 
     classDef bad fill:#fff,stroke:#c62828,stroke-width:2px,color:#000;
     classDef step fill:#fff,stroke:#0277bd,stroke-width:2px,color:#000;
@@ -36,7 +46,7 @@ graph LR
 
 ---
 
-## 1NF: One Value, One Cell
+## 1️⃣ 1NF: One Value, One Cell
 
 **First Normal Form** says: every column holds a single, atomic value. No comma-separated lists. No arrays crammed into a text field.
 
@@ -64,7 +74,7 @@ The fix — give each product its own row, or (better) extract products into a s
 
 ---
 
-## 2NF: Every Column Depends on the Full Key
+## 2️⃣ 2NF: Every Column Depends on the Full Key
 
 **Second Normal Form** builds on 1NF and says: every non-key column must depend on _the entire_ primary key, not just part of it. This only matters when I have a **composite key** (a primary key made of two or more columns).
 
@@ -103,7 +113,7 @@ Now each fact lives in exactly one place. Price changes happen in one row.
 
 ---
 
-## 3NF: No Middle-Men
+## 3️⃣ 3NF: No Middle-Men
 
 **Third Normal Form** says: no **transitive dependencies**. A non-key column should depend on the primary key directly — not through another non-key column.
 
@@ -118,6 +128,15 @@ Here's an `employees` table I once inherited:
 Everything looks correct. But now: **what happens when the Engineering department gets a new head?** I'd need to update every row where `department_id = D10`. And if Alice's row says the head is "Charlie" while Bob's row already says "Eve," which one is right? The same fact — who leads Engineering — is duplicated across rows, and duplicated facts eventually contradict each other.
 
 The root cause: `department_name` and `department_head` don't really depend on `employee_id`. They depend on `department_id`, which _itself_ depends on `employee_id`. The dependency chain is: `employee_id → department_id → department_name`. That's a **transitive dependency** — a column reaching the key only through a middle-man.
+
+```mermaid
+graph LR
+    E[employee_id] -->|Determines| D[department_id]
+    D -->|Determines| N[department_name]
+    E -.->|Transitive Hop| N
+    
+    classDef default fill:#fff,stroke:#333,stroke-width:2px;
+```
 
 **Challenge:** how would you split this table so that department info lives in exactly one place, no matter how many employees belong to it?
 
@@ -142,7 +161,7 @@ The fix is the same pattern — extract the transitive dependency into its own t
 
 ---
 
-## Wait — How Is 3NF Different from 2NF?
+## 🤔 Wait — How Is 3NF Different from 2NF?
 
 Both end with the same fix — extract columns into a new table. So what's actually different? Let's go back to the two examples.
 
@@ -170,7 +189,7 @@ Here's my litmus test: if I change Alice's department from D10 to D20, does "Eng
 
 ---
 
-## The Decomposition Framework
+## 🪄 The Decomposition Framework
 
 The three normal forms give me the _why_. Here's the _how_ — a systematic method I apply to any table, without relying on intuition.
 
@@ -248,7 +267,7 @@ One bloated table became three focused, perpendicular tables — each one respon
 
 ---
 
-## The Takeaway
+## 💡 The Takeaway
 
 > **Normalize until it hurts, denormalize until it works.**
 {: .prompt-tip }
