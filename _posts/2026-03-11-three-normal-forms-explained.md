@@ -8,7 +8,6 @@ categories: [ Tech, Design ]
 tags: [ tech, database, design, normalization, sql ]
 description: "A practical walkthrough of the three normal forms (1NF, 2NF, 3NF) — with flawed tables and challenge questions — plus a four-step decomposition framework for splitting any messy table into clean, perpendicular pieces."
 image: /assets/images/headers/db-three-normal-forms.jpg
-published: false
 ---
 
 > A bad API can be versioned. A bad database schema haunts you forever.
@@ -117,7 +116,7 @@ Now each fact lives in exactly one place. Price changes happen in one row.
 
 **Third Normal Form** says: no **transitive dependencies**. A non-key column should depend on the primary key directly — not through another non-key column.
 
-Here's an `employees` table I once inherited:
+Let's have a look at this `employees` table:
 
 | employee_id | employee_name | department_id | department_name | department_head |
 |---|---|---|---|---|
@@ -192,7 +191,7 @@ Here's my litmus test: if I change Alice's department from D10 to D20, does "Eng
 
 **The one-line distinction:** 2NF says _"don't store me with a key that's bigger than I need."_ 3NF says _"don't store me with a key that isn't my real owner."_
 
-| | **2NF** | **3NF** |
+| | **2NF Problem** | **3NF Problem** |
 |---|---|---|
 | **The column says** | "I only need _part_ of your key" | "I belong to a _different_ column, not your key" |
 | **Can only happen with** | Composite keys (2+ columns) | Any key — single or composite |
