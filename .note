@@ -1,64 +1,60 @@
-# Promotion Drafts — Clarity Over Authority
-# https://roobystudio.com/posts/clarity-over-authority/
+==============================
+LinkedIn Promotion
+==============================
 
+New blog post: DB Design — The Three Normal Forms
 
-## LinkedIn
+Most database design guides explain normalization like a textbook. I wanted to try something different.
 
-A common trap in our industry: confusing seniority with authority.
+In this post, I show you flawed tables first — and challenge you to spot what's wrong before I reveal the answer.
 
-We assume that climbing the ladder means telling people what to do. But the best senior engineers and leaders I've worked with don't command — they clarify.
+Here's what it covers:
+→ 1NF, 2NF, 3NF — each one introduced through a broken table and a "what goes wrong when..." question
+→ The subtle difference between 2NF and 3NF (they look the same until you don't)
+→ A four-step decomposition framework for splitting any messy table into clean, perpendicular pieces — no intuition required
 
-Here's the difference:
+My favourite line from the post:
 
-When a production fire hits, the authority-driven lead barks "Deploy the hotfix NOW." The team scrambles. Nobody understands the root cause. The hotfix introduces a regression.
+"A column in 3NF depends on the key, the whole key, and nothing but the key — so help me Codd."
 
-The clarity-driven lead takes two minutes: "Here's the problem. Here's the two-part fix. Alice, you take A. Bob, you take B." Everyone moves in parallel. Zero confusion.
+If you've ever stared at a table that felt "off" but couldn't articulate why, this framework will give you the vocabulary and the method.
 
-Same crisis. Same urgency. Completely different outcome.
+🔗 https://roobystudio.com/posts/db-three-normal-forms/
 
-Seniority is an exercise in translation — taking chaos and distilling it into a path forward. It's not about how many people report to you. It's about your ability to walk into a room full of ambiguity and walk out with clarity.
+#DatabaseDesign #SQL #BackendDevelopment #SoftwareEngineering #Normalization
 
-I wrote about this in Vol. 2 of my Leader Playbook, including a second scenario on vague feature requests, a comparison framework, and a practical how-to:
+==============================
+X (Twitter) Promotion
+==============================
 
-https://roobystudio.com/posts/clarity-over-authority/
+Version A (hook + link):
 
-Authority forces compliance. Clarity creates alignment.
+A bad API can be versioned. A bad database schema haunts you forever.
 
-#leadership #engineering #seniority #teamwork #softwareengineering
+New post: I break down 1NF, 2NF, and 3NF with flawed tables you can try to fix yourself — plus a four-step framework for decomposing any messy table.
 
+🔗 roobystudio.com/posts/db-three-normal-forms/
 
-## X (Twitter) — Thread
+---
 
-### Tweet 1 (hook)
+Version B (punchy thread-starter):
 
-Seniority isn't about authority. It's about clarity.
+"The key, the whole key, and nothing but the key — so help me Codd."
 
-The best senior engineers I know don't command — they translate chaos into a path forward.
+If you can't explain why that sentence summarises all three normal forms, my latest post is for you 👇
 
-A thread on why clarity beats authority every time:
+roobystudio.com/posts/db-three-normal-forms/
 
-### Tweet 2 (the contrast)
+---
 
-Production fire hits on a Friday.
+Version C (challenge angle):
 
-Authority lead: "Deploy the hotfix NOW. I don't have time to explain."
-→ Team scrambles. Two devs clash on the same file. Hotfix causes a regression.
+Here's a table. What's wrong with it?
 
-Clarity lead: "Here's the root cause. Alice, take the config. Bob, take the circuit breaker."
-→ Parallel execution. Zero confusion.
+| employee_id | name | dept_id | dept_name | dept_head |
+| 1 | Alice | D10 | Engineering | Charlie |
+| 2 | Bob | D10 | Engineering | Charlie |
 
-### Tweet 3 (the principle)
+If you said "nothing" — you need this post.
 
-Junior engineers answer questions.
-Senior engineers question the answers.
-
-Your job isn't to give orders. It's to absorb ambiguity and project focus.
-
-### Tweet 4 (the punchline + link)
-
-Authority forces compliance.
-Clarity creates alignment.
-
-Full post — including a second scenario, a comparison framework, and a practical playbook:
-
-https://roobystudio.com/posts/clarity-over-authority/
+roobystudio.com/posts/db-three-normal-forms/
