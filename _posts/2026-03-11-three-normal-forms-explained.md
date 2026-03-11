@@ -157,7 +157,18 @@ The fix is the same pattern — extract the transitive dependency into its own t
 | D10 | Engineering | Charlie |
 | D20 | Marketing | Diana |
 
-**The classic summary:** a column in 3NF depends on _the key, the whole key, and nothing but the key_ — so help me Codd.
+There's a famous one-liner that summarizes all three normal forms at once:
+
+> _"The key, the whole key, and nothing but the key — so help me Codd."_
+
+Each phrase maps to one form:
+
++ **"The key"** → **1NF.** Every row is uniquely identified by a key, and every cell holds a single atomic value.
++ **"The whole key"** → **2NF.** Every column depends on _the whole key_ — not just part of a composite key.
++ **"Nothing but the key"** → **3NF.** Every column depends on _nothing but the key_ — no sneaking through a middle-man column.
+
+> "So help me **Codd**" is a pun on "so help me God." [Edgar F. Codd](https://en.wikipedia.org/wiki/Edgar_F._Codd) was the British computer scientist who invented the relational database model in 1970 — the foundation behind SQL, tables, and the normal forms themselves.
+{: .prompt-info }
 
 ---
 
