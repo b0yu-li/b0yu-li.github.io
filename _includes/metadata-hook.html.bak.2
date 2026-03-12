@@ -1,0 +1,135 @@
+<!-- Dynamic animated background: layered wave landscape -->
+<style>
+  body {
+    background: transparent !important;
+    isolation: isolate;
+  }
+
+  .bg-waves {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  #topbar-wrapper {
+    background-color: transparent !important;
+  }
+
+  footer {
+    background-color: transparent !important;
+    border-top-color: transparent !important;
+  }
+
+  #toc-wrapper::before,
+  .toc-border-cover {
+    background: transparent !important;
+  }
+
+  @media (prefers-color-scheme: light) {
+    html:not([data-mode]) hr,
+    html[data-mode='light'] hr {
+      border-color: rgb(207, 207, 207);
+    }
+  }
+  @media (prefers-color-scheme: dark) {
+    html[data-mode='light'] hr {
+      border-color: rgb(207, 207, 207);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bg-waves { display: none; }
+    body { background: var(--main-bg) !important; }
+  }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var canvas = document.createElement('canvas');
+  canvas.className = 'bg-waves';
+  canvas.setAttribute('aria-hidden', 'true');
+  document.body.prepend(canvas);
+
+  var ctx = canvas.getContext('2d');
+  var w, h;
+
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  var DARK = {
+    bg: '#0a1628',
+    layers: [
+      { color: '#0b2e42', base: 0.18, amp: 0.06,  seed: 0.0, speed: 0.6 },
+      { color: '#0e4a50', base: 0.28, amp: 0.055, seed: 1.4, speed: 0.7 },
+      { color: '#15685c', base: 0.38, amp: 0.05,  seed: 2.8, speed: 0.8 },
+      { color: '#1e9a72', base: 0.50, amp: 0.05,  seed: 4.2, speed: 0.9 },
+      { color: '#35c898', base: 0.60, amp: 0.045, seed: 5.6, speed: 1.0 },
+      { color: '#65e0b8', base: 0.72, amp: 0.04,  seed: 7.0, speed: 1.1 },
+      { color: '#98ecd2', base: 0.84, amp: 0.035, seed: 8.4, speed: 1.2 }
+    ]
+  };
+
+  var LIGHT = {
+    bg: '#f0f5f3',
+    layers: [
+      { color: '#c8d8d2', base: 0.18, amp: 0.06,  seed: 0.0, speed: 0.6 },
+      { color: '#b0ccc2', base: 0.28, amp: 0.055, seed: 1.4, speed: 0.7 },
+      { color: '#98c0b4', base: 0.38, amp: 0.05,  seed: 2.8, speed: 0.8 },
+      { color: '#80b4a8', base: 0.50, amp: 0.05,  seed: 4.2, speed: 0.9 },
+      { color: '#98c4b8', base: 0.60, amp: 0.045, seed: 5.6, speed: 1.0 },
+      { color: '#b0d4c8', base: 0.72, amp: 0.04,  seed: 7.0, speed: 1.1 },
+      { color: '#c8e0d8', base: 0.84, amp: 0.035, seed: 8.4, speed: 1.2 }
+    ]
+  };
+
+  function isDark() {
+    var mode = document.documentElement.getAttribute('data-mode');
+    if (mode) return mode === 'dark';
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+
+  function noise(x, t, seed) {
+    return Math.sin(x * 0.0015 + t * 0.35 + seed) * 0.5
+         + Math.sin(x * 0.004  + t * 0.2  + seed * 1.7) * 0.25
+         + Math.sin(x * 0.008  + t * 0.15 + seed * 3.1) * 0.15
+         + Math.sin(x * 0.015  + t * 0.1  + seed * 5.3) * 0.07
+         + Math.sin(x * 0.03   + t * 0.08 + seed * 7.7) * 0.03;
+  }
+
+  function draw(t) {
+    var p = isDark() ? DARK : LIGHT;
+
+    ctx.fillStyle = p.bg;
+    ctx.fillRect(0, 0, w, h);
+
+    for (var i = 0; i < p.layers.length; i++) {
+      var L = p.layers[i];
+      var ts = t * L.speed;
+
+      ctx.beginPath();
+      ctx.moveTo(0, h);
+      for (var x = 0; x <= w; x += 3) {
+        ctx.lineTo(x, (L.base + noise(x, ts, L.seed) * L.amp) * h);
+      }
+      ctx.lineTo(w, h);
+      ctx.closePath();
+      ctx.fillStyle = L.color;
+      ctx.fill();
+    }
+  }
+
+  var last = 0;
+  function loop(ts) {
+    requestAnimationFrame(loop);
+    if (ts - last < 33) return;
+    last = ts;
+    draw(ts / 1000);
+  }
+  requestAnimationFrame(loop);
+});
+</script>
