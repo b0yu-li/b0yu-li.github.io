@@ -1,0 +1,55 @@
+<!-- Matte-glass post cards -->
+<style>
+  @media (prefers-color-scheme: light) {
+    html:not([data-mode]),
+    html[data-mode='light'] {
+      --glass-bg: rgb(255 255 255 / 42%);
+      --glass-border: rgb(255 255 255 / 55%);
+      --glass-shadow: 0 4px 24px rgb(0 0 0 / 6%), 0 0 0 0.5px rgb(0 0 0 / 6%);
+      --glass-inset: inset 0 1px 0 rgb(255 255 255 / 70%);
+      --glass-hover-tint: rgb(255 255 255 / 18%);
+    }
+
+    html[data-mode='dark'] {
+      --glass-bg: rgb(255 255 255 / 4%);
+      --glass-border: rgb(255 255 255 / 7%);
+      --glass-shadow: 0 8px 32px rgb(0 0 0 / 40%), 0 0 0 0.5px rgb(255 255 255 / 4%);
+      --glass-inset: inset 0 1px 0 rgb(255 255 255 / 6%);
+      --glass-hover-tint: rgb(255 255 255 / 6%);
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html:not([data-mode]),
+    html[data-mode='dark'] {
+      --glass-bg: rgb(255 255 255 / 4%);
+      --glass-border: rgb(255 255 255 / 7%);
+      --glass-shadow: 0 8px 32px rgb(0 0 0 / 40%), 0 0 0 0.5px rgb(255 255 255 / 4%);
+      --glass-inset: inset 0 1px 0 rgb(255 255 255 / 6%);
+      --glass-hover-tint: rgb(255 255 255 / 6%);
+    }
+
+    html[data-mode='light'] {
+      --glass-bg: rgb(255 255 255 / 42%);
+      --glass-border: rgb(255 255 255 / 55%);
+      --glass-shadow: 0 4px 24px rgb(0 0 0 / 6%), 0 0 0 0.5px rgb(0 0 0 / 6%);
+      --glass-inset: inset 0 1px 0 rgb(255 255 255 / 70%);
+      --glass-hover-tint: rgb(255 255 255 / 18%);
+    }
+  }
+
+  .post-preview {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(16px) saturate(130%);
+    -webkit-backdrop-filter: blur(16px) saturate(130%);
+    border: 1px solid var(--glass-border) !important;
+    box-shadow: var(--glass-shadow), var(--glass-inset) !important;
+    transition: background-color 0.35s ease-in-out,
+                border-color 0.35s ease-in-out,
+                box-shadow 0.35s ease-in-out;
+  }
+
+  .post-preview::before {
+    background-color: var(--glass-hover-tint) !important;
+  }
+</style>
