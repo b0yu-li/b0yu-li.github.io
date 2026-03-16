@@ -76,6 +76,14 @@ flowchart TB
 
 A **Deployment** tells Kubernetes how many pods to keep running, and makes sure that count is always met. A **Service** gives those pods a stable address and routes incoming traffic to whichever pods are currently healthy — regardless of which node they're sitting on. The sections below explain each piece in detail.
 
+### The Cluster — The Whole Picture
+
+A **cluster** is the full Kubernetes environment — everything inside the outer boundary in the diagram above. It's the collection of machines (nodes) that Kubernetes manages as a single unit: the control plane nodes that make decisions, and the worker nodes that run application pods.
+
+When I say "deploy to the cluster," I mean: hand Kubernetes a declaration, and let it figure out which machine runs what. I don't address individual servers. I address the cluster as one logical target, and Kubernetes distributes the work across however many nodes are available.
+
+This is the key abstraction. Without the cluster concept, I'd be back to thinking about individual machines. With it, I think about my application — and the cluster handles the rest.
+
 ### Pods — The Unit of Deployment
 
 A **Pod** is the smallest deployable unit in Kubernetes. It's a thin wrapper around one or more containers — in practice, usually one container, one pod.
@@ -260,7 +268,30 @@ It's abstraction all the way down, and I never see any of it.
 
 ---
 
-## 6. Kubernetes vs. Managing Servers Manually
+## 6. Kubernetes vs. Docker
+
+This is one of the most common questions I see: _"Is Kubernetes a replacement for Docker?"_ The short answer: **no — they work at different layers.**
+
+**Docker** is a container engine. It builds container images and runs individual containers on a single machine. When I write a `Dockerfile`, build an image, and run `docker run`, I'm using Docker.
+
+**Kubernetes** is an orchestrator. It doesn't build images or run containers directly — it tells a container runtime (like containerd, which Docker also uses under the hood) to run them across a fleet of machines. Kubernetes manages the _fleet_; Docker manages the _individual container_.
+
+The stage crew analogy maps here too: **Docker builds the actors. Kubernetes runs the show.**
+
+| | **Docker** | **Kubernetes** |
+|---|---|---|
+| **What it does** | Builds and runs containers | Orchestrates containers across machines |
+| **Scope** | Single machine | Cluster of machines |
+| **Scaling** | Manual — run more `docker run` commands | Declarative — set `replicas: N` |
+| **Crash recovery** | Container stays down unless restarted | Pod auto-replaced in seconds |
+| **Networking** | Port mapping on one host | Built-in service discovery and load balancing |
+| **Use case** | Local development, CI builds | Production deployment at scale |
+
+In practice, most teams use both: Docker (or a compatible tool) to **build** the container image, and Kubernetes to **run** it in production. They're complementary, not competing.
+
+---
+
+## 7. Kubernetes vs. Managing Servers Manually
 
 | | **Kubernetes** | **Bare VMs / Manual** |
 |---|---|---|
@@ -275,7 +306,7 @@ The **developer visibility** row is the one that intrigues me. Low visibility in
 
 ---
 
-## 7. The Flip Side: When It Fails, It's Hard to See
+## 8. The Flip Side: When It Fails, It's Hard to See
 
 The same abstraction that protects me in normal operations obscures the root cause when something goes wrong.
 
@@ -291,10 +322,16 @@ The invisibility is a feature in normal operations. It becomes a liability when 
 
 ---
 
-## 8. The Takeaway
+## 9. The Takeaway
 
 Kubernetes is a bet on **declarative operations**. Instead of scripting every action — "start this, stop that, reroute this traffic" — I describe the world I want and let the system chase it.
 
 The stage crew never takes a bow. They work in the dark, keeping the performance going, replacing broken props before the audience notices. The apps just perform.
 
 The best infrastructure is the kind you forget exists. Kubernetes earns that invisibility — not by doing nothing, but by doing everything quietly.
+
+---
+
+## Edit Notes
+
++ **13 Mar 2026** — Added a "Kubernetes vs. Docker" section (Section 6) to clarify that Docker and Kubernetes operate at different layers — container engine vs. orchestrator — and are complementary, not competing. Also expanded the Core Concepts section with a dedicated "Cluster" subsection to formally define the term that appeared throughout the post without introduction.
