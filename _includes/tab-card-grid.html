@@ -1,0 +1,191 @@
+{% comment %}
+  Reusable card-grid component for tab pages (Journal, Studio, Tech).
+
+  Parameters:
+    include.category  — PascalCase category to filter by (e.g. "Journal")
+    include.icon      — Font Awesome class for the no-image placeholder (e.g. "fas fa-pen-fancy")
+    include.id        — Unique slug used for element IDs (e.g. "journal")
+{% endcomment %}
+
+<style>
+  .tab-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  @media (max-width: 576px) {
+    .tab-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .tab-card {
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--card-bg, #1e1e1e);
+    border: 1px solid var(--card-border-color, rgba(150, 150, 150, 0.2));
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .tab-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  }
+
+  .tab-card a {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border-bottom: none !important;
+  }
+
+  .tab-card-img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+  }
+
+  .tab-card-placeholder {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(135deg, #2d2d44 0%, #1b1b2f 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tab-card-placeholder i {
+    font-size: 2.5rem;
+    opacity: 0.25;
+    color: var(--heading-color, #c9d1d9);
+  }
+
+  .tab-card-body {
+    position: relative;
+    margin-top: -2.5rem;
+    padding: 0.75rem 0.9rem 0.85rem;
+    border-radius: 0 0 12px 12px;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  [data-mode="dark"] .tab-card-body {
+    background: rgba(30, 30, 40, 0.6);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .tab-card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: #1a1a1a;
+    margin: 0 0 0.35rem;
+  }
+
+  [data-mode="dark"] .tab-card-title {
+    color: #e8e8e8;
+  }
+
+  .tab-card-date {
+    font-size: 0.78rem;
+    color: rgba(0, 0, 0, 0.5);
+    margin-top: auto;
+  }
+
+  [data-mode="dark"] .tab-card-date {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  [data-mode="light"] .tab-card-placeholder {
+    background: linear-gradient(135deg, #e8e8f0 0%, #d5d5e0 100%);
+  }
+
+  .tab-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+  }
+
+  .tab-sort-btn {
+    background: none;
+    border: 1px solid var(--card-border-color, rgba(150, 150, 150, 0.2));
+    border-radius: 8px;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8rem;
+    color: var(--text-muted-color, #868e96);
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .tab-sort-btn:hover {
+    color: var(--heading-color, #c9d1d9);
+    border-color: var(--heading-color, #c9d1d9);
+  }
+
+  .tab-sort-btn i {
+    font-size: 0.7rem;
+    transition: transform 0.3s ease;
+  }
+
+  .tab-sort-btn.asc i {
+    transform: rotate(180deg);
+  }
+</style>
+
+<div class="tab-toolbar">
+  <button class="tab-sort-btn" id="{{ include.id }}-sort" title="Toggle sort order">
+    <span>Latest first</span>
+    <i class="fas fa-arrow-down"></i>
+  </button>
+</div>
+
+<div class="tab-grid" id="{{ include.id }}-grid">
+  {% assign cat = include.category %}
+  {% for post in site.categories[cat] %}
+    {% if post.categories[0] == cat %}
+    <div class="tab-card">
+      <a href="{{ post.url | relative_url }}">
+        {% assign img = post.image.path | default: post.image %}
+        {% if img %}
+        <img class="tab-card-img" src="{{ img | relative_url }}" alt="{{ post.title | xml_escape }}" loading="lazy">
+        {% else %}
+        <div class="tab-card-placeholder">
+          <i class="{{ include.icon }}"></i>
+        </div>
+        {% endif %}
+        <div class="tab-card-body">
+          <div class="tab-card-title">{{ post.title }}</div>
+          <span class="tab-card-date">{{ post.date | date: "%b %d, %Y" }}</span>
+        </div>
+      </a>
+    </div>
+    {% endif %}
+  {% endfor %}
+</div>
+
+<script>
+  document.getElementById('{{ include.id }}-sort').addEventListener('click', function () {
+    var grid = document.getElementById('{{ include.id }}-grid');
+    var cards = Array.from(grid.children);
+    cards.reverse();
+    cards.forEach(function (card) { grid.appendChild(card); });
+    var isAsc = this.classList.toggle('asc');
+    this.querySelector('span').textContent = isAsc ? 'Oldest first' : 'Latest first';
+  });
+</script>
