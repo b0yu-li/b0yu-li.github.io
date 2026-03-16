@@ -2,7 +2,7 @@
 layout: post
 title: "Language Is the World"
 author: boyu
-date: 2026-03-16 22:00:00 +0800
+date: 2026-03-16 20:15:00 +0800
 categories: [ Journal, Philosophy ]
 tags: [ language, thinking, clarity, philosophy, growth ]
 mermaid: true
