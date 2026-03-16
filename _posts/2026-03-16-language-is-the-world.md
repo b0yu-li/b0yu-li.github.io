@@ -20,13 +20,13 @@ I was wrong. Language is not the truck. **Language is the road.** And where the 
 
 Here is an experiment. Try to recall a moment when you felt something _deeply_, but you couldn't name it.
 
-Maybe it was standing in an airport terminal after saying goodbye to someone you love — not sadness exactly, not loneliness, but something heavier and more specific. You fumbled for words. You said "I feel weird." And the moment you said that, the feeling flattened. It became generic. The texture was lost.
+Maybe it was that creeping dread on a Sunday evening — not tiredness, not boredom, but something specific. A low hum of anxiety about Monday, mixed with guilt that you didn't do enough with your weekend. You couldn't name it. You just said "I feel off" and moved on.
 
-Now imagine someone hands you the Portuguese word **_saudade_** — a deep, bittersweet longing for something or someone you love, mixed with the quiet acceptance that it may never return. Suddenly, the feeling clicks. You didn't just _name_ it — you **understood** it. The word gave you permission to feel it fully, to hold it up and examine it, to recognize it the next time it shows up.
+Then one day you stumble on the phrase **"Sunday scaries."** And suddenly, the feeling _clicks_. You didn't just label it — you **recognized** it. Now you can spot it the moment it shows up. You can talk about it with friends and they instantly know what you mean. You can even push back against it, because a thing with a name is a thing you can confront.
 
 That is not a coincidence. **The word didn't describe the thought. The word _enabled_ the thought.**
 
-The Japanese have **_wabi-sabi_** — the beauty of imperfection and impermanence. The Germans have **_Schadenfreude_** — the guilty pleasure of watching someone else's misfortune. The Danes have **_hygge_** — a warm, cozy contentment shared with loved ones.
+The Japanese have **_wabi-sabi (侘び寂び)_** — the beauty of imperfection and impermanence. The Germans have **_Schadenfreude_** — the guilty pleasure of watching someone else's misfortune. The Danes have **_hygge_** — a warm, cozy contentment shared with loved ones.
 
 These aren't just "cool foreign words." They are **mental tools** that entire cultures use to perceive things the rest of us walk past without noticing. If you don't have the word, you don't have the lens.
 
@@ -34,7 +34,7 @@ These aren't just "cool foreign words." They are **mental tools** that entire cu
 
 Think about a five-year-old looking at a sunset. They see "orange." Maybe "pretty."
 
-Now think about a painter looking at the same sunset. They see _cadmium orange_ bleeding into _alizarin crimson_, with _cerulean blue_ creeping in at the edges and a thin vein of _raw sienna_ where the clouds catch the last light.
+Now think about a painter looking at the same sunset. They see a warm, burnt orange fading into deep red near the horizon, streaks of purple where the clouds thin out, and a pale gold glow right at the line where the sun disappears.
 
 Same sky. Radically different experience.
 
@@ -56,17 +56,7 @@ Mandarin is a beautiful language — poetic, compact, rich with layers of implic
 
 English is the opposite. It _forces_ you to be explicit. You must declare your subject. You must pick a tense — are you talking about the past, the present, or the future? You must choose between "a" and "the" — is this a general thing or a _specific_ thing? These aren't cosmetic differences. They are **structural constraints that force clarity**.
 
-When I write an argument in English, the language _refuses_ to let me be vague. It keeps asking: _Who_ did this? _When_? _Which one_? And because I have to answer those questions to form a grammatical sentence, I end up thinking more precisely than I would have in Chinese — where the same idea could float by, beautifully ambiguous, never pinned down.
-
----
-
-Lu Xun — widely regarded as the greatest Chinese writer of the twentieth century — saw this problem almost a hundred years ago. He looked at a nation struggling with mass literacy, with modernization, with clarity of public thought, and he pointed at the language itself. Shortly before his death, he made a declaration that shocked the literary world:
-
-> "If Chinese characters do not fade away, China will perish."
-
-It sounds extreme. But Lu Xun wasn't attacking Chinese _culture_ — he was attacking the **tool** that culture was forced to think with. He believed the complexity of the writing system locked knowledge behind a wall that only the elite could climb, and that the ambiguity baked into the language made it harder for a society to think clearly, argue rigorously, and hold power accountable with precise words.
-
-I don't go as far as Lu Xun. I love my mother tongue. But I understand what he felt. When I try to write a technical argument, a logical breakdown, or a precise critique in Chinese, I sometimes feel like I'm sculpting with wet sand — the shape is there for a moment, but the edges keep softening. In English, the material is firmer. The edges hold.
+When I write an argument in English, the language _refuses_ to let me be vague. It keeps asking: _Who_ did this? _When_? _Which one_? And because I have to answer those questions to form a grammatical sentence, I end up thinking more precisely than I would have in Mandarin — where the same idea could float by, beautifully ambiguous, never pinned down.
 
 **That is not a judgment of intelligence. It is a property of the tool.** A chef with a dull knife and a chef with a sharp knife can have the same skill — but one of them will produce cleaner cuts.
 
