@@ -1,0 +1,54 @@
+<style>
+  /* --- Homepage card glassmorphism --- */
+
+  #post-list .post-preview {
+    background: transparent !important;
+  }
+
+  #post-list .post-preview > .col-md-5 {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: none !important;
+    padding: 0 !important;
+    z-index: 0;
+  }
+
+  #post-list .post-preview .preview-img {
+    width: 100% !important;
+    height: 100% !important;
+    aspect-ratio: unset !important;
+    border-radius: 10px !important;
+  }
+
+  #post-list .post-preview .preview-img img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-radius: 10px !important;
+  }
+
+  #post-list .post-preview > .col-md-7 {
+    position: relative;
+    z-index: 1;
+  }
+
+  #post-list .card .card-body {
+    background: rgba(255, 255, 255, 0.6) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-radius: 10px !important;
+    margin: 0.6rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  }
+
+  [data-mode="dark"] #post-list .card .card-body {
+    background: rgba(30, 30, 40, 0.6) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+  }
+
+  #post-list .post-preview::before {
+    display: none !important;
+  }
+</style>
