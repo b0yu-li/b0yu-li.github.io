@@ -51,9 +51,11 @@ Then one day you stumble on the phrase **"Sunday scaries."** And suddenly, the f
 
 That is not a coincidence. **The word didn't describe the thought. The word _enabled_ the thought.**
 
-The Japanese have **_wabi-sabi (侘び寂び)_** — the beauty of imperfection and impermanence. The Germans have **_Schadenfreude_** — the guilty pleasure of watching someone else's misfortune. The Danes have **_hygge_** — a warm, cozy contentment shared with loved ones.
+Or think about the difference between "tired" and **"burnt out."** For months you might drag yourself through the day saying "I'm just tired." You sleep more, drink more coffee, and nothing changes — because _tired_ points you at the wrong fix. Then someone introduces the concept of **burnout** and you realize the problem was never about sleep. It was about meaning, about doing too much of a thing for too long. The new word didn't just relabel the feeling — it _redirected_ your response entirely.
 
-These aren't just "cool foreign words." They are **mental tools** that entire cultures use to perceive things the rest of us walk past without noticing. If you don't have the word, you don't have the lens.
+This happens across cultures, too. The Japanese have **_wabi-sabi (侘び寂び)_** — the beauty of imperfection and impermanence. The Germans have **_Schadenfreude_** — the guilty pleasure of watching someone else's misfortune. The Danes have **_hygge_** — a warm, cozy contentment shared with loved ones. These aren't just "cool foreign words." They are **mental tools** that entire cultures use to perceive things the rest of us walk past without noticing.
+
+If you don't have the word, you don't have the lens.
 
 ## A Child's Sky vs. A Painter's Sky
 
@@ -71,7 +73,7 @@ This is what Wittgenstein meant. Your language doesn't just describe your world 
 
 Here is something I didn't expect when I started speaking English daily: **I became a different person.**
 
-Not metaphorically. I mean my _personality shifts_. When I speak Mandarin — my native language — I am looser, more instinctive, more emotionally immediate. When I switch to English, something changes. My thoughts line up differently. I slow down. I build arguments step by step. I become more analytical, more precise.
+Not metaphorically. I mean my _personality shifts_. When I speak Mandarin — my native language — I am more instinctive, more emotionally immediate. When I switch to English, something changes. My thoughts line up differently. I slow down. I build arguments step by step. I become more analytical, more precise.
 
 It feels like switching operating systems on the same hardware. Same brain, different software, different output.
 
@@ -101,6 +103,8 @@ The first sentence sounds productive. It is not. It is a cloud shaped like progr
 The second sentence is a scalpel. It names the problem, quantifies the damage, identifies the cause, and proposes a fix — all in one breath. The team can act on it _immediately_.
 
 **The difference is not intelligence. It is language.** The person who said "improve the user experience" may have had the exact same insight in their head. But because they couldn't — or didn't — sharpen it into precise words, the thought stayed blurry. And blurry thoughts produce blurry outcomes.
+
+This isn't just a workplace thing. It happens in relationships too. Think about the difference between _"you never listen to me"_ and _"when I was telling you about my day at dinner, you were scrolling your phone, and it made me feel like what I said didn't matter."_ The first one starts a fight. The second one starts a conversation. Same frustration underneath — but the precise version names the moment, the action, and the impact. It gives the other person something they can actually respond to instead of just defending themselves.
 
 This is why writing is thinking. The act of putting words on paper is not _recording_ a thought you already had. It is the act of **having** the thought. You discover what you actually mean only when you force yourself to be precise.
 
