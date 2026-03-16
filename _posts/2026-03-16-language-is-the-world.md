@@ -42,6 +42,34 @@ The painter isn't making things up. Those colors were always there. But the chil
 
 This is what Wittgenstein meant. Your language doesn't just describe your world — it _draws the border_ of your world. Everything beyond that border is fog.
 
+## A Different Language, A Different Self
+
+Here is something I didn't expect when I started speaking English daily: **I became a different person.**
+
+Not metaphorically. I mean my _personality shifts_. When I speak Mandarin — my native language — I am looser, more instinctive, more emotionally immediate. When I switch to English, something changes. My thoughts line up differently. I slow down. I build arguments step by step. I become more analytical, more precise.
+
+It feels like switching operating systems on the same hardware. Same brain, different software, different output.
+
+I used to think this was just me. It isn't. Linguists have studied this for decades — bilingual people consistently report _feeling_ like a different person depending on which language they're using. And it makes perfect sense once you accept that language isn't just a delivery mechanism. **If language shapes thought, then a different language produces different thoughts.**
+
+Mandarin is a beautiful language — poetic, compact, rich with layers of implicit meaning. A four-character idiom (成语) can carry an entire story, a moral lesson, and an emotional punch in four syllables. But that very beauty comes with a cost. Chinese often communicates through _context_ and _shared assumption_. It trusts the listener to fill in the gaps. The grammar is loose. Tense is optional. The subject can vanish entirely.
+
+English is the opposite. It _forces_ you to be explicit. You must declare your subject. You must pick a tense — are you talking about the past, the present, or the future? You must choose between "a" and "the" — is this a general thing or a _specific_ thing? These aren't cosmetic differences. They are **structural constraints that force clarity**.
+
+When I write an argument in English, the language _refuses_ to let me be vague. It keeps asking: _Who_ did this? _When_? _Which one_? And because I have to answer those questions to form a grammatical sentence, I end up thinking more precisely than I would have in Chinese — where the same idea could float by, beautifully ambiguous, never pinned down.
+
+---
+
+Lu Xun — widely regarded as the greatest Chinese writer of the twentieth century — saw this problem almost a hundred years ago. He looked at a nation struggling with mass literacy, with modernization, with clarity of public thought, and he pointed at the language itself. Shortly before his death, he made a declaration that shocked the literary world:
+
+> "If Chinese characters do not fade away, China will perish."
+
+It sounds extreme. But Lu Xun wasn't attacking Chinese _culture_ — he was attacking the **tool** that culture was forced to think with. He believed the complexity of the writing system locked knowledge behind a wall that only the elite could climb, and that the ambiguity baked into the language made it harder for a society to think clearly, argue rigorously, and hold power accountable with precise words.
+
+I don't go as far as Lu Xun. I love my mother tongue. But I understand what he felt. When I try to write a technical argument, a logical breakdown, or a precise critique in Chinese, I sometimes feel like I'm sculpting with wet sand — the shape is there for a moment, but the edges keep softening. In English, the material is firmer. The edges hold.
+
+**That is not a judgment of intelligence. It is a property of the tool.** A chef with a dull knife and a chef with a sharp knife can have the same skill — but one of them will produce cleaner cuts.
+
 ## Precision Is Power
 
 If the _boundary_ of language limits what you can think, then the _precision_ of language determines how clearly you can think.
