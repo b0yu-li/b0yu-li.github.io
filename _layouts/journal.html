@@ -107,9 +107,50 @@ layout: page
   [data-mode="light"] .journal-card-placeholder {
     background: linear-gradient(135deg, #e8e8f0 0%, #d5d5e0 100%);
   }
+
+  .journal-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+  }
+
+  .journal-sort-btn {
+    background: none;
+    border: 1px solid var(--card-border-color, rgba(150, 150, 150, 0.2));
+    border-radius: 8px;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8rem;
+    color: var(--text-muted-color, #868e96);
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .journal-sort-btn:hover {
+    color: var(--heading-color, #c9d1d9);
+    border-color: var(--heading-color, #c9d1d9);
+  }
+
+  .journal-sort-btn i {
+    font-size: 0.7rem;
+    transition: transform 0.3s ease;
+  }
+
+  .journal-sort-btn.asc i {
+    transform: rotate(180deg);
+  }
 </style>
 
-<div class="journal-grid">
+<div class="journal-toolbar">
+  <button class="journal-sort-btn" id="journal-sort" title="Toggle sort order">
+    <span>Latest first</span>
+    <i class="fas fa-arrow-down"></i>
+  </button>
+</div>
+
+<div class="journal-grid" id="journal-grid">
   {% for post in site.categories.Journal %}
     {% if post.categories[0] == "Journal" %}
     <div class="journal-card">
@@ -131,3 +172,14 @@ layout: page
     {% endif %}
   {% endfor %}
 </div>
+
+<script>
+  document.getElementById('journal-sort').addEventListener('click', function () {
+    var grid = document.getElementById('journal-grid');
+    var cards = Array.from(grid.children);
+    cards.reverse();
+    cards.forEach(function (card) { grid.appendChild(card); });
+    var isAsc = this.classList.toggle('asc');
+    this.querySelector('span').textContent = isAsc ? 'Oldest first' : 'Latest first';
+  });
+</script>
