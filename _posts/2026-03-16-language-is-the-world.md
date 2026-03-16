@@ -51,11 +51,11 @@ Then one day you stumble on the phrase **"Sunday scaries."** And suddenly, the f
 
 That is not a coincidence. **The word didn't describe the thought. The word _enabled_ the thought.**
 
-Or think about the difference between "tired" and **"burnt out."** For months you might drag yourself through the day saying "I'm just tired." You sleep more, drink more coffee, and nothing changes — because _tired_ points you at the wrong fix. Then someone introduces the concept of **burnout** and you realize the problem was never about sleep. It was about meaning, about doing too much of a thing for too long. The new word didn't just relabel the feeling — it _redirected_ your response entirely.
+The same applies to how we diagnose our own exhaustion. Think about the difference between "tired" and **"burnt out."** For months you might drag yourself through the day saying "I'm just tired." You sleep more, drink more coffee, and nothing changes — because _tired_ points you at the wrong fix. Then someone introduces the concept of **burnout** and you realize the problem was never about sleep. It was about meaning, about doing too much of a thing for too long. The new word didn't just relabel the feeling — it _redirected_ your response entirely.
 
-This happens across cultures, too. The Japanese have **_wabi-sabi (侘び寂び)_** — the beauty of imperfection and impermanence. The Germans have **_Schadenfreude_** — the guilty pleasure of watching someone else's misfortune. The Danes have **_hygge_** — a warm, cozy contentment shared with loved ones. These aren't just "cool foreign words." They are **mental tools** that entire cultures use to perceive things the rest of us walk past without noticing.
+This happens across cultures, too. The Japanese have **_wabi-sabi (侘び寂び)_** — the beauty of imperfection and impermanence. The Germans have **_Schadenfreude_** — the guilty pleasure of watching someone else's misfortune. The Danes have **_hygge_** — a warm, cozy contentment shared with loved ones. These aren't just "cool foreign words." They are **mental tools** that entire cultures use to perceive things the rest of us walk past without noticing. Without the word, the phenomenon remains invisible.
 
-If you don't have the word, you don't have the lens.
+If I don't have the word, I don't have the lens.
 
 ## A Child's Sky vs. A Painter's Sky
 
