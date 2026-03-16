@@ -5,6 +5,7 @@ author: boyu
 date: 2026-03-16 10:30:00 +0800
 categories: [ Journal, Philosophy ]
 tags: [ language, thinking, clarity, philosophy, growth ]
+mermaid: true
 description: "The boundary of my language is the boundary of my mind. A reflection on how the words we have — and the precision with which we use them — shape the very limits of what we can think, feel, and become."
 image: /assets/images/headers/language-is-the-world.jpg
 ---
@@ -15,6 +16,30 @@ image: /assets/images/headers/language-is-the-world.jpg
 I used to think language was just a delivery truck — it picks up a thought from my brain, drives it across the air, and drops it off in yours. A neutral carrier. A pipe.
 
 I was wrong. Language is not the truck. **Language is the road.** And where the road ends, so does the journey.
+
+```mermaid
+graph TD
+    L[<b>Language</b><br/>The words you have · How you use them]
+
+    L --> B[<b>Boundary</b><br/><i>The words you know</i>]
+    L --> P[<b>Precision</b><br/><i>How sharply you use them</i>]
+
+    B --> B1[What You Can Perceive]
+    P --> P1[How Clearly You Can Think]
+
+    B1 --> Out[<b>The World You See</b>]
+    P1 --> Out
+
+    classDef root fill:#fff,stroke:#906,stroke-width:3px,color:#000;
+    classDef branch fill:#fff,stroke:#0277bd,stroke-width:2px,stroke-dasharray: 5 5,color:#000;
+    classDef leaf fill:#fff,stroke:#0277bd,stroke-width:2px,color:#000;
+    classDef outcome fill:#fff,stroke:#906,stroke-width:3px,color:#000;
+
+    class L root;
+    class B,P branch;
+    class B1,P1 leaf;
+    class Out outcome;
+```
 
 ## When Words Fail, Thoughts Blur
 
@@ -84,6 +109,34 @@ This is why writing is thinking. The act of putting words on paper is not _recor
 Here is the thing that makes this idea so powerful — and so dangerous.
 
 Language shapes thought, and thought shapes language. It is a loop.
+
+```mermaid
+graph TD
+    Choice[<b>The Choice</b><br/>How do you spend your time?]
+
+    Choice --> E[<b>Expand</b><br/><i>Read · Write · Learn</i>]
+    Choice --> S[<b>Stagnate</b><br/><i>Consume · Scroll · Skim</i>]
+
+    E --> E1[Richer Vocabulary]
+    E1 --> E2[Deeper Thinking]
+    E2 --> E3[Sharper Expression]
+    E3 -.->|virtuous cycle| E
+
+    S --> S1[Flatter Vocabulary]
+    S1 --> S2[Simpler Thinking]
+    S2 --> S3[Vaguer Expression]
+    S3 -.->|vicious cycle| S
+
+    classDef choice fill:#fff,stroke:#906,stroke-width:3px,color:#000;
+    classDef expand fill:#fff,stroke:#0277bd,stroke-width:2px,stroke-dasharray: 5 5,color:#000;
+    classDef shrink fill:#fff,stroke:#c62828,stroke-width:2px,stroke-dasharray: 5 5,color:#000;
+    classDef good fill:#fff,stroke:#0277bd,stroke-width:2px,color:#000;
+    classDef bad fill:#fff,stroke:#c62828,stroke-width:2px,color:#000;
+
+    class Choice choice;
+    class E,E1,E2,E3 expand;
+    class S,S1,S2,S3 shrink;
+```
 
 + If you read widely, you absorb new words, new frameworks, new ways of seeing. Your inner world expands. You start noticing subtleties in your emotions, your arguments, your relationships that you were blind to before.
 + If you don't, the loop shrinks. Your vocabulary flattens. "Good" and "bad" become your only tools. Complex situations get crammed into simple bins. Nuance dies.
