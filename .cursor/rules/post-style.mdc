@@ -21,6 +21,31 @@ alwaysApply: false
 - For journal/philosophy posts: use descriptive headings (`## The Analyst vs. The Builder`)
 - Separate major topic shifts with `---`; don't use it between every section
 
+## Visual-First Thinking
+
+**Before writing any post, ask: Can this concept be shown visually?**
+
+- Diagrams are not decoration — they are explanation
+- Every framework, process, loop, or comparison should trigger the question: "Can I show this?"
+- Place diagrams early (after the hook, before the deep-dive) so readers get the mental model upfront
+- Use Mermaid for flowcharts, sequences, comparisons, and decision trees
+- Add `mermaid: true` to front matter when a diagram is included
+
+### When to Use Diagrams
+
+- **Processes or workflows:** steps, loops, conditionals
+- **Contrasts or comparisons:** "X vs. Y", "before vs. after"
+- **Hierarchies or relationships:** parent-child, dependencies
+- **Mental models:** frameworks, systems, how things connect
+
+### Mermaid Syntax Essentials
+
+- Use `graph TD` for top-down flows; keep node count under ~10 for readability
+- Style for dark mode: white fills (`fill:#fff`), colored strokes to distinguish categories, `color:#000` for text
+- Use dashed strokes (`stroke-dasharray: 5 5`) for intermediate steps; solid strokes for endpoints
+- Use HTML in labels: `<b>` for headings, `<br/>` for line breaks, `<i>` for subtitles
+- Escape double quotes as `&quot;` inside node labels
+
 ## Lists
 
 - Use `+` for unordered bullet points — not `-` or `*`
@@ -51,17 +76,6 @@ alwaysApply: false
 - Use `>` blockquotes to bookend the post — one near the top for the thesis, one near the bottom for the takeaway
 - Candidate sentences for bold: definitions ("**Seniority is an exercise in translation**"), one-liners ("**Ambiguity kills motivation.**"), and quotable contrasts ("**Junior engineers answer questions. Senior engineers question the answers.**")
 - Don't over-bold — aim for one highlighted sentence per section, not every paragraph
-
-## Mermaid Diagrams
-
-- Add a Mermaid diagram when the post introduces a framework, contrast, or flow that benefits from a visual anchor
-- Place diagrams early (after the thesis, before the deep-dive) so readers get the mental model upfront
-- Use `graph TD` for top-down flows; keep node count under ~10 for readability
-- Style for dark mode: white fills (`fill:#fff`), colored strokes to distinguish categories, `color:#000` for text
-- Use dashed strokes (`stroke-dasharray: 5 5`) for intermediate steps; solid strokes for endpoints
-- Use HTML in labels: `<b>` for headings, `<br/>` for line breaks, `<i>` for subtitles
-- Escape double quotes as `&quot;` inside node labels
-- Add `mermaid: true` to front matter when a diagram is included
 
 ## Blockquotes & Callouts
 

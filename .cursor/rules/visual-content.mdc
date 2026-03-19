@@ -1,0 +1,227 @@
+---
+description: Visual-first content creation with Mermaid diagrams and templates
+globs: _posts/*.md
+alwaysApply: false
+---
+
+# Visual Content Guide
+
+## Philosophy
+
+**Diagrams are not decoration. They are explanation.**
+
+Before finalizing any post, ask yourself:
++ What concept would be clearer as a diagram?
++ Am I explaining a process, loop, comparison, or hierarchy?
++ Would a visual model help readers grasp this faster?
+
+If yes to any of these, create a diagram.
+
+---
+
+## When to Use Diagrams
+
+| Scenario | Diagram Type | Example Use Case |
+|----------|--------------|------------------|
+| **Process or workflow** | Flowchart (`graph TD`) | User authentication flow, build pipeline |
+| **Decision tree** | Flowchart with conditionals | Algorithm logic, conditional routing |
+| **Loop or cycle** | Graph with back-edges | Habit loops, feedback cycles, retry logic |
+| **Comparison** | Side-by-side nodes | REST vs GraphQL, junior vs senior mindset |
+| **Timeline or sequence** | Left-to-right flow (`graph LR`) | Project phases, evolution of a concept |
+| **Hierarchy** | Tree structure | Class inheritance, organizational structure |
+
+---
+
+## Diagram Templates
+
+### 1. Simple Process Flow
+
+```mermaid
+graph TD
+    Start["<b>Start Point</b><br/><i>Initial state</i>"]
+    Step1["<b>Action 1</b><br/><i>What happens</i>"]
+    Step2["<b>Action 2</b><br/><i>What happens next</i>"]
+    End["<b>End Result</b><br/><i>Final state</i>"]
+
+    Start --> Step1
+    Step1 --> Step2
+    Step2 --> End
+
+    classDef startEnd fill:#fff,stroke:#2e7d32,stroke-width:2px,color:#000;
+    classDef process fill:#fff,stroke:#0277bd,stroke-width:2px,color:#000;
+
+    class Start,End startEnd;
+    class Step1,Step2 process;
+```
+
+### 2. Loop or Cycle
+
+```mermaid
+graph TD
+    Trigger["<b>Trigger Event</b><br/><i>What starts it</i>"]
+    Action["<b>Action Taken</b><br/><i>The response</i>"]
+    Result["<b>Result</b><br/><i>What happens</i>"]
+    Loop["<b>Loop Back</b><br/><i>Reinforces the cycle</i>"]
+
+    Trigger --> Action
+    Action --> Result
+    Result --> Loop
+    Loop --> Action
+
+    classDef trigger fill:#fff,stroke:#906,stroke-width:3px,color:#000;
+    classDef loop fill:#fff,stroke:#0277bd,stroke-width:2px,stroke-dasharray: 5 5,color:#000;
+
+    class Trigger trigger;
+    class Action,Result,Loop loop;
+```
+
+### 3. Decision Tree
+
+```mermaid
+graph TD
+    Question{"<b>Is condition true?</b>"}
+    Yes["<b>Yes Path</b><br/><i>When true</i>"]
+    No["<b>No Path</b><br/><i>When false</i>"]
+    ResultYes["<b>Outcome A</b>"]
+    ResultNo["<b>Outcome B</b>"]
+
+    Question -->|Yes| Yes
+    Question -->|No| No
+    Yes --> ResultYes
+    No --> ResultNo
+
+    classDef decision fill:#fff,stroke:#f57c00,stroke-width:2px,color:#000;
+    classDef outcome fill:#fff,stroke:#2e7d32,stroke-width:2px,color:#000;
+
+    class Question decision;
+    class ResultYes,ResultNo outcome;
+```
+
+### 4. Comparison (Side-by-Side)
+
+```mermaid
+graph LR
+    subgraph approach_a [Approach A]
+        A1["<b>Step 1</b>"]
+        A2["<b>Step 2</b>"]
+        A3["<b>Result</b>"]
+        A1 --> A2 --> A3
+    end
+
+    subgraph approach_b [Approach B]
+        B1["<b>Step 1</b>"]
+        B2["<b>Step 2</b>"]
+        B3["<b>Result</b>"]
+        B1 --> B2 --> B3
+    end
+
+    classDef groupA fill:#fff,stroke:#0277bd,stroke-width:2px,color:#000;
+    classDef groupB fill:#fff,stroke:#906,stroke-width:2px,color:#000;
+
+    class A1,A2,A3 groupA;
+    class B1,B2,B3 groupB;
+```
+
+---
+
+## Mermaid Best Practices
+
+### Styling for Dark Mode
+
+Always use this pattern for visibility in both light and dark themes:
+
+```
+classDef className fill:#fff,stroke:#colorCode,stroke-width:2px,color:#000;
+```
+
++ **fill:#fff** — white background (works in both modes)
++ **stroke:#colorCode** — colored border to distinguish node types
++ **color:#000** — black text (legible on white fill)
+
+### Recommended Stroke Colors
+
+| Purpose | Color Code | Visual Effect |
+|---------|------------|---------------|
+| Start/End nodes | `#2e7d32` | Green — indicates entry/exit |
+| Process steps | `#0277bd` | Blue — neutral, main flow |
+| Trigger/Alert | `#906` | Purple — draws attention |
+| Decision points | `#f57c00` | Orange — indicates branching |
+| Loops (dashed) | `#0277bd` with `stroke-dasharray: 5 5` | Dashed blue — cyclical |
+
+### Node Labels
+
++ Use HTML for rich formatting: `<b>`, `<i>`, `<br/>`
++ Structure: `["<b>Main Label</b><br/><i>Supporting detail</i>"]`
++ Escape quotes inside labels: `&quot;`
++ Keep labels under 20 characters per line for readability
+
+### Graph Sizing
+
++ Keep node count under **~10 nodes** for clarity
++ If a diagram grows too large, split it into multiple diagrams
++ Use subgraphs to group related nodes visually
+
+---
+
+## Checklist Before Publishing
+
+- [ ] Does this post explain a process, loop, comparison, or hierarchy?
+- [ ] Is there a concept that would be clearer visually?
+- [ ] Did I add `mermaid: true` to the front matter?
+- [ ] Is the diagram placed early in the post (after the hook)?
+- [ ] Are node labels clear and concise (under 20 chars per line)?
+- [ ] Did I use dark-mode-safe styling (white fills, colored strokes)?
+- [ ] Is the node count under ~10 for readability?
+
+---
+
+## Good vs. Bad Diagram Choices
+
+### Good Use Cases
+
++ Explaining a habit loop (trigger → action → reward → loop back)
++ Comparing two approaches side-by-side (REST vs. GraphQL structure)
++ Showing a decision tree (if X, then Y; else Z)
++ Mapping a user authentication flow (login → validate → redirect)
+
+### Bad Use Cases
+
++ Simple linear lists that work better as bullet points
++ Concepts already explained clearly in one sentence
++ Over-engineering trivial processes (e.g., "Open file → Read → Close")
++ Diagrams that require more than 10 nodes (split into multiple instead)
+
+---
+
+## Example: The Switch Lite Loop
+
+Here's how the post-purchase rationalization loop was visualized:
+
+```mermaid
+graph TD
+    Buy["<b>Buy the Gadget</b><br/><i>Dopamine spike</i>"]
+    Fade["<b>Novelty Fades</b><br/><i>The &quot;new toy&quot; glow wears off</i>"]
+    Watch["<b>Watch Reviews</b><br/><i>Re-experience the purchase</i>"]
+    Algo["<b>Algorithm Learns</b><br/><i>Serves more of the same</i>"]
+    Skip["<b>Break the Loop</b><br/><i>Pick up the device instead</i>"]
+
+    Buy --> Fade
+    Fade --> Watch
+    Watch --> Algo
+    Algo --> Watch
+    Watch --> Skip
+
+    classDef trigger fill:#fff,stroke:#906,stroke-width:3px,color:#000;
+    classDef loop fill:#fff,stroke:#0277bd,stroke-width:2px,stroke-dasharray: 5 5,color:#000;
+    classDef exit fill:#fff,stroke:#2e7d32,stroke-width:2px,color:#000;
+
+    class Buy trigger;
+    class Fade,Watch,Algo loop;
+    class Skip exit;
+```
+
+**Why this works:**
++ Visualizes the cycle clearly (Watch → Algorithm → Watch)
++ Uses color to distinguish trigger (purple), loop (dashed blue), and exit (green)
++ Appears early in the post, giving readers a mental model before the deep-dive
++ Keeps node count manageable (5 nodes)
