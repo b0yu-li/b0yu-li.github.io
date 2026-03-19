@@ -17,6 +17,9 @@ I am Boyu, I like creating stuff (whether it be code or music thingy).
 
 ## Recent Updates
 
++ **Mar 17, 2026:** Tried AI-assisted development (Cursor + Claude) and shipped an MVP in an hour. Stack: Next.js 16 + React 19 frontend, NestJS 11 backend, Prisma + PostgreSQL. The productivity boost is unreal.
++ **Mar 16, 2026:** Renovated the STUDIO, TECH, and JOURNAL tabs UI.
++ **Mar 14, 2026:** Played tennis at the club—first time since college.
 + **Mar 4, 2026:** I beat _First Sinner_ in _Hollow Knight: Silksong_ on my 11th attempt.
 + **Feb 24, 2026:** The DS has arrived! So many happy hours on this console years ago. The DS system ages fantastically and I am absolutely loving it. I am also fascinated about the 640x480 photos it takes, it just has the retro-vibe and takes very little storage space, I feel absolutely no guilt taking a bunch of photos.
 + **Feb 21, 2026:** I ordered a pink Nintendo DSi with the battery replaced.
