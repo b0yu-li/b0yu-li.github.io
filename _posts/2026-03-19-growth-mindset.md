@@ -11,13 +11,15 @@ image: /assets/images/headers/growth-mindset.jpg
 published: false
 ---
 
-Last week, a close friend told me she wanted to learn piano. Then, in the same breath, she said: "But I'm not musical. I never have been."
+Picture this. Someone tells you they want to learn piano. Then, in the same breath: "But I'm not musical. I never have been."
 
-She wasn't asking for my opinion. She was announcing a verdict — one she'd carried for decades, handed down by some unnamed authority when she was young enough to believe it.
+They're not asking for your opinion. They're announcing a verdict — one they've carried for years, handed down by some unnamed authority when they were young enough to believe it.
 
-> **She didn't say "I haven't learned music yet." She said "I'm not musical." As if it were a blood type.**
+I've heard variations of this sentence more times than I can count — from friends, from colleagues, from myself. "I'm not a math person." "I'm not creative." "I'm just not wired that way." The words change, but the shape is always the same.
 
-That single sentence — six words — contains an entire philosophy about human potential. And it's one most of us carry without ever questioning it.
+> **They never say "I haven't learned this yet." They say "I'm not this." As if ability were a blood type.**
+
+That framing — six words — contains an entire philosophy about human potential. And it's one most of us carry without ever questioning it.
 
 ## What Growth Mindset Actually Is
 
