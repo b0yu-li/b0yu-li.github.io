@@ -2,13 +2,12 @@
 layout: post
 title: "Growth Mindset"
 author: boyu
-date: 2026-03-20 20:00:00 +0800
+date: 2026-03-20 22:00:00 +0800
 categories: [ Journal, Philosophy ]
 tags: [ mindset, growth, psychology, education, self-improvement ]
 description: "What growth mindset really means, why exam-oriented education makes it so hard to adopt, and how to start rewiring your default response to failure."
 mermaid: true
 image: /assets/images/headers/growth-mindset.jpg
-published: false # TODO: - Change this
 ---
 
 Picture this. Someone tells you they want to learn piano. Then, in the same breath: "But I'm not musical. I never have been."
@@ -32,7 +31,7 @@ That's the textbook version. Here's how I think about it:
 
 **A fixed mindset treats life like a courtroom.** You're always on trial, and every result is a verdict.
 
-A growth mindset treats life like a lab. Every result is data. Bad data doesn't mean you're a bad scientist — it means you need a better experiment.
+**A growth mindset treats life like a lab**. Every result is data. Bad data doesn't mean you're a bad scientist — it means you need a better experiment.
 
 ```mermaid
 graph TD
@@ -44,22 +43,25 @@ graph TD
     Fixed --> Avoid["<b>Avoid</b><br/><i>Retreat from difficulty</i>"]
     Growth --> Engage["<b>Engage</b><br/><i>Lean into the challenge</i>"]
 
-    Avoid --> Stagnate["<b>Stay the Same</b>"]
+    Avoid --> Stagnate["<b>Stay the Same</b><br/><i>(stuck)</i>"]
     Engage --> Improve["<b>Get Better</b>"]
 
-    Improve -.->|next challenge| Trigger
+    Improve -.->|repeated practice loops| Trigger
+    Improve -->|eventually, after the loop| Success["<b>ULTIMATE ACHIEVEMENT</b><br/><i>Goal realized!</i>"]
 
     classDef trigger fill:#fff,stroke:#906,stroke-width:3px,color:#000;
     classDef fixed fill:#fff,stroke:#c62828,stroke-width:2px,color:#000;
     classDef growth fill:#fff,stroke:#0277bd,stroke-width:2px,color:#000;
     classDef stagnate fill:#fff,stroke:#c62828,stroke-width:2px,stroke-dasharray: 5 5,color:#000;
     classDef improve fill:#fff,stroke:#2e7d32,stroke-width:2px,color:#000;
+    classDef success fill:#FFD700,stroke:#006400,stroke-width:5px,color:#000,rx:30,ry:30;
 
     class Trigger trigger;
     class Fixed,Avoid fixed;
     class Growth,Engage growth;
     class Stagnate stagnate;
     class Improve improve;
+    class Success success;
 ```
 
 The growth path loops back. The fixed path dead-ends. Over time, this asymmetry explains almost everything.
@@ -72,19 +74,19 @@ Here's how the difference plays out in practice.
 
 **Example 1: The failed presentation.**
 
-Bob gives a presentation at work. It goes badly — the room is quiet, his manager gives polite but lukewarm feedback.
+Alice gives a presentation at work. It goes badly — the room is quiet, her manager gives polite but lukewarm feedback.
 
-+ Fixed mindset Bob: "I'm terrible at public speaking. I should never have volunteered. I'm not the kind of person who's good at this." He avoids presenting for the rest of the year.
-+ Growth mindset Bob: "That didn't land. What specifically went wrong — was it the structure? The pacing? Did I practice enough?" He asks a colleague for honest feedback and signs up for the next one.
++ Fixed mindset Alice: "I'm terrible at public speaking. I should never have volunteered. I'm not the kind of person who's good at this." She avoids presenting for the rest of the year.
++ Growth mindset Alice: "That didn't land. What specifically went wrong — was it the structure? The pacing? Did I practice enough?" She asks a colleague for honest feedback and signs up for the next one.
 
 Same event. Same person. Wildly different trajectories.
 
 **Example 2: The math grade.**
 
-A student gets 60% on a math test.
+Bob gets 60% on a math test.
 
-+ Fixed mindset: "I'm just not a math person." Identity claim. Case closed. The student drifts further behind because they've decided the ceiling is real.
-+ Growth mindset: "I didn't understand chapter 4. I need to try different practice problems and maybe ask for help." Process claim. The score becomes a starting point, not a sentence.
++ Fixed mindset Bob: "I'm just not a math person." Identity claim. Case closed. Bob drifts further behind because he has decided the ceiling is real.
++ Growth mindset Bob: "I didn't understand chapter 4. I need to try different practice problems and maybe ask for help." Process claim. The score becomes a starting point, not a sentence.
 
 **The fixed mindset asks: "Am I good enough?" The growth mindset asks: "How do I get better?"**
 
