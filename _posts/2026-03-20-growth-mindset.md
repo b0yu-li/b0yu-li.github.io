@@ -2,13 +2,13 @@
 layout: post
 title: "Growth Mindset"
 author: boyu
-date: 2026-03-19 11:00:00 +0800 # TODO: - Change this
+date: 2026-03-20 20:00:00 +0800
 categories: [ Journal, Philosophy ]
 tags: [ mindset, growth, psychology, education, self-improvement ]
 description: "What growth mindset really means, why exam-oriented education makes it so hard to adopt, and how to start rewiring your default response to failure."
 mermaid: true
 image: /assets/images/headers/growth-mindset.jpg
-published: false
+published: false # TODO: - Change this
 ---
 
 Picture this. Someone tells you they want to learn piano. Then, in the same breath: "But I'm not musical. I never have been."
