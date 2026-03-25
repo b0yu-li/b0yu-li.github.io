@@ -13,9 +13,9 @@ published: false # TODO: - Refine the post and change date
 
 > JavaScript used to be the candle in the browser window. Node.js turned it into the power grid.
 
-I've lost count of the number of times someone has asked me: _"Wait, why do I need to install Node.js to build a React app? Isn't React a frontend thing?"_
+I've wondered since long ago: _"Wait, why do I need to install Node.js to build a React app? Isn't React a frontend thing?"_
 
-It's a fair question. And the answer reveals something fundamental about how modern web development actually works. Node.js isn't just "JavaScript on the server." It's the invisible infrastructure that powers almost everything in today's JavaScript ecosystem — frontend _and_ backend.
+It's a fair question. And the answer reveals something fundamental about how modern web development actually works. **Node.js** isn't just "JavaScript on the server." It's the **invisible infrastructure** that powers almost everything in today's JavaScript ecosystem — **frontend _and_ backend**.
 
 ---
 
@@ -34,7 +34,7 @@ Under the hood, Node.js is built on two things:
 + **V8** — Google's open-source JavaScript engine, the same one inside Chrome. V8 compiles JavaScript directly to machine code, which is what makes it fast.
 + **libuv** — a C library that gives Node.js access to the operating system: file I/O, networking, timers, child processes. This is the part the browser doesn't have.
 
-Ryan Dahl created Node.js in 2009. The key insight was deceptively simple: take V8 out of Chrome, bolt on system-level I/O capabilities, and suddenly JavaScript — a language 300 million developers already know — can do everything Python or Java can do.
+Ryan Dahl created Node.js in 2009. The key insight was deceptively simple: take V8 out of Chrome, bolt on system-level I/O capabilities, and suddenly JavaScript can do everything Python or Java can do.
 
 **Node.js didn't change JavaScript. It changed where JavaScript could run.**
 
@@ -75,11 +75,45 @@ graph TD
 
 Once electricity exists, an ecosystem of appliances follows. For Node.js, that ecosystem is **npm** — the largest software registry in the world, with over 2 million packages. Need a web framework? `npm install express`. Need a date library? `npm install dayjs`. Need to parse CSV files? There's a package for that. The "power grid" made the "appliance store" inevitable.
 
+<!-- TODO: - Refactor -->
+```plaintext
+Why Node.js is like Electricity
+1. It is the "Invisible Utility"
+
+Just as you don't think about the power grid until the lights go out, much of the modern web relies on Node.js as its underlying infrastructure. Whether it’s build tools (Vite, Webpack), CLI utilities, or massive backend microservices, Node.js has become the "utility" that powers the development lifecycle.
+2. The "Grid" (npm)
+
+If Node.js is the current, then npm is the power grid. It is a massive, interconnected network that allows developers to "plug in" a dependency and immediately get power (functionality) without having to generate it themselves.
+3. The Event-Driven Flow
+
+There is a mechanical similarity. Electricity is a flow of electrons; Node.js is a flow of events. The Event Loop manages a constant stream of I/O tasks, ensuring that the "current" never stops moving, even when one specific part of the system is waiting for data.
+
+Why Node.js is NOT like Electricity
+1. Fragility and "Weight"
+
+Electricity is remarkably stable; the physics of a copper wire haven't changed in a century. Node.js, however, is famous for its "heavy" infrastructure. The node_modules folder is often joked about as the heaviest object in the universe. Unlike electricity, which is lean and efficient, Node.js environments can become bloated and fragile due to dependency hell.
+2. Lack of True Parallelism (by default)
+
+Electricity can power a thousand different devices in a house simultaneously in parallel. Standard Node.js is single-threaded. While it is excellent at concurrency (handling many things at once by switching between them), it isn't "parallel" in the same way that a multi-threaded language or a literal electrical circuit is.
+3. Transience vs. Permanence
+
+Electricity is a physical constant. Node.js is a software choice. In the tech world, "utilities" can be replaced. We are already seeing the rise of Deno and Bun, which aim to solve the security and speed bottlenecks of Node. If a better "source of power" comes along that is faster and more secure, the industry could migrate away from Node.js—something you can't do with electricity.
+The Verdict
+
+Node.js is less like "electricity" and more like the standardized electrical socket. It’s the common interface that almost every modern web project uses to get things done. It might not be the most efficient "fuel," but because everyone has agreed on the plug shape, it’s currently impossible to ignore.
+```
+
 ---
 
 ## 3. Why Node.js Appears in Frontend AND Backend
 
+<!-- TODO: - Rephrase the question so the readers would think: React is the FE thing, and Node.js seems like a BE thing, why does my React project need Node.js -->
 This is the question that trips people up. If React runs in the browser, why does my React project need Node.js?
+
+<!-- TODO: - Put this opinion somewhere -->
+```
+Node.js isn't your project's destination; it's the factory that builds the car before it hits the road."
+```
 
 ### The Backend — The Obvious Part
 
