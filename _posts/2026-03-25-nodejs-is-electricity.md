@@ -2,7 +2,7 @@
 layout: post
 title: "Node.js: The Electricity Behind Modern JavaScript"
 author: boyu
-date: 2026-03-21 15:30:00 +0800
+date: 2026-03-25 12:50:00 +0800
 mermaid: true
 categories: [ Tech, Backend ]
 tags: [ tech, node, javascript, backend, event-loop, interview ]
