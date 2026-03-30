@@ -2,7 +2,7 @@
 layout: post
 title: "Next.js: Why React Now Runs on the Server"
 author: boyu
-date: 2026-03-27 18:00:00 +0800
+date: 2026-04-02 18:30:00 +0800
 categories: [ Tech, Frontend ]
 tags: [ tech, nextjs, react, server-components, javascript, frontend ]
 description: "React used to be a browser-only library. Next.js changed that with React Server Components. Here's why components now run on the server, what that means for performance and security, and how to combine server and client code."
