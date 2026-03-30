@@ -7,6 +7,7 @@ categories: [ Tech, Utility ]
 tags: [ tech, cheatsheet, git ]
 description: "A hand-picked collection of essential Git CLI commands for daily workflow"
 image: /assets/images/headers/git-commands.jpg
+mermaid: true
 ---
 
 I recently switched IDEs and decided to rely more on the terminal. Here is a documentation of my most frequently used `git` commands.
@@ -140,7 +141,7 @@ git format-patch abc1234..HEAD
 + **Apply Patch**
 
 ```shell
-git apply git apply /path/to/file.patch
+git apply /path/to/file.patch
 ```
 
 ## 6. Branching
@@ -152,3 +153,104 @@ git checkout -b <new_branch_name> <base_branch_name>
 # Example: Create 'feature-login' starting from 'main'
 git checkout -b feature-login main
 ```
+
+## 7. Feature branch development flow (vs trunk-based)
+
+In a **trunk-based** setup, I usually commit and push small changes to `main` quickly (sometimes directly, sometimes through very short-lived PRs). In a **feature branch** setup, I keep work isolated on a branch, then merge through a PR after review.
+
+**Feature branches trade faster direct integration for clearer review boundaries and safer isolation.**
+
+| **Dimension** | **Trunk-based** | **Feature branch** |
+|---|---|---|
+| **Where commits go first** | `main` | `feature/*` or `fix/*` |
+| **When `main` changes** | Continuously during development | When PR is approved and merged |
+| **Review gate** | Usually lightweight or after merge | Usually before merge via PR |
+| **Branch lifetime** | Very short or no branch | Short-lived task branch |
+
+```mermaid
+flowchart LR
+    subgraph trunkFlow [Trunk-based loop]
+        direction LR
+        trunkPull[Pull main]
+        trunkCommit[Commit small change]
+        trunkPush[Push to main]
+        trunkRepeat[Repeat quickly]
+        trunkPull --> trunkCommit --> trunkPush --> trunkRepeat --> trunkPull
+    end
+
+    subgraph featureFlow [Feature branch loop]
+        direction LR
+        featureSync[Sync main]
+        featureBranch[Create feature branch]
+        featureWork[Commit on branch]
+        featurePr[Open or update PR]
+        featureMerge[Merge to main]
+        featureCleanup[Delete branch]
+        featureSync --> featureBranch --> featureWork --> featurePr --> featureMerge --> featureCleanup
+    end
+```
+
++ **Sync `main` before I start**
+```shell
+git fetch origin
+git checkout main
+git pull origin main --rebase
+```
+
++ **Create and publish the feature branch**
+```shell
+git checkout -b feature/my-change main
+git push -u origin feature/my-change
+```
+
++ **Work in the branch with the same local loop**
+```shell
+git add .
+git commit -m "feat: implement my change"
+git push
+```
+
++ **After I open the PR — same branch, more pushes** _The PR/MR tracks the **remote** feature branch, so I keep working locally on that branch and push as usual. New commits show up on the same review automatically._
+
+```shell
+git add .
+git commit -m "fix: address review feedback"
+git push
+```
+
++ **Rebase onto `main` when I need a fresh base** _I prefer **`git rebase`** over merge so the branch stays linear. I do this **before** I open the PR, **while** it is open (e.g. after `main` moved), or when I need to re-run CI on a current base — same commands._
+
+```shell
+git fetch origin
+git checkout feature/my-change
+git rebase origin/main
+```
+
+If that rebase rewrote commits I had **already pushed**, my local history and the remote branch no longer line up, so a normal `git push` is rejected.
+
++ **`git push --force-with-lease`** _After a rebase or `amend` on published commits, I have to replace the remote branch tip to match my new history. **`--force-with-lease` is a guarded force push:** Git checks that the remote branch is still where I last thought it was (from my recent `fetch`). If someone else pushed first, the push aborts instead of overwriting their commits. A plain `git push --force` skips that check._
+
+_I refresh `git fetch origin` before rebasing and before the force push so the “lease” compares against an up-to-date picture of the remote._
+
+```shell
+git push --force-with-lease
+```
+
++ **Cleanup after merge**
+```shell
+git checkout main
+git pull origin main --rebase
+git branch -d feature/my-change
+git push origin --delete feature/my-change
+```
+
+_If my repo uses squash/rebase merge and `git branch -d` says “not fully merged,” I verify the branch is already in `main`, then delete it with `git branch -D feature/my-change`._
+
+> If my feature branch is **shared** — someone else pushes to it, or bases their work on it — I treat **`git rebase` + `git push --force-with-lease` as a team decision**, not a solo convenience trick.
+>
+> **Why:** Rebase and amend **replace commits** with new hashes. My collaborators may still have the old chain locally or in their PRs. After I force-push, their history and mine diverge in ways that are tedious to untangle (duplicate changes, confusing merges, “where did this commit go?”).
+>
+> **`--force-with-lease` helps, but it is not a green light for shared branches.** It only refuses to clobber the remote if the tip moved since my last `fetch`. It does **not** fix the fact that others already built on the commits I threw away.
+>
+> **What I usually do instead:** pull `main` into my branch with **`git merge origin/main`** (no force push), or agree upfront that this branch is **mine only** until the PR lands — then rebase is fine.
+{: .prompt-warning }
