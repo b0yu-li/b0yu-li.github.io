@@ -1,0 +1,29 @@
+---
+description: Lightweight technical and editorial review gate before finalizing post edits
+alwaysApply: true
+---
+
+# Review Gate
+
+Before finalizing any change to blog content, run a short review pass and report high-signal findings first.
+
+## Review Priorities
+
++ **Correctness first:** flag inaccurate commands, unsafe defaults, broken flows, or advice that can mislead readers.
++ **Risk language:** for risky Git operations (`rebase`, `amend`, force push, branch deletion), ensure guardrails and caveats are explicit.
++ **Context realism:** avoid absolute wording when team workflows differ; prefer scoped phrasing ("usually", "in my workflow", "often").
++ **Actionability:** every finding includes a concrete wording change or command-level fix.
++ **Style alignment:** keep first-person voice, concise explanations, and `+` bullet style used in this repo.
+
+## Minimum Checkpoints
+
++ Confirm command snippets are safe to run as written.
++ Confirm branch-sensitive commands include the intended branch context when relevant.
++ Confirm cleanup commands mention squash/rebase edge cases when needed.
++ Confirm final feedback is ordered by severity, then optional polish notes.
+
+## Review Output Shape
+
++ Start with findings (highest severity first).
++ Include file path references for each finding.
++ If no issues are found, state that explicitly and note any residual testing or workflow assumptions.
