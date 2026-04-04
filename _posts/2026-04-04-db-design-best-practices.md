@@ -3,10 +3,9 @@ layout: post
 title: "Database Design Best Practices Every Backend Dev Should Know"
 author: boyu
 date: 2026-04-04 16:05:00 +0800
-mermaid: true
 categories: [ Tech, Design ]
-tags: [ tech, database, design, normalization, sql, backend ]
-description: "From the three normal forms to logical foreign keys and the N+1 trap — the database design principles that separate clean schemas from production nightmares."
+tags: [ tech, database, sql, backend, orm, concurrency ]
+description: "Logical vs physical foreign keys, N+1 in the ORM layer, optimistic vs pessimistic locking for concurrent updates, and operational habits — indexes, soft deletes, audits, naming — that keep a schema maintainable."
 image: /assets/images/headers/db-design-best-practices.jpg
 ---
 
@@ -16,233 +15,11 @@ I've learned this the hard way: the database is the foundation of everything. I 
 
 These are the principles and practices I keep coming back to.
 
----
+## 1. Start With Normalization
 
-## 1. The Three Normal Forms — Your Database's Backbone
+**Normalization** — getting to a sane shape before I tune anything else — lives in a separate post: **[DB Design: The Three Normal Forms](/posts/three-normal-forms-explained/)**. That walkthrough covers 1NF through 3NF, partial vs transitive dependencies, a four-step **decomposition framework** for messy tables, and when I deliberately denormalize. I read the two posts as a pair: shape the data first, then apply what follows.
 
-**Normalization** is the process of structuring tables so that data is stored cleanly, without duplication or hidden dependencies. There are more than three normal forms, but in practice, **the first three are the ones that matter**. If my schema satisfies 3NF, I'm ahead of most production databases I've seen.
-
-The way I think about it: imagine organizing a **filing cabinet** for a company. Every piece of information should live in exactly one folder, and every folder should be about exactly one thing. If I dump everything into one giant folder, I'll find the same customer's address scribbled on fifty invoices — and when they move, I'll have to find and fix all fifty.
-
-```mermaid
-graph LR
-    U[<b>Unnormalized</b><br/>Everything in one table<br/>Duplicated data everywhere]
-    --> A[<b>1NF</b><br/>Atomic values<br/>No repeating groups]
-    --> B[<b>2NF</b><br/>No partial dependencies<br/>Every column depends on the full key]
-    --> C[<b>3NF</b><br/>No transitive dependencies<br/>Columns depend only on the key]
-
-    classDef bad fill:#fff,stroke:#c62828,stroke-width:2px,color:#000;
-    classDef step fill:#fff,stroke:#0277bd,stroke-width:2px,color:#000;
-    classDef good fill:#fff,stroke:#2e7d32,stroke-width:3px,color:#000;
-
-    class U bad;
-    class A,B step;
-    class C good;
-```
-
-### 1NF: One Value, One Cell
-
-**First Normal Form** says: every column holds a single, atomic value. No comma-separated lists. No arrays crammed into a text field.
-
-I've seen this pattern more times than I'd like to admit:
-
-| order_id | customer | products |
-|---|---|---|
-| 1 | Alice | Widget, Gadget, Gizmo |
-| 2 | Bob | Widget |
-
-Seems compact and convenient. Now try to answer this: **how would you write a query to find all orders that contain "Gadget"?** I'd have to parse a comma-separated string — `LIKE '%Gadget%'` — which is fragile, can't use an index, and would also match a product called "SuperGadget". What about counting how many products each order has? More string splitting. The moment I need to _query_ the data inside that column, the design falls apart.
-
-**Challenge:** before reading on, how would you redesign this table so that querying for a single product is straightforward?
-
-The fix — give each product its own row, or (better) extract products into a separate table:
-
-| order_id | product |
-|---|---|
-| 1 | Widget |
-| 1 | Gadget |
-| 1 | Gizmo |
-| 2 | Widget |
-
-**The rule I follow:** if I'm tempted to store a comma-separated list in a column, I'm violating 1NF. Stop and create a related table instead.
-
-### 2NF: Every Column Depends on the Full Key
-
-**Second Normal Form** builds on 1NF and says: every non-key column must depend on _the entire_ primary key, not just part of it. This only matters when I have a **composite key** (a primary key made of two or more columns).
-
-Let me walk through an example. Say I have an `order_items` table. A single order can contain multiple products, and the same product can appear in multiple orders. Neither `order_id` nor `product_id` alone can uniquely identify a row — but _together_ they can. That combination is called a **composite key**: a primary key made of two or more columns. Here, the composite key is `(order_id, product_id)`:
-
-| order_id | product_id | quantity | product_name | product_price |
-|---|---|---|---|---|
-| 1 | 101 | 2 | Widget | 9.99 |
-| 1 | 102 | 1 | Gadget | 19.99 |
-| 2 | 101 | 5 | Widget | 9.99 |
-
-Looks reasonable at first glance. Now ask yourself: **what happens when the Widget's price changes to 12.99?** I'd have to find and update _every row_ where `product_id = 101` appears. Miss one, and my data contradicts itself — the same product with two different prices.
-
-The root cause: `product_name` and `product_price` depend only on `product_id` — they have nothing to do with `order_id`. That's a **partial dependency**. These columns don't need the full composite key to be determined; they only need half of it.
-
-**Challenge:** how would you restructure this table so that a price change only requires updating a single row?
-
-The fix — extract product info into its own table:
-
-**`order_items`**
-
-| order_id | product_id | quantity |
-|---|---|---|
-| 1 | 101 | 2 |
-| 1 | 102 | 1 |
-| 2 | 101 | 5 |
-
-**`products`**
-
-| product_id | product_name | product_price |
-|---|---|---|
-| 101 | Widget | 9.99 |
-| 102 | Gadget | 19.99 |
-
-Now each fact lives in exactly one place. Price changes happen in one row.
-
-### 3NF: No Middle-Men
-
-**Third Normal Form** says: no **transitive dependencies**. A non-key column should depend on the primary key directly — not through another non-key column.
-
-Here's an `employees` table I once inherited:
-
-| employee_id | employee_name | department_id | department_name | department_head |
-|---|---|---|---|---|
-| 1 | Alice | D10 | Engineering | Charlie |
-| 2 | Bob | D10 | Engineering | Charlie |
-| 3 | Carol | D20 | Marketing | Diana |
-
-Everything looks correct. But now: **what happens when the Engineering department gets a new head?** I'd need to update every row where `department_id = D10`. And if Alice's row says the head is "Charlie" while Bob's row already says "Eve," which one is right? The same fact — who leads Engineering — is duplicated across rows, and duplicated facts eventually contradict each other.
-
-The root cause: `department_name` and `department_head` don't really depend on `employee_id`. They depend on `department_id`, which _itself_ depends on `employee_id`. The dependency chain is: `employee_id → department_id → department_name`. That's a **transitive dependency** — a column reaching the key only through a middle-man.
-
-**Challenge:** how would you split this table so that department info lives in exactly one place, no matter how many employees belong to it?
-
-The fix is the same pattern — extract the transitive dependency into its own table:
-
-**`employees`**
-
-| employee_id | employee_name | department_id |
-|---|---|---|
-| 1 | Alice | D10 |
-| 2 | Bob | D10 |
-| 3 | Carol | D20 |
-
-**`departments`**
-
-| department_id | department_name | department_head |
-|---|---|---|
-| D10 | Engineering | Charlie |
-| D20 | Marketing | Diana |
-
-**The classic summary:** a column in 3NF depends on _the key, the whole key, and nothing but the key_ — so help me Codd.
-
-### Wait — How Is 3NF Different from 2NF?
-
-Both end with the same fix — extract columns into a new table. So what's actually different? Let's go back to the two examples.
-
-**The 2NF problem — "I only need _part_ of your key."**
-
-The `order_items` table had a two-part key: `(order_id, product_id)`. But `product_name` didn't care about `order_id` at all. If I told it only the `product_id`, it could already give me the answer. It was sitting in a table whose key was _too big_ for it — it only needed half.
-
-> `product_name`: "You keep telling me the `order_id`, but I don't need it. Just give me the `product_id` and I'll tell you the name."
-
-**The 3NF problem — "I don't belong to _you_. I belong to that other column."**
-
-The `employees` table had a single key: `employee_id`. If I ask "what's the department name for employee 1?", I _can_ answer — look up Alice, see she's in D10, then recall that D10 is Engineering. But notice the two hops: I went from `employee_id` to `department_id`, and _then_ from `department_id` to `department_name`. I needed a middle-man.
-
-Here's my litmus test: if I change Alice's department from D10 to D20, does "Engineering" still make sense in her row? No — because `department_name` was never really about Alice. It was about whatever `department_id` happened to be sitting next to it.
-
-> `department_name`: "You're asking me about employee 1, but I don't actually know anything about employees. Give me a `department_id` — _that's_ the question I answer."
-
-**The one-line distinction:** 2NF says _"don't store me with a key that's bigger than I need."_ 3NF says _"don't store me with a key that isn't my real owner."_
-
-| | **2NF** | **3NF** |
-|---|---|---|
-| **The column says** | "I only need _part_ of your key" | "I belong to a _different_ column, not your key" |
-| **Can only happen with** | Composite keys (2+ columns) | Any key — single or composite |
-| **How to spot it** | A column ignores one part of the composite key | A column describes another non-key column, not the row itself |
-
-### The Decomposition Framework
-
-The three normal forms give me the _why_. Here's the _how_ — a systematic method I apply to any table, without relying on intuition.
-
-**Step 1: List every column and identify the primary key.**
-
-I write out all the columns and determine what uniquely identifies a row — a single column or a composite key.
-
-**Step 2: For each non-key column, ask: "What is the _minimal_ set of columns that determines this value?"**
-
-This is the key question. I don't ask "is this column related to the table?" — I ask "what do I need to _know_ to look up this column's value?" That minimal set is called the column's **determinant**.
-
-**Step 3: Group columns by their determinant.**
-
-Columns that share the same determinant belong together. Each distinct determinant group becomes its own table, with the determinant as its primary key.
-
-**Step 4: Link the tables.**
-
-The original table keeps only the columns whose determinant is its own primary key, plus foreign key references to the new tables.
-
-Let me walk through a messy table to show this in action. Imagine a `project_assignments` table:
-
-| employee_id | employee_name | project_id | project_name | project_budget | role | department_name |
-|---|---|---|---|---|---|---|
-| 1 | Alice | P10 | Atlas | 500k | Lead | Engineering |
-| 2 | Bob | P10 | Atlas | 500k | Dev | Engineering |
-| 1 | Alice | P20 | Beacon | 200k | Dev | Engineering |
-| 3 | Carol | P20 | Beacon | 200k | Lead | Marketing |
-
-The composite key is `(employee_id, project_id)`. Now I apply step 2 — what determines each column?
-
-| Column | Determined by | Full key needed? |
-|---|---|---|
-| `role` | `(employee_id, project_id)` | Yes — the full key |
-| `employee_name` | `employee_id` alone | No — partial |
-| `department_name` | `employee_id` alone | No — partial |
-| `project_name` | `project_id` alone | No — partial |
-| `project_budget` | `project_id` alone | No — partial |
-
-Step 3 — group by determinant:
-
-+ **Group A** — determinant `(employee_id, project_id)`: `role`
-+ **Group B** — determinant `employee_id`: `employee_name`, `department_name`
-+ **Group C** — determinant `project_id`: `project_name`, `project_budget`
-
-Step 4 — each group becomes a table:
-
-**`project_assignments`** — key: `(employee_id, project_id)`
-
-| employee_id | project_id | role |
-|---|---|---|
-| 1 | P10 | Lead |
-| 2 | P10 | Dev |
-| 1 | P20 | Dev |
-| 3 | P20 | Lead |
-
-**`employees`** — key: `employee_id`
-
-| employee_id | employee_name | department_name |
-|---|---|---|
-| 1 | Alice | Engineering |
-| 2 | Bob | Engineering |
-| 3 | Carol | Marketing |
-
-**`projects`** — key: `project_id`
-
-| project_id | project_name | project_budget |
-|---|---|---|
-| P10 | Atlas | 500k |
-| P20 | Beacon | 200k |
-
-One bloated table became three focused, perpendicular tables — each one responsible for exactly one concept. No duplicated facts, no update anomalies.
-
-> Notice that `department_name` in the `employees` table still has a transitive dependency (it depends on a department, not on the employee directly). I could apply the framework one more level and extract a `departments` table. The method is recursive — I keep going until every column depends on nothing but its table's key.
-{: .prompt-info }
-
-> **Normalize until it hurts, denormalize until it works.** The normal forms are my starting point. In practice, I may intentionally denormalize for read performance (caching a `total_amount` on an order, for instance). That's fine — as long as it's a conscious decision, not an accident.
+> **Normalize until it hurts, denormalize until it works.** I start from a clean normalized baseline and only denormalize when reads or reporting need it — never by accident.
 {: .prompt-tip }
 
 ---
@@ -432,10 +209,62 @@ The specific convention matters less than consistency. When every table follows 
 
 ---
 
+## 5. Optimistic vs Pessimistic Locking
+
+Once more than one request can touch the same row, **schema shape isn't enough** — I need a strategy for **concurrent updates**. Two people read a balance, both add money, both write: without care, one update can silently disappear (**lost update**). The usual answers are **optimistic** and **pessimistic** locking.
+
+### Pessimistic locking — "lock first, then change"
+
+I **take a lock on the row before I read the data I intend to write**, and hold it until my transaction ends. In SQL, that's often `SELECT … FOR UPDATE` (or the ORM equivalent). Nobody else can modify that row until I commit or roll back.
+
+```sql
+BEGIN;
+SELECT balance FROM accounts WHERE id = 42 FOR UPDATE;
+-- read, compute new balance, write
+UPDATE accounts SET balance = ? WHERE id = 42;
+COMMIT;
+```
+
+**When I reach for it:** **high contention** on a small set of rows — think seat maps, inventory for a hot SKU, or a row everyone updates in a short window. The database **serializes** access; correctness is straightforward.
+
+**What I watch for:** locks **block** other transactions; wrong lock order causes **deadlocks**; long transactions while holding a lock hurt throughput. I keep the locked section **short**.
+
+### Optimistic locking — "assume nobody else touched it; verify on write"
+
+I **don't lock on read**. Instead I record **what version of the row I read** — a dedicated `version` (integer) or sometimes a timestamp — and my `UPDATE` succeeds **only if that version is still current**:
+
+```sql
+UPDATE accounts
+SET balance = ?, version = version + 1
+WHERE id = 42 AND version = 7;
+```
+
+If **zero rows** are updated, someone else changed the row first. I **retry** (re-read, merge, write again) or return a conflict to the client.
+
+**When I reach for it:** **low contention** and many readers — most web CRUD. No long-held locks, better throughput when collisions are rare.
+
+**What I watch for:** retries must be **idempotent** where it matters; I need a clear **conflict** story for the API (HTTP 409, message, etc.). Under heavy write contention on the same row, optimistic can **thrash** with constant retries — that's a sign to consider pessimistic or queue the work.
+
+In JPA, a **`@Version`** field on the entity gives me optimistic locking for free — Hibernate increments the version and throws `OptimisticLockException` when the update loses the race.
+
+```java
+@Entity
+public class Account {
+    @Id private Long id;
+    private BigDecimal balance;
+    @Version
+    private Long version;
+}
+```
+
+**My rule of thumb:** default to **optimistic** for typical app workloads; switch to **pessimistic** when I can name the hot rows and **correctness under contention** matters more than raw parallel throughput. **Wrong choice** shows up as subtle data bugs or **deadlocks**, not just slow queries.
+
+---
+
 ## The Takeaway
 
 Database design is not glamorous work. Nobody tweets about a well-normalized schema. But **every production nightmare I've debugged — data inconsistency, mysterious slowdowns, impossible migrations — traced back to a design decision made (or not made) in the first week**.
 
-The normal forms keep my data clean. Logical foreign keys keep my architecture flexible. Killing N+1 queries keeps my app fast. And the small practices — indexes, soft deletes, audit columns, naming conventions — compound into a schema that's a _pleasure_ to work with instead of a minefield.
+[Normalization](/posts/three-normal-forms-explained/) keeps my facts in one place. **Logical foreign keys** keep my architecture flexible when the database can't enforce every edge. **Killing N+1 queries** keeps my app fast at the ORM layer. **Optimistic or pessimistic locking** keeps concurrent updates from stepping on each other. And the small practices — indexes, soft deletes, audit columns, naming conventions — compound into a schema that's a _pleasure_ to work with instead of a minefield.
 
 > I design my databases as if the next developer to work on them is a sleep-deprived version of me — because it will be.
