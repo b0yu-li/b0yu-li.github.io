@@ -31,11 +31,12 @@ graph LR
     N --> B["Baseline schema"]
     B --> D["Denormalize on purpose (when needed)"]
 
+    classDef mess fill:#fff,stroke:#c62828,stroke-width:2px,color:#000;
     classDef step fill:#fff,stroke:#0277bd,stroke-width:2px,color:#000;
-    classDef end fill:#fff,stroke:#2e7d32,stroke-width:2px,color:#000;
-    class M fill:#fff,stroke:#c62828,stroke-width:2px,color:#000;
+    classDef done fill:#fff,stroke:#2e7d32,stroke-width:2px,color:#000;
+    class M mess;
     class N,B step;
-    class D end;
+    class D done;
 ```
 
 ---
