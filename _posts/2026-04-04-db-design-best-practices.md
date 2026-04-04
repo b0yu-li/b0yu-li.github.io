@@ -90,13 +90,11 @@ flowchart LR
     class C1,C2 tbl;
 ```
 
-**Why would I skip the constraint?** It felt dangerous to me at first. But in practice, many production systems at scale intentionally use logical foreign keys:
+**Why would I skip the constraint (the physical `FOREIGN KEY` in DDL)?** It felt dangerous to me at first. But in practice, many production systems at scale intentionally use logical foreign keys:
 
 + **Cross-service boundaries.** In a microservices architecture, `orders` and `customers` might live in different databases entirely. I _can't_ declare a foreign key across databases. The `customer_id` in the orders DB is a logical reference — my code is responsible for ensuring it's valid.
 
-+ **Schema migration pain.** Foreign keys make `ALTER TABLE` operations slower and riskier on large tables. Dropping and recreating constraints during a migration on a table with hundreds of millions of rows can lock the table for minutes. Many teams at scale (Shopify, GitHub, Meta) have documented moving away from physical foreign keys for this reason.
-
-+ **Soft deletes.** If my `customers` table uses soft deletes (`deleted_at IS NOT NULL` instead of actual `DELETE`), a foreign key constraint won't help — the row still exists. I need application-level checks anyway.
++ **Schema migration pain.** Foreign keys make `ALTER TABLE` operations slower and riskier on large tables. Dropping and recreating constraints during a migration on a table with hundreds of millions of rows can lock the table for minutes. Many teams at scale (Shopify, GitHub, Meta) have documented easing off physical foreign keys **in parts of their stack** or **for certain high-churn tables** — not necessarily everywhere.
 
 + **Insert ordering.** Foreign keys enforce insert order — I must insert the parent before the child. In bulk imports or event-driven systems, records may arrive out of order. Logical foreign keys give me the flexibility to insert records in any order and reconcile later.
 
@@ -439,7 +437,7 @@ I add a default scope or a `WHERE deleted_at IS NULL` to my queries so deleted r
 
 ### Always Add Audit Columns
 
-Every table should have, at minimum:
+I want **`created_at` and `updated_at` on every table** that mutates — I treat those as non-negotiable. I add **`created_by` / `updated_by`** (or a service identity) when I care about **accountability** — which is most business tables, but I skip them on tiny reference data if nothing meaningful would go there.
 
 ```sql
 CREATE TABLE orders (
@@ -452,7 +450,7 @@ CREATE TABLE orders (
 );
 ```
 
-I will always need these. Every production debug session eventually becomes "when did this change, and who changed it?" Without audit columns, I'm flying blind.
+Every production debug session eventually becomes "when did this change, and who changed it?" Without at least timestamps — and actor columns where it matters — I'm flying blind.
 
 ### Use Consistent Naming Conventions
 
