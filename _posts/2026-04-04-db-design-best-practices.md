@@ -3,6 +3,7 @@ layout: post
 title: "Database Design Best Practices Every Backend Dev Should Know"
 author: boyu
 date: 2026-04-04 16:05:00 +0800
+mermaid: true
 categories: [ Tech, Design ]
 tags: [ tech, database, sql, backend, orm, concurrency ]
 description: "Logical vs physical foreign keys, N+1 in the ORM layer, optimistic vs pessimistic locking for concurrent updates, and operational habits — indexes, soft deletes, audits, naming — that keep a schema maintainable."
@@ -17,16 +18,33 @@ These are the principles and practices I keep coming back to.
 
 ## 1. Start With Normalization
 
+I treat normalization like **drawing the floor plan before I pick paint** — if the walls are in the wrong place, no amount of indexing fixes the layout.
+
 **Normalization** — getting to a sane shape before I tune anything else — lives in a separate post: **[DB Design: The Three Normal Forms](/posts/three-normal-forms-explained/)**. That walkthrough covers 1NF through 3NF, partial vs transitive dependencies, a four-step **decomposition framework** for messy tables, and when I deliberately denormalize. I read the two posts as a pair: shape the data first, then apply what follows.
 
 > **Normalize until it hurts, denormalize until it works.** I start from a clean normalized baseline and only denormalize when reads or reporting need it — never by accident.
 {: .prompt-tip }
+
+```mermaid
+graph LR
+    M[<b>Messy table</b><br/><i>duplicated facts</i>] --> N[<b>Normalize</b><br/><i>1NF–3NF</i>]
+    N --> B[<b>Baseline schema</b>]
+    B --> D[<b>Denormalize on purpose</b><br/><i>only when needed</i>]
+
+    classDef step fill:#fff,stroke:#0277bd,stroke-width:2px,color:#000;
+    classDef end fill:#fff,stroke:#2e7d32,stroke-width:2px,color:#000;
+    class M fill:#fff,stroke:#c62828,stroke-width:2px,color:#000;
+    class N,B step;
+    class D end;
+```
 
 ---
 
 ## 2. Logical Foreign Keys Over Physical Foreign Keys
 
 This one tripped me up when I was learning database design from textbooks.
+
+**The analogy:** a **physical foreign key** is a **bouncer with a list** — the database won't let the row through unless the parent exists. A **logical foreign key** is the **same ID in my pocket** — I still mean "this customer," but **I'm** responsible for checking the list, not the door.
 
 A **physical foreign key** is a `FOREIGN KEY` constraint declared in the DDL. The database enforces referential integrity — if I try to insert an order with a `customer_id` that doesn't exist in the `customers` table, the database rejects it.
 
@@ -50,6 +68,21 @@ CREATE TABLE orders (
 );
 ```
 
+```mermaid
+graph LR
+    subgraph p [Physical FK — same database]
+        O1[orders] -->|FOREIGN KEY<br/>DDL enforced| C1[(customers)]
+    end
+    subgraph l [Logical FK — e.g. split systems]
+        O2[orders.customer_id] -.->|no DDL link| C2[(customers<br/>here or elsewhere)]
+    end
+
+    classDef box fill:#fff,stroke:#0277bd,stroke-width:2px,color:#000;
+    classDef tbl fill:#fff,stroke:#2e7d32,stroke-width:2px,color:#000;
+    class O1,O2 box;
+    class C1,C2 tbl;
+```
+
 **Why would I skip the constraint?** It felt dangerous to me at first. But in practice, many production systems at scale intentionally use logical foreign keys:
 
 + **Cross-service boundaries.** In a microservices architecture, `orders` and `customers` might live in different databases entirely. I _can't_ declare a foreign key across databases. The `customer_id` in the orders DB is a logical reference — my code is responsible for ensuring it's valid.
@@ -63,7 +96,7 @@ CREATE TABLE orders (
 This doesn't mean "never use physical foreign keys." For a monolithic application with a single database and strong data integrity requirements (financial systems, for example), physical foreign keys are valuable. **The point is: understand the tradeoff.** Physical foreign keys give me database-enforced integrity. Logical foreign keys give me operational flexibility. I pick the one that matches my architecture.
 
 ```java
-// With logical foreign keys, your application layer enforces integrity
+// With logical foreign keys, my application enforces integrity
 public Order createOrder(CreateOrderRequest request) {
     Customer customer = customerRepo.findById(request.getCustomerId())
         .orElseThrow(() -> new EntityNotFoundException(
@@ -85,6 +118,20 @@ public Order createOrder(CreateOrderRequest request) {
 I covered the N+1 problem from an API perspective in a [previous post](/posts/backend-api-design-tips/). Here I want to zoom into the **ORM layer** — specifically JPA/Hibernate — because that's where this problem most often hides in my experience.
 
 The core issue: my ORM loads related entities **lazily by default**. That means fetching a list of orders doesn't load their customers until I _access_ each one. In a loop, that means N extra queries.
+
+**The analogy:** I ask the kitchen for **ten plates of food** (one query), then **ring the supplier ten separate times** to ask who grew each tomato. One trip with a shopping list would have done.
+
+```mermaid
+sequenceDiagram
+    participant App as Application
+    participant DB as Database
+    App->>DB: SELECT orders (1 query)
+    DB-->>App: N rows
+    loop Once per order
+        App->>DB: SELECT customer by id
+        DB-->>App: 1 row
+    end
+```
 
 ```java
 @Entity
@@ -115,9 +162,17 @@ List<Order> findAllWithCustomers();
 
 This generates a single `SELECT ... FROM orders JOIN customers ...` instead of 1 + N queries.
 
+```mermaid
+sequenceDiagram
+    participant App as Application
+    participant DB as Database
+    App->>DB: SELECT orders JOIN customers (1 query)
+    DB-->>App: N rows with customer data
+```
+
 ### Fix 2: @EntityGraph
 
-If you prefer annotations over query strings:
+If I prefer annotations over query strings:
 
 ```java
 @EntityGraph(attributePaths = {"customer"})
@@ -150,6 +205,22 @@ This won't eliminate the extra queries entirely, but it reduces N queries to rou
 
 An index on a column I never filter or sort by is wasted space and slows down writes. An _absent_ index on a column in my `WHERE` clause turns a millisecond lookup into a full table scan.
 
+I already use the **book index** mental model below; the other image I keep in mind is a **library card catalog** — I don't reread every book spine when I only need authors whose last name starts with _M_.
+
+```mermaid
+graph LR
+    Q[<b>Query</b><br/>WHERE customer_id = ?] --> I{Index on<br/>customer_id?}
+    I -->|Yes| F[<b>Seek</b><br/><i>few pages</i>]
+    I -->|No| S[<b>Full scan</b><br/><i>every row</i>]
+
+    classDef good fill:#fff,stroke:#2e7d32,stroke-width:2px,color:#000;
+    classDef bad fill:#fff,stroke:#c62828,stroke-width:2px,color:#000;
+    classDef mid fill:#fff,stroke:#f57c00,stroke-width:2px,color:#000;
+    class F good;
+    class S bad;
+    class Q,I mid;
+```
+
 ```sql
 -- If you frequently query orders by customer and status:
 CREATE INDEX idx_orders_customer_status
@@ -161,6 +232,20 @@ CREATE INDEX idx_orders_customer_status
 Composite indexes matter too: an index on `(customer_id, status)` serves queries that filter by `customer_id` alone _and_ queries that filter by both `customer_id` and `status`. But it does **not** serve queries that filter by `status` alone — index column order matters.
 
 ### Soft Deletes Over Hard Deletes
+
+**The analogy:** a **hard delete** is shredding a file; a **soft delete** is moving it to the trash — the bytes are still there until I empty the bin on purpose.
+
+```mermaid
+graph TD
+    H[<b>Hard DELETE</b>] --> HG[<i>Row gone</i><br/>references may dangle]
+    S[<b>Soft delete</b>] --> SF[Set deleted_at]
+    SF --> SQ[<i>Same row, filtered out</i><br/>of normal queries]
+
+    classDef warn fill:#fff,stroke:#c62828,stroke-width:2px,color:#000;
+    classDef ok fill:#fff,stroke:#2e7d32,stroke-width:2px,color:#000;
+    class H,HG warn;
+    class S,SF,SQ ok;
+```
 
 Instead of `DELETE FROM customers WHERE id = 42`, set a flag:
 
@@ -213,6 +298,20 @@ The specific convention matters less than consistency. When every table follows 
 
 Once more than one request can touch the same row, **schema shape isn't enough** — I need a strategy for **concurrent updates**. Two people read a balance, both add money, both write: without care, one update can silently disappear (**lost update**). The usual answers are **optimistic** and **pessimistic** locking.
 
+**The analogy:** **pessimistic** is **reserving a hotel room** — nobody else can book it until I'm done. **Optimistic** is **two people grabbing the last sale item** — whoever gets to checkout first wins; the other has to put it back and decide what to do next.
+
+```mermaid
+sequenceDiagram
+    participant A as Request A
+    participant B as Request B
+    participant Row as accounts row
+    A->>Row: READ 100
+    B->>Row: READ 100
+    A->>Row: WRITE 150
+    B->>Row: WRITE 120
+    Note over Row: Last write wins — one update lost
+```
+
 ### Pessimistic locking — "lock first, then change"
 
 I **take a lock on the row before I read the data I intend to write**, and hold it until my transaction ends. In SQL, that's often `SELECT … FOR UPDATE` (or the ORM equivalent). Nobody else can modify that row until I commit or roll back.
@@ -229,6 +328,18 @@ COMMIT;
 
 **What I watch for:** locks **block** other transactions; wrong lock order causes **deadlocks**; long transactions while holding a lock hurt throughput. I keep the locked section **short**.
 
+```mermaid
+graph LR
+    T1[Transaction 1] --> L1[FOR UPDATE — holds lock]
+    T2[Transaction 2] --> W[<i>waits</i>]
+    L1 --> R[Commit — release]
+
+    classDef lock fill:#fff,stroke:#0277bd,stroke-width:2px,color:#000;
+    classDef wait fill:#fff,stroke:#f57c00,stroke-width:2px,color:#000;
+    class T1,L1,R lock;
+    class T2,W wait;
+```
+
 ### Optimistic locking — "assume nobody else touched it; verify on write"
 
 I **don't lock on read**. Instead I record **what version of the row I read** — a dedicated `version` (integer) or sometimes a timestamp — and my `UPDATE` succeeds **only if that version is still current**:
@@ -240,6 +351,17 @@ WHERE id = 42 AND version = 7;
 ```
 
 If **zero rows** are updated, someone else changed the row first. I **retry** (re-read, merge, write again) or return a conflict to the client.
+
+```mermaid
+sequenceDiagram
+    participant Me as My transaction
+    participant Row as Row version 7
+    Me->>Row: READ balance, version 7
+    Note over Me: Someone else commits first
+    Me->>Row: UPDATE ... WHERE version = 7
+    Row-->>Me: 0 rows updated — conflict
+    Me->>Row: Re-read, retry or abort
+```
 
 **When I reach for it:** **low contention** and many readers — most web CRUD. No long-held locks, better throughput when collisions are rare.
 
@@ -255,6 +377,20 @@ public class Account {
     @Version
     private Long version;
 }
+```
+
+```mermaid
+graph TD
+    Q{How hot is<br/>this row?}
+    Q -->|Rare conflicts| O[<b>Optimistic</b><br/>version / retry / 409]
+    Q -->|Everyone piles on| P[<b>Pessimistic</b><br/>FOR UPDATE / short txn]
+
+    classDef opt fill:#fff,stroke:#2e7d32,stroke-width:2px,color:#000;
+    classDef pes fill:#fff,stroke:#0277bd,stroke-width:2px,color:#000;
+    classDef dec fill:#fff,stroke:#f57c00,stroke-width:2px,color:#000;
+    class O opt;
+    class P pes;
+    class Q dec;
 ```
 
 **My rule of thumb:** default to **optimistic** for typical app workloads; switch to **pessimistic** when I can name the hot rows and **correctness under contention** matters more than raw parallel throughput. **Wrong choice** shows up as subtle data bugs or **deadlocks**, not just slow queries.
