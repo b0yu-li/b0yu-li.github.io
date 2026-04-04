@@ -27,9 +27,9 @@ I treat normalization like **drawing the floor plan before I pick paint** — if
 
 ```mermaid
 graph LR
-    M[<b>Messy table</b><br/><i>duplicated facts</i>] --> N[<b>Normalize</b><br/><i>1NF–3NF</i>]
-    N --> B[<b>Baseline schema</b>]
-    B --> D[<b>Denormalize on purpose</b><br/><i>only when needed</i>]
+    M["Messy table (duplicated facts)"] --> N["Normalize (1NF-3NF)"]
+    N --> B["Baseline schema"]
+    B --> D["Denormalize on purpose (when needed)"]
 
     classDef step fill:#fff,stroke:#0277bd,stroke-width:2px,color:#000;
     classDef end fill:#fff,stroke:#2e7d32,stroke-width:2px,color:#000;
@@ -70,10 +70,10 @@ CREATE TABLE orders (
 
 ```mermaid
 graph LR
-    subgraph p [Physical FK — same database]
+    subgraph p ["Physical FK (same database)"]
         O1[orders] -->|FOREIGN KEY<br/>DDL enforced| C1[(customers)]
     end
-    subgraph l [Logical FK — e.g. split systems]
+    subgraph l ["Logical FK (split systems)"]
         O2[orders.customer_id] -.->|no DDL link| C2[(customers<br/>here or elsewhere)]
     end
 
@@ -199,7 +199,110 @@ This won't eliminate the extra queries entirely, but it reduces N queries to rou
 
 ---
 
-## 4. More Practices Worth Adopting
+## 4. Optimistic vs Pessimistic Locking
+
+Once more than one request can touch the same row, **schema shape isn't enough** — I need a strategy for **concurrent updates**. Two people read a balance, both add money, both write: without care, one update can silently disappear (**lost update**). The usual answers are **optimistic** and **pessimistic** locking.
+
+**The analogy:** **pessimistic** is **reserving a hotel room** — nobody else can book it until I'm done. **Optimistic** is **two people grabbing the last sale item** — whoever gets to checkout first wins; the other has to put it back and decide what to do next.
+
+```mermaid
+sequenceDiagram
+    participant A as Request A
+    participant B as Request B
+    participant Row as accounts row
+    A->>Row: READ 100
+    B->>Row: READ 100
+    A->>Row: WRITE 150
+    B->>Row: WRITE 120
+    Note over Row: Last write wins - one update lost
+```
+
+### Pessimistic locking — "lock first, then change"
+
+I **take a lock on the row before I read the data I intend to write**, and hold it until my transaction ends. In SQL, that's often `SELECT … FOR UPDATE` (or the ORM equivalent). Nobody else can modify that row until I commit or roll back.
+
+```sql
+BEGIN;
+SELECT balance FROM accounts WHERE id = 42 FOR UPDATE;
+-- read, compute new balance, write
+UPDATE accounts SET balance = ? WHERE id = 42;
+COMMIT;
+```
+
+**When I reach for it:** **high contention** on a small set of rows — think seat maps, inventory for a hot SKU, or a row everyone updates in a short window. The database **serializes** access; correctness is straightforward.
+
+**What I watch for:** locks **block** other transactions; wrong lock order causes **deadlocks**; long transactions while holding a lock hurt throughput. I keep the locked section **short**.
+
+```mermaid
+graph LR
+    T1[Transaction 1] --> L1["FOR UPDATE (holds lock)"]
+    T2[Transaction 2] --> W["waits"]
+    L1 --> R["Commit / release"]
+
+    classDef lock fill:#fff,stroke:#0277bd,stroke-width:2px,color:#000;
+    classDef wait fill:#fff,stroke:#f57c00,stroke-width:2px,color:#000;
+    class T1,L1,R lock;
+    class T2,W wait;
+```
+
+### Optimistic locking — "assume nobody else touched it; verify on write"
+
+I **don't lock on read**. Instead I record **what version of the row I read** — a dedicated `version` (integer) or sometimes a timestamp — and my `UPDATE` succeeds **only if that version is still current**:
+
+```sql
+UPDATE accounts
+SET balance = ?, version = version + 1
+WHERE id = 42 AND version = 7;
+```
+
+If **zero rows** are updated, someone else changed the row first. I **retry** (re-read, merge, write again) or return a conflict to the client.
+
+```mermaid
+sequenceDiagram
+    participant Me as My transaction
+    participant Row as Row version 7
+    Me->>Row: READ balance, version 7
+    Note over Me: Someone else commits first
+    Me->>Row: UPDATE ... WHERE version = 7
+    Row-->>Me: 0 rows updated - conflict
+    Me->>Row: Re-read, retry or abort
+```
+
+**When I reach for it:** **low contention** and many readers — most web CRUD. No long-held locks, better throughput when collisions are rare.
+
+**What I watch for:** retries must be **idempotent** where it matters; I need a clear **conflict** story for the API (HTTP 409, message, etc.). Under heavy write contention on the same row, optimistic can **thrash** with constant retries — that's a sign to consider pessimistic or queue the work.
+
+In JPA, a **`@Version`** field on the entity gives me optimistic locking for free — Hibernate increments the version and throws `OptimisticLockException` when the update loses the race.
+
+```java
+@Entity
+public class Account {
+    @Id private Long id;
+    private BigDecimal balance;
+    @Version
+    private Long version;
+}
+```
+
+```mermaid
+graph TD
+    Q{How hot is<br/>this row?}
+    Q -->|Rare conflicts| O[<b>Optimistic</b><br/>version / retry / 409]
+    Q -->|Everyone piles on| P[<b>Pessimistic</b><br/>FOR UPDATE / short txn]
+
+    classDef opt fill:#fff,stroke:#2e7d32,stroke-width:2px,color:#000;
+    classDef pes fill:#fff,stroke:#0277bd,stroke-width:2px,color:#000;
+    classDef dec fill:#fff,stroke:#f57c00,stroke-width:2px,color:#000;
+    class O opt;
+    class P pes;
+    class Q dec;
+```
+
+**My rule of thumb:** default to **optimistic** for typical app workloads; switch to **pessimistic** when I can name the hot rows and **correctness under contention** matters more than raw parallel throughput. **Wrong choice** shows up as subtle data bugs or **deadlocks**, not just slow queries.
+
+---
+
+## 5. More Practices Worth Adopting
 
 ### Index What You Query
 
@@ -291,109 +394,6 @@ I pick a convention and enforce it ruthlessly:
 | Timestamps | `_at` suffix | `created_at`, `deleted_at` |
 
 The specific convention matters less than consistency. When every table follows the same pattern, I can navigate the schema without checking documentation — and so can anyone who joins the team after me.
-
----
-
-## 5. Optimistic vs Pessimistic Locking
-
-Once more than one request can touch the same row, **schema shape isn't enough** — I need a strategy for **concurrent updates**. Two people read a balance, both add money, both write: without care, one update can silently disappear (**lost update**). The usual answers are **optimistic** and **pessimistic** locking.
-
-**The analogy:** **pessimistic** is **reserving a hotel room** — nobody else can book it until I'm done. **Optimistic** is **two people grabbing the last sale item** — whoever gets to checkout first wins; the other has to put it back and decide what to do next.
-
-```mermaid
-sequenceDiagram
-    participant A as Request A
-    participant B as Request B
-    participant Row as accounts row
-    A->>Row: READ 100
-    B->>Row: READ 100
-    A->>Row: WRITE 150
-    B->>Row: WRITE 120
-    Note over Row: Last write wins — one update lost
-```
-
-### Pessimistic locking — "lock first, then change"
-
-I **take a lock on the row before I read the data I intend to write**, and hold it until my transaction ends. In SQL, that's often `SELECT … FOR UPDATE` (or the ORM equivalent). Nobody else can modify that row until I commit or roll back.
-
-```sql
-BEGIN;
-SELECT balance FROM accounts WHERE id = 42 FOR UPDATE;
--- read, compute new balance, write
-UPDATE accounts SET balance = ? WHERE id = 42;
-COMMIT;
-```
-
-**When I reach for it:** **high contention** on a small set of rows — think seat maps, inventory for a hot SKU, or a row everyone updates in a short window. The database **serializes** access; correctness is straightforward.
-
-**What I watch for:** locks **block** other transactions; wrong lock order causes **deadlocks**; long transactions while holding a lock hurt throughput. I keep the locked section **short**.
-
-```mermaid
-graph LR
-    T1[Transaction 1] --> L1[FOR UPDATE — holds lock]
-    T2[Transaction 2] --> W[<i>waits</i>]
-    L1 --> R[Commit — release]
-
-    classDef lock fill:#fff,stroke:#0277bd,stroke-width:2px,color:#000;
-    classDef wait fill:#fff,stroke:#f57c00,stroke-width:2px,color:#000;
-    class T1,L1,R lock;
-    class T2,W wait;
-```
-
-### Optimistic locking — "assume nobody else touched it; verify on write"
-
-I **don't lock on read**. Instead I record **what version of the row I read** — a dedicated `version` (integer) or sometimes a timestamp — and my `UPDATE` succeeds **only if that version is still current**:
-
-```sql
-UPDATE accounts
-SET balance = ?, version = version + 1
-WHERE id = 42 AND version = 7;
-```
-
-If **zero rows** are updated, someone else changed the row first. I **retry** (re-read, merge, write again) or return a conflict to the client.
-
-```mermaid
-sequenceDiagram
-    participant Me as My transaction
-    participant Row as Row version 7
-    Me->>Row: READ balance, version 7
-    Note over Me: Someone else commits first
-    Me->>Row: UPDATE ... WHERE version = 7
-    Row-->>Me: 0 rows updated — conflict
-    Me->>Row: Re-read, retry or abort
-```
-
-**When I reach for it:** **low contention** and many readers — most web CRUD. No long-held locks, better throughput when collisions are rare.
-
-**What I watch for:** retries must be **idempotent** where it matters; I need a clear **conflict** story for the API (HTTP 409, message, etc.). Under heavy write contention on the same row, optimistic can **thrash** with constant retries — that's a sign to consider pessimistic or queue the work.
-
-In JPA, a **`@Version`** field on the entity gives me optimistic locking for free — Hibernate increments the version and throws `OptimisticLockException` when the update loses the race.
-
-```java
-@Entity
-public class Account {
-    @Id private Long id;
-    private BigDecimal balance;
-    @Version
-    private Long version;
-}
-```
-
-```mermaid
-graph TD
-    Q{How hot is<br/>this row?}
-    Q -->|Rare conflicts| O[<b>Optimistic</b><br/>version / retry / 409]
-    Q -->|Everyone piles on| P[<b>Pessimistic</b><br/>FOR UPDATE / short txn]
-
-    classDef opt fill:#fff,stroke:#2e7d32,stroke-width:2px,color:#000;
-    classDef pes fill:#fff,stroke:#0277bd,stroke-width:2px,color:#000;
-    classDef dec fill:#fff,stroke:#f57c00,stroke-width:2px,color:#000;
-    class O opt;
-    class P pes;
-    class Q dec;
-```
-
-**My rule of thumb:** default to **optimistic** for typical app workloads; switch to **pessimistic** when I can name the hot rows and **correctness under contention** matters more than raw parallel throughput. **Wrong choice** shows up as subtle data bugs or **deadlocks**, not just slow queries.
 
 ---
 
