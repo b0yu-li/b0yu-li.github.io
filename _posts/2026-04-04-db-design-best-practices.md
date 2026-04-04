@@ -2,13 +2,12 @@
 layout: post
 title: "Database Design Best Practices Every Backend Dev Should Know"
 author: boyu
-date: 2026-03-10 10:30:00 +0800
+date: 2026-04-04 16:05:00 +0800
 mermaid: true
 categories: [ Tech, Design ]
 tags: [ tech, database, design, normalization, sql, backend ]
 description: "From the three normal forms to logical foreign keys and the N+1 trap — the database design principles that separate clean schemas from production nightmares."
 image: /assets/images/headers/db-design-best-practices.jpg
-published: false
 ---
 
 > A bad API can be versioned. A bad database schema haunts you forever.
