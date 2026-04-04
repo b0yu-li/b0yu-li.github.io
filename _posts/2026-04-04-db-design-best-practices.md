@@ -45,7 +45,11 @@ graph LR
 
 This one tripped me up when I was learning database design from textbooks.
 
-**The analogy:** a **physical foreign key** is a **bouncer with a list** — the database won't let the row through unless the parent exists. A **logical foreign key** is the **same ID in my pocket** — I still mean "this customer," but **I'm** responsible for checking the list, not the door.
+**The analogy:** I picture an **order** with a `customer_id` that should reference a row in **customers**. The useful question is: **when I save that order, does the database stop me if the customer doesn't exist?**
+
++ **If yes — physical foreign key.** That's the **bouncer with a list** in the engine: on insert or update, it checks the id against `customers`. No match ⇒ the write **fails**, for my app, a script, or ad-hoc SQL — same rule for everyone.
+
++ **If no — logical foreign key.** The `customer_id` column is **still there** and I still *mean* "this order belongs to that customer," but the database **does not** run that check — it only stores the number, even if the customer row is missing or lives in another system. **Same column; different gatekeeper.**
 
 A **physical foreign key** is a `FOREIGN KEY` constraint declared in the DDL. The database enforces referential integrity — if I try to insert an order with a `customer_id` that doesn't exist in the `customers` table, the database rejects it.
 
@@ -70,11 +74,13 @@ CREATE TABLE orders (
 ```
 
 ```mermaid
-graph LR
+flowchart LR
     subgraph p ["Physical FK (same database)"]
+        direction LR
         O1[orders] -->|FOREIGN KEY<br/>DDL enforced| C1[(customers)]
     end
     subgraph l ["Logical FK (split systems)"]
+        direction LR
         O2[orders.customer_id] -.->|no DDL link| C2[(customers<br/>here or elsewhere)]
     end
 
@@ -98,14 +104,15 @@ This doesn't mean "never use physical foreign keys." For a monolithic applicatio
 
 ```java
 // With logical foreign keys, my application enforces integrity
-public Order createOrder(CreateOrderRequest request) {
-    Customer customer = customerRepo.findById(request.getCustomerId())
+public Order createOrder(final CreateOrderRequest request) {
+    final Customer customer = customerRepo.findById(request.getCustomerId())
         .orElseThrow(() -> new EntityNotFoundException(
             "Customer not found: " + request.getCustomerId()));
 
-    Order order = new Order();
-    order.setCustomerId(customer.getId());
-    order.setTotal(request.getTotal());
+    final Order order = Order.builder()
+        .customerId(customer.getId())
+        .total(request.getTotal())
+        .build();
     return orderRepo.save(order);
 }
 ```
@@ -232,7 +239,67 @@ COMMIT;
 
 **When I reach for it:** **high contention** on a small set of rows — think seat maps, inventory for a hot SKU, or a row everyone updates in a short window. The database **serializes** access; correctness is straightforward.
 
-**What I watch for:** locks **block** other transactions; wrong lock order causes **deadlocks**; long transactions while holding a lock hurt throughput. I keep the locked section **short**.
+**What I watch for:**
+
++ **Blocking.** Anyone else who needs the **same row** waits until I commit or roll back. I keep that window **small** — no slow HTTP calls, file I/O, or “wait for user” logic inside the transaction.
+
++ **Deadlocks.** If I lock **several** rows in one transaction, I grab them in a **fixed order** everywhere (e.g. sort by id before locking). Different orderings across code paths are a classic deadlock recipe.
+
+    **Different lock order, same two rows** — each session holds one lock and waits on the other:
+
+    ```mermaid
+    sequenceDiagram
+        participant A as Session A
+        participant B as Session B
+        participant R5 as Row 5
+        participant R9 as Row 9
+        Note over A,B: Opposite lock order — A locks 5 then 9, B locks 9 then 5
+        A->>R5: FOR UPDATE (holds)
+        B->>R9: FOR UPDATE (holds)
+        A->>R9: FOR UPDATE (blocked)
+        B->>R5: FOR UPDATE (blocked)
+        Note over A,B: Circular wait — neither can finish
+    ```
+
+    **Example — two accounts (ids 5 and 9), two transfers in flight:**
+
+    ```sql
+    -- Bad: Session A (5→9) locks 5 then 9. Session B (9→5) locks 9 then 5.
+    -- Interleaved: A holds 5, B holds 9; A waits for 9, B waits for 5 → deadlock.
+
+    -- Good: same two rows, same lock order every time (lower id first), any transfer direction.
+    BEGIN;
+    SELECT * FROM accounts WHERE id = 5 FOR UPDATE;
+    SELECT * FROM accounts WHERE id = 9 FOR UPDATE;
+    -- … debit / credit …
+    COMMIT;
+    ```
+
+    So even for a **9→5** transfer, I still lock **5**, then **9** — business direction doesn’t change lock order.
+
+    **Fixed lock order — how the deadlock goes away:** both sessions queue on the **same** first row. One waits in line, then both finish — no circle.
+
+    ```mermaid
+    sequenceDiagram
+        participant A as Session A
+        participant B as Session B
+        participant R5 as Row 5
+        participant R9 as Row 9
+        Note over A,B: Same order every path — 5 then 9 (9→5 transfer still locks 5 first)
+        A->>R5: FOR UPDATE (holds)
+        B->>R5: FOR UPDATE (waits — A holds 5)
+        A->>R9: FOR UPDATE (holds)
+        Note over A: COMMIT — releases 5 and 9
+        B->>R5: FOR UPDATE (granted)
+        B->>R9: FOR UPDATE (holds)
+        Note over B: COMMIT
+    ```
+
++ **Queueing at the lock.** Long work while holding a lock = long queues and timeouts. I do heavy computation **before** opening the transaction or **after** commit when I can.
+
++ **How I lock one row.** My `SELECT … FOR UPDATE` uses a selective predicate — usually the **primary key** — so the engine locks exactly the row I mean, not a wide scan.
+
++ **Timeouts.** Where the engine supports it (PostgreSQL has **`lock_timeout`**; others have equivalents), I cap wait time so a blocked session fails fast instead of hanging forever.
 
 ```mermaid
 graph LR
@@ -261,17 +328,26 @@ If **zero rows** are updated, someone else changed the row first. I **retry** (r
 ```mermaid
 sequenceDiagram
     participant Me as My transaction
-    participant Row as Row version 7
+    participant Other as Other transaction
+    participant Row as accounts row id 42
     Me->>Row: READ balance, version 7
-    Note over Me: Someone else commits first
+    Other->>Row: READ balance, version 7
+    Other->>Row: UPDATE ... WHERE version = 7
+    Row-->>Other: 1 row updated, version 8
     Me->>Row: UPDATE ... WHERE version = 7
-    Row-->>Me: 0 rows updated - conflict
+    Row-->>Me: 0 rows, stale version
     Me->>Row: Re-read, retry or abort
 ```
 
 **When I reach for it:** **low contention** and many readers — most web CRUD. No long-held locks, better throughput when collisions are rare.
 
-**What I watch for:** retries must be **idempotent** where it matters; I need a clear **conflict** story for the API (HTTP 409, message, etc.). Under heavy write contention on the same row, optimistic can **thrash** with constant retries — that's a sign to consider pessimistic or queue the work.
+**What I watch for:**
+
++ **Idempotent retries.** If I re-read and retry after a lost version race, that retry must be safe to run more than once for the same user intent — or I need idempotency keys / conditional writes so I don't double-apply side effects (charges, emails, duplicate rows).
+
++ **A clear conflict contract.** When I surface failure to the client, I use something predictable (often **HTTP 409**) and a message that says *why* — stale version, concurrent edit — so the UI can refresh or merge instead of showing a vague 500.
+
++ **Hot-row thrash.** If everyone writes the **same** row and optimistic locking keeps failing and retrying in a loop, I'm burning latency for little progress. That's my cue to try **pessimistic** locking on that hotspot or **serialize** the work (e.g. a queue) instead of optimistic retry storms.
 
 In JPA, a **`@Version`** field on the entity gives me optimistic locking for free — Hibernate increments the version and throws `OptimisticLockException` when the update loses the race.
 
@@ -332,8 +408,6 @@ CREATE INDEX idx_orders_customer_status
 ```
 
 **The mental model:** indexes are like a book's index. I wouldn't put every word in the index — just the ones readers actually look up. I profile my slow queries, check my `WHERE` clauses, and index accordingly.
-
-Composite indexes matter too: an index on `(customer_id, status)` serves queries that filter by `customer_id` alone _and_ queries that filter by both `customer_id` and `status`. But it does **not** serve queries that filter by `status` alone — index column order matters.
 
 ### Soft Deletes Over Hard Deletes
 

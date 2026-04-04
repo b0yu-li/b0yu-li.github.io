@@ -288,4 +288,4 @@ The framework makes it mechanical: list columns, find each one's determinant, gr
 
 The next time I'm staring at a table that feels "off" — duplicated data, awkward updates, unexplainable inconsistencies — I'll run through these four steps. The answer almost always falls out.
 
-**Next in this thread:** [Database design best practices](/posts/db-design-best-practices/) — logical vs physical foreign keys, N+1 in the ORM layer, indexes, soft deletes, audit columns, and naming conventions I adopt after the tables are shaped.
+**Next in this thread:** [Database design best practices](/posts/db-design-best-practices/) — logical vs physical foreign keys, N+1 in the ORM layer, optimistic vs pessimistic locking for concurrent updates, indexes, soft deletes, audit columns, and naming conventions I adopt after the tables are shaped.
