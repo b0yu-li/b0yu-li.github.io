@@ -210,9 +210,15 @@ git commit -m "feat: implement my change"
 git push
 ```
 
-+ **Staying current with `develop` during development** _I don't follow a rigid schedule. I **`fetch`** and rebase onto `origin/develop` **whenever it occurs to me** — or after I see `develop` move — because **sooner is usually better** for overlap: conflicts stay smaller and I resolve them while the work is still fresh. If `develop` is quiet, syncing mainly around MR time can be enough; if it moves fast, I integrate more often. On hectic weeks I sometimes use a light anchor (e.g. start of the day) so I don't accidentally stretch the gap._
++ **Staying current with `develop` during development**
+    + I do not follow a rigid schedule.
+    + I `fetch` and rebase onto `origin/develop` whenever it occurs to me, or right after I notice `develop` moved.
+    + **Why I sync early:** conflicts are usually smaller, and I resolve them while context is still fresh.
+    + **How I adapt cadence:** if `develop` is quiet, syncing around MR time can be enough; if it moves fast, I integrate more often.
 
-+ **After I open the MR (PR on GitHub) — same branch, more pushes** _The MR tracks the **remote** feature branch, so I keep working locally on that branch and push as usual. New commits show up on the same review automatically._
++ **After I open the MR (PR on GitHub) — same branch, more pushes**
+    + The MR tracks the remote feature branch.
+    + I keep working on the same local branch and push as usual; new commits appear in the same review automatically.
 
 ```shell
 git add .
@@ -220,7 +226,9 @@ git commit -m "fix: address review feedback"
 git push
 ```
 
-+ **Rebase onto `develop` when I need a fresh base** _I prefer **`git rebase`** over merge so the branch stays linear. I do this **before** I open the MR, **while** it is open (e.g. after `develop` moved), or when I need to re-run CI on a current base — same commands._
++ **Rebase onto `develop` when I need a fresh base**
+    + I prefer `git rebase` over merge so my branch history stays linear.
+    + I use the same commands before opening the MR, while the MR is open (for example, after `develop` moves), or when I need CI on a fresh base.
 
 ```shell
 git fetch origin
@@ -228,13 +236,16 @@ git checkout feature/my-change
 git rebase origin/develop
 ```
 
-+ **Dissecting `git fetch origin` and `git rebase origin/develop`** _Same mechanics, different base branch name._
-+ `git fetch origin` updates my local remote-tracking refs (like `origin/develop`) without changing my current branch files.
-+ `origin` is the remote alias; `develop` is the branch on that remote.
-+ I run the rebase while checked out on my feature branch (not on `develop` itself).
-+ `git rebase origin/develop` takes my current branch commits (the ones not in `origin/develop`) and replays them on top of the latest `origin/develop`.
-+ I run `git fetch origin` first so `origin/develop` reflects the newest remote tip; otherwise, I might rebase onto stale history.
-+ If conflicts appear, I resolve files, then continue:
++ **What each line in that block does** — _Unpacking the three commands above — same shape as updating from `main` in **Syncing** (`git pull origin main --rebase`): refresh what the remote knows, then replay my commits on top of the latest integration branch. Here that branch is `develop`, so I target `origin/develop`._
+    + **Step 1 — Refresh remote state with `git fetch origin`:**
+        + `origin` is the remote alias. This `fetch` updates local remote-tracking refs (like `origin/develop`) without changing my working files.
+    + **Step 2 — Stay on my feature branch:**
+        + I run the rebase while checked out on `feature/my-change` (not on `develop` itself).
+    + **Step 3 — Rebase onto the refreshed base with `git rebase origin/develop`:**
+        + Git takes commits on my current branch that are not in `origin/develop` and replays them on top of the latest `origin/develop`.
+    + **Why this order matters:**
+        + I fetch first so I do not accidentally rebase onto stale remote history.
++ **If conflicts appear, I resolve files, then continue:**
 
 ```shell
 git add <resolved_files>
@@ -243,23 +254,22 @@ git rebase --continue
 git rebase --abort
 ```
 
-+ If I already pushed this branch before the rebase, the follow-up push usually needs:
++ **If I already pushed this branch before the rebase**
+    + Rebase rewrites commit hashes. If those commits were already pushed, local and remote history no longer line up, so a normal `git push` is rejected.
+    + The follow-up push usually needs `git push --force-with-lease`.
+    + I refresh `git fetch origin` before rebasing and before force-pushing so the lease compares against current remote state.
+
++ **`git push --force-with-lease` after rebase or amend on published commits**
+    + I use this when I must replace the remote tip to match rewritten local history.
+    + `--force-with-lease` is a guarded force push: it only updates when the remote tip is still what I last fetched.
+    + If someone else pushed first, Git aborts instead of overwriting their commits.
+    + A plain `git push --force` skips this safety check.
 
 ```shell
 git push --force-with-lease
 ```
 
-If that rebase rewrote commits I had **already pushed**, my local history and the remote branch no longer line up, so a normal `git push` is rejected.
-
-+ **`git push --force-with-lease`** _After a rebase or `amend` on published commits, I have to replace the remote branch tip to match my new history. **`--force-with-lease` is a guarded force push:** Git checks that the remote branch is still where I last thought it was (from my recent `fetch`). If someone else pushed first, the push aborts instead of overwriting their commits. A plain `git push --force` skips that check._
-
-_I refresh `git fetch origin` before rebasing and before the force push so the “lease” compares against an up-to-date picture of the remote._
-
-```shell
-git push --force-with-lease
-```
-
-+ **Cleanup after merge**
++ **Cleanup after merge** - I first update local `develop`, then remove the feature branch locally and on remote.
 ```shell
 git checkout develop
 git pull origin develop --rebase
@@ -267,7 +277,7 @@ git branch -d feature/my-change
 git push origin --delete feature/my-change
 ```
 
-_If my repo uses squash/rebase merge and `git branch -d` says “not fully merged,” I verify the branch is already in `develop`, then delete it with `git branch -D feature/my-change`._
+_If my repo uses squash/rebase merge and `git branch -d` says "not fully merged," I verify the branch is already in `develop`, then delete it with `git branch -D feature/my-change`._
 
 > If my feature branch is **shared** — someone else pushes to it, or bases their work on it — I treat **`git rebase` + `git push --force-with-lease` as a team decision**, not a solo convenience trick.
 >
