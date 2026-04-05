@@ -8,7 +8,7 @@ tags: [ introduction, life ]
 redirect_from:
   - /update/2026/01/05/my-first-post.html
 image: /assets/images/headers/hello.png
-description: "Meet Boyu, a creator blending code and music. From implementing serverless features and live-coding environments to conquering Hollow Knight: Silksong, here is a glimpse into my world."
+description: "Meet Boyu—building Pixel Bot, writing about databases, reading wuxia on a handheld, and still blending code with music. A living intro and recent updates."
 ---
 
 ## Who am I?
@@ -17,6 +17,10 @@ I am Boyu, I like creating stuff (whether it be code or music thingy).
 
 ## Recent Updates
 
++ **Apr 5, 2026:** Having so much fun reading _射雕英雄传_ on my **Anbernic RG34XX SP**—I picked it up around **9:30 PM on Apr 3** and I am only about **25%** in so far (still going strong).
++ **Apr 4, 2026:** Published **[Database design best practices](/posts/db-design-best-practices/)**—I started drafting around **Mar 10** and spent a lot of time polishing before it went live.
++ **Apr 2–4, 2026:** The story of **张雪**, founder of **ZX Motor (张雪摩托)**, moved me deeply.
++ **Mar 28–29, 2026 (weekend):** Built **Pixel Bot**, an AI customer agent for a hypothetical retro handhelds shop—it answers from a small grounded knowledge base, asks for budget and form factor before recommendations, and includes a mock repair handoff. Repo: [https://github.com/b0yu-li/pixel-bot](https://github.com/b0yu-li/pixel-bot), demo: [https://youtu.be/JYHINhhMp3E](https://youtu.be/JYHINhhMp3E).
 + **Mar 17, 2026:** Tried AI-assisted development (Cursor + Claude) and shipped an MVP in an hour. Stack: Next.js 16 + React 19 frontend, NestJS 11 backend, Prisma + PostgreSQL. The productivity boost is unreal.
 + **Mar 16, 2026:** Renovated the STUDIO, TECH, and JOURNAL tabs UI.
 + **Mar 14, 2026:** Played tennis at the club—first time since college.
