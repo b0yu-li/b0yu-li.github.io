@@ -256,3 +256,9 @@ _If my repo uses squash/rebase merge and `git branch -d` says “not fully merge
 >
 > **What I usually do instead:** pull `main` into my branch with **`git merge origin/main`** (no force push), or agree upfront that this branch is **mine only** until the PR lands — then rebase is fine.
 {: .prompt-warning }
+
+## 8. Notes
+
+_Small tangents and naming — not part of the command loops above._
+
++ **Pull Request vs Merge Request** _GitHub’s **Pull Request** comes from the fork-and-contribute flow: I publish commits, then I ask someone to **pull** them into the upstream repo. GitLab’s **Merge Request** names the operation instead: **merge** this branch into the target branch. **Same review step, different metaphor.** I write **PR/MR** earlier in this post so readers from either platform know what I mean._
