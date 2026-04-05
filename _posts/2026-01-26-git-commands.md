@@ -156,15 +156,15 @@ git checkout -b feature-login main
 
 ## 7. Feature branch development flow (vs trunk-based)
 
-In a **trunk-based** setup, I usually commit and push small changes to `main` quickly (sometimes directly, sometimes through very short-lived PRs). In a **feature branch** setup, I keep work isolated on a branch, then merge through a PR after review.
+In a **trunk-based** setup, I usually commit and push small changes to `main` quickly (sometimes directly, sometimes through very short-lived MRs). In a **feature branch** setup, I keep work isolated on a branch, then merge through an MR to `develop` after review.
 
 **Feature branches trade faster direct integration for clearer review boundaries and safer isolation.**
 
 | **Dimension** | **Trunk-based** | **Feature branch** |
 |---|---|---|
 | **Where commits go first** | `main` | `feature/*` or `fix/*` |
-| **When `main` changes** | Continuously during development | When PR is approved and merged |
-| **Review gate** | Usually lightweight or after merge | Usually before merge via PR |
+| **When integration branch changes** | Continuously during development (`main`) | When MR is approved and merged (`develop`) |
+| **Review gate** | Usually lightweight or after merge | Usually before merge via MR |
 | **Branch lifetime** | Very short or no branch | Short-lived task branch |
 
 ```mermaid
@@ -180,26 +180,26 @@ flowchart LR
 
     subgraph featureFlow [Feature branch loop]
         direction LR
-        featureSync[Sync main]
+        featureSync[Sync develop]
         featureBranch[Create feature branch]
         featureWork[Commit on branch]
-        featurePr[Open or update PR]
-        featureMerge[Merge to main]
+        featureMr[Open or update MR]
+        featureMerge[Merge to develop]
         featureCleanup[Delete branch]
-        featureSync --> featureBranch --> featureWork --> featurePr --> featureMerge --> featureCleanup
+        featureSync --> featureBranch --> featureWork --> featureMr --> featureMerge --> featureCleanup
     end
 ```
 
-+ **Sync `main` before I start**
++ **Sync `develop` before I start**
 ```shell
 git fetch origin
-git checkout main
-git pull origin main --rebase
+git checkout develop
+git pull origin develop --rebase
 ```
 
 + **Create and publish the feature branch**
 ```shell
-git checkout -b feature/my-change main
+git checkout -b feature/my-change develop
 git push -u origin feature/my-change
 ```
 
@@ -210,9 +210,9 @@ git commit -m "feat: implement my change"
 git push
 ```
 
-+ **Staying current with `main` during development** _I don't follow a rigid schedule. I **`fetch`** and rebase onto `origin/main` **whenever it occurs to me** — or after I see `main` move — because **sooner is usually better** for overlap: conflicts stay smaller and I resolve them while the work is still fresh. If `main` is quiet, syncing mainly around PR time can be enough; if it moves fast, I integrate more often. On hectic weeks I sometimes use a light anchor (e.g. start of the day) so I don't accidentally stretch the gap._
++ **Staying current with `develop` during development** _I don't follow a rigid schedule. I **`fetch`** and rebase onto `origin/develop` **whenever it occurs to me** — or after I see `develop` move — because **sooner is usually better** for overlap: conflicts stay smaller and I resolve them while the work is still fresh. If `develop` is quiet, syncing mainly around MR time can be enough; if it moves fast, I integrate more often. On hectic weeks I sometimes use a light anchor (e.g. start of the day) so I don't accidentally stretch the gap._
 
-+ **After I open the PR — same branch, more pushes** _The PR/MR tracks the **remote** feature branch, so I keep working locally on that branch and push as usual. New commits show up on the same review automatically._
++ **After I open the MR (PR on GitHub) — same branch, more pushes** _The MR tracks the **remote** feature branch, so I keep working locally on that branch and push as usual. New commits show up on the same review automatically._
 
 ```shell
 git add .
@@ -220,12 +220,33 @@ git commit -m "fix: address review feedback"
 git push
 ```
 
-+ **Rebase onto `main` when I need a fresh base** _I prefer **`git rebase`** over merge so the branch stays linear. I do this **before** I open the PR, **while** it is open (e.g. after `main` moved), or when I need to re-run CI on a current base — same commands._
++ **Rebase onto `develop` when I need a fresh base** _I prefer **`git rebase`** over merge so the branch stays linear. I do this **before** I open the MR, **while** it is open (e.g. after `develop` moved), or when I need to re-run CI on a current base — same commands._
 
 ```shell
 git fetch origin
 git checkout feature/my-change
-git rebase origin/main
+git rebase origin/develop
+```
+
++ **Dissecting `git fetch origin` and `git rebase origin/develop`** _Same mechanics, different base branch name._
++ `git fetch origin` updates my local remote-tracking refs (like `origin/develop`) without changing my current branch files.
++ `origin` is the remote alias; `develop` is the branch on that remote.
++ I run the rebase while checked out on my feature branch (not on `develop` itself).
++ `git rebase origin/develop` takes my current branch commits (the ones not in `origin/develop`) and replays them on top of the latest `origin/develop`.
++ I run `git fetch origin` first so `origin/develop` reflects the newest remote tip; otherwise, I might rebase onto stale history.
++ If conflicts appear, I resolve files, then continue:
+
+```shell
+git add <resolved_files>
+git rebase --continue
+# Or bail out and return to pre-rebase state
+git rebase --abort
+```
+
++ If I already pushed this branch before the rebase, the follow-up push usually needs:
+
+```shell
+git push --force-with-lease
 ```
 
 If that rebase rewrote commits I had **already pushed**, my local history and the remote branch no longer line up, so a normal `git push` is rejected.
@@ -240,25 +261,25 @@ git push --force-with-lease
 
 + **Cleanup after merge**
 ```shell
-git checkout main
-git pull origin main --rebase
+git checkout develop
+git pull origin develop --rebase
 git branch -d feature/my-change
 git push origin --delete feature/my-change
 ```
 
-_If my repo uses squash/rebase merge and `git branch -d` says “not fully merged,” I verify the branch is already in `main`, then delete it with `git branch -D feature/my-change`._
+_If my repo uses squash/rebase merge and `git branch -d` says “not fully merged,” I verify the branch is already in `develop`, then delete it with `git branch -D feature/my-change`._
 
 > If my feature branch is **shared** — someone else pushes to it, or bases their work on it — I treat **`git rebase` + `git push --force-with-lease` as a team decision**, not a solo convenience trick.
 >
-> **Why:** Rebase and amend **replace commits** with new hashes. My collaborators may still have the old chain locally or in their PRs. After I force-push, their history and mine diverge in ways that are tedious to untangle (duplicate changes, confusing merges, “where did this commit go?”).
+> **Why:** Rebase and amend **replace commits** with new hashes. My collaborators may still have the old chain locally or in their MRs/PRs. After I force-push, their history and mine diverge in ways that are tedious to untangle (duplicate changes, confusing merges, “where did this commit go?”).
 >
 > **`--force-with-lease` helps, but it is not a green light for shared branches.** It only refuses to clobber the remote if the tip moved since my last `fetch`. It does **not** fix the fact that others already built on the commits I threw away.
 >
-> **What I usually do instead:** pull `main` into my branch with **`git merge origin/main`** (no force push), or agree upfront that this branch is **mine only** until the PR lands — then rebase is fine.
+> **What I usually do instead:** pull `develop` into my branch with **`git merge origin/develop`** (no force push), or agree upfront that this branch is **mine only** until the MR lands — then rebase is fine.
 {: .prompt-warning }
 
 ## 8. Notes
 
 _Small tangents and naming — not part of the command loops above._
 
-+ **Pull Request vs Merge Request** _GitHub’s **Pull Request** comes from the fork-and-contribute flow: I publish commits, then I ask someone to **pull** them into the upstream repo. GitLab’s **Merge Request** names the operation instead: **merge** this branch into the target branch. **Same review step, different metaphor.** I write **PR/MR** earlier in this post so readers from either platform know what I mean._
++ **Merge Request vs Pull Request** _I default to **Merge Request** in this post because that is my day-to-day wording. On GitHub, the equivalent term is **Pull Request**. **Same review step, different metaphor.** I mention both where it helps cross-platform readers._
