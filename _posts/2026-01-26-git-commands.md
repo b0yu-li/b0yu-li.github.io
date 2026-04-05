@@ -210,6 +210,8 @@ git commit -m "feat: implement my change"
 git push
 ```
 
++ **Staying current with `main` during development** _I don't follow a rigid schedule. I **`fetch`** and rebase onto `origin/main` **whenever it occurs to me** — or after I see `main` move — because **sooner is usually better** for overlap: conflicts stay smaller and I resolve them while the work is still fresh. If `main` is quiet, syncing mainly around PR time can be enough; if it moves fast, I integrate more often. On hectic weeks I sometimes use a light anchor (e.g. start of the day) so I don't accidentally stretch the gap._
+
 + **After I open the PR — same branch, more pushes** _The PR/MR tracks the **remote** feature branch, so I keep working locally on that branch and push as usual. New commits show up on the same review automatically._
 
 ```shell
