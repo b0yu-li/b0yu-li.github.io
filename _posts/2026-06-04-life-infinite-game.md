@@ -40,7 +40,7 @@ The framing comes from James Carse's _Finite and Infinite Games_. Simon Sinek la
 
 **A finite mindset asks: "Am I ahead?" An infinite mindset asks: "Am I still in?"**
 
-One question has a podium. The other has a path.
+The first question wants a **rank** — who's winning, who's behind, whether you're still on the podium. The second wants **motion** — whether you're still playing at all, even if the last few rounds went quiet.
 
 ```mermaid
 graph TD
@@ -85,7 +85,12 @@ You get passed over for a promotion. Finite-game thinking says: _"I lost. My car
 
 **Example 2: The relationship verdict.**
 
-A friendship fades after a move, a breakup, a fight that never fully healed. Finite-game thinking treats it like a final score: _"We failed."_ Infinite-game thinking asks a different question: _"Is there still a game worth playing here — honestly, gently, or from a distance?"_ Some connections end. But the habit of writing people off as "lost" can leak into every new connection before it has a chance to breathe.
+A friendship fades after a move, a breakup, or a fight that never fully healed.
+
++ **Finite-game thinking:** _"We failed. That friendship is over — case closed."_ You file the person under **lost** and move on as if the story has a final score.
++ **Infinite-game thinking:** _"This chapter changed. Is there still something worth tending — an honest talk, a gentle check-in, or simply respect from a distance?"_ You don't have to force closeness. You just don't treat every drift as proof that you **can't** do relationships.
+
+Some connections really do end, and that's fine. The risk is what happens **next**: if you start every new friendship already expecting it to fail — keeping people at arm's length, bailing at the first awkward moment, telling yourself _"why bother, it'll end anyway"_ — you're letting an old loss decide a new game before the new person gets a fair shot.
 
 **Example 3: The blog hiatus (mine).**
 
@@ -103,7 +108,7 @@ I could have waited until I had three polished drafts queued, a content calendar
 
 Instead, I sat down and wrote about **why I came back at all**.
 
-That is the infinite move: not the triumphant relaunch, but the quiet decision that the game is still worth playing. The words don't need to be my best work. They need to exist. Because existence is how you stay in.
+That is the infinite move: not the triumphant relaunch, but the quiet decision that the game is still worth playing. The words don't need to be my best work. They need to exist. Because existence is how I stay in.
 
 If you've been sitting on something — a blog, a side project, a conversation you've avoided, a skill you shelved after one bad attempt — this is the part I want you to hear:
 
@@ -129,11 +134,11 @@ Finite games reward spikes. Infinite games reward **direction**. Are you slightl
 
 ### 4. Change the Rules When You Must
 
-Infinite games evolve. Maybe the blog shifts from weekly essays to occasional deep dives. Maybe your career stops chasing titles and starts chasing problems you care about. **Rigid attachment to old rules is how finite players die inside infinite games** — still moving, but playing the wrong sport.
+Infinite games evolve. Maybe the blog shifts from weekly essays to occasional deep dives. Maybe your career stops chasing titles and starts chasing problems you care about. **Rigid attachment to old rules is how finite players stuggle inside infinite games** — still moving, but playing the wrong sport.
 
 ### 5. Let Other People Stay In Too
 
-An infinite mindset toward your own life pairs badly with a finite mindset toward others. If you treat every disagreement as a win/lose bout, every colleague as a rival, every ex-friend as a defeated opponent — you shrink the game until it's just you and the scoreboard. Generosity isn't softness. It's **keeping more players on the field**, which is how the game stays interesting.
+An infinite mindset toward your own life pairs BADLY with a finite mindset toward others. If you treat every disagreement as a win/lose bout, every colleague as a rival, every ex-friend as a defeated opponent — you shrink the game until it's just you and the scoreboard. Generosity isn't softness. It's **keeping more players on the field**, which is how the game stays interesting.
 
 ---
 
@@ -141,7 +146,7 @@ An infinite mindset toward your own life pairs badly with a finite mindset towar
 
 Life is not a tournament with a trophy and a closing ceremony. It's an infinite game — messy, unbounded, and still going whether you show up or not.
 
-Finite moments will keep happening: promotions, breakups, silent months, seasons where you're off the pace. You can feel the sting. You should. But the sting is information about a **round**, not a death sentence on the **game**.
+Finite moments will keep happening: promotions, breakups, silent months, seasons where you're off the pace. You can feel the sting. You should. But the sting is information about a **round**, not a **game over**.
 
 > The question isn't "Did I fall behind?" It's "Am I willing to play the next move?" I answered yes tonight. However long your pause has been — your next move is allowed to be small. It just has to be yours.
 {: .prompt-tip }
