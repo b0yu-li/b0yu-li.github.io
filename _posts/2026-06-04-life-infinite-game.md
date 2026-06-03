@@ -134,11 +134,11 @@ Finite games reward spikes. Infinite games reward **direction**. Are you slightl
 
 ### 4. Change the Rules When You Must
 
-Infinite games evolve. Maybe the blog shifts from weekly essays to occasional deep dives. Maybe your career stops chasing titles and starts chasing problems you care about. **Rigid attachment to old rules is how finite players stuggle inside infinite games** — still moving, but playing the wrong sport.
+Infinite games evolve. Maybe the blog shifts from weekly essays to occasional deep dives. Maybe your career stops chasing titles and starts chasing problems you care about. **Rigid attachment to old rules is how finite players struggle inside infinite games** — still moving, but playing the wrong sport.
 
 ### 5. Let Other People Stay In Too
 
-An infinite mindset toward your own life pairs BADLY with a finite mindset toward others. If you treat every disagreement as a win/lose bout, every colleague as a rival, every ex-friend as a defeated opponent — you shrink the game until it's just you and the scoreboard. Generosity isn't softness. It's **keeping more players on the field**, which is how the game stays interesting.
+An infinite mindset toward your own life pairs **badly** with a finite mindset toward others. If you treat every disagreement as a win/lose bout, every colleague as a rival, every ex-friend as a defeated opponent — you shrink the game until it's just you and the scoreboard. Generosity isn't softness. It's **keeping more players on the field**, which is how the game stays interesting.
 
 ---
 
@@ -146,7 +146,7 @@ An infinite mindset toward your own life pairs BADLY with a finite mindset towar
 
 Life is not a tournament with a trophy and a closing ceremony. It's an infinite game — messy, unbounded, and still going whether you show up or not.
 
-Finite moments will keep happening: promotions, breakups, silent months, seasons where you're off the pace. You can feel the sting. You should. But the sting is information about a **round**, not a **game over**.
+Finite moments will keep happening: promotions, breakups, silent months, seasons where you're off the pace. You can feel the sting. You should. But the sting is information about a **round**, **not a game over**.
 
 > The question isn't "Did I fall behind?" It's "Am I willing to play the next move?" I answered yes tonight. However long your pause has been — your next move is allowed to be small. It just has to be yours.
 {: .prompt-tip }
