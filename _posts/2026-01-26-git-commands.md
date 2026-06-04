@@ -322,11 +322,11 @@ _If my repo uses squash/rebase merge and `git branch -d` says "not fully merged,
 
 ---
 
-> If my feature branch is **shared** — someone else pushes to it, or bases their work on it — I treat **`git rebase` + `git push --force-with-lease` as a team decision**, not a solo convenience trick.
+> **Shared feature branch → I merge, I do not rebase.** If someone else pushes to the branch or bases their work on my commits, I stay current with **`git merge origin/develop`** (see **Stay current** above) so I do not rewrite history others already have.
 >
-> **Why:** Rebase and amend **replace commits** with new hashes. My collaborators may still have the old chain locally or in their MRs/PRs. After I force-push, their history and mine diverge in ways that are tedious to untangle (duplicate changes, confusing merges, “where did this commit go?”).
+> **Why I avoid rebase here:** rebase and amend **replace commits** with new hashes. My collaborators may still have the old chain locally or in their MRs/PRs. If I rebase and then force-push, our histories diverge in tedious ways (duplicate changes, confusing merges, “where did this commit go?”).
 >
-> **`--force-with-lease` helps, but it is not a green light for shared branches.** It only refuses to clobber the remote if the tip moved since my last `fetch`. It does **not** fix the fact that others already built on the commits I threw away.
+> **`--force-with-lease`** only guards the remote tip — it won’t push if someone else updated the branch since my last `fetch`. It does not update my teammates’ clones after I rebase and replace commits they may already have.
 >
-> **What I usually do instead:** pull `develop` into my branch with **`git merge origin/develop`** (no force push), or agree upfront that this branch is **mine only** until the MR lands — then rebase is fine.
+> **When rebase is fine:** the branch is **mine only** until the MR lands — or the team has explicitly agreed we may rebase and force-push on that branch.
 {: .prompt-warning }
