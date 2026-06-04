@@ -12,6 +12,8 @@ mermaid: true
 
 I recently switched IDEs and decided to rely more on the terminal. Here is a documentation of my most frequently used `git` commands.
 
+**How to read this post:** **§1–6** are quick reference cards; **§7** is my feature-branch workflow — when I rebase vs merge, and what Git is doing under the hood.
+
 ## 1. Setup & Configuration
 
 + **Initialize Repository**
@@ -154,6 +156,8 @@ git checkout -b <new_branch_name> <base_branch_name>
 git checkout -b feature-login main
 ```
 
+---
+
 ## 7. Feature branch development flow (vs trunk-based)
 
 In a **trunk-based** setup, I usually commit and push small changes to `main` quickly (sometimes directly, sometimes through very short-lived MRs). In a **feature branch** setup, I keep work isolated on a branch, then merge through an MR to `develop` after review.
@@ -190,33 +194,44 @@ flowchart LR
     end
 ```
 
+### Conventions in this section
+
++ **Integration branch:** In §7, **`develop`** is where approved work lands. If your team integrates into **`main`** instead, use `origin/main` everywhere I write `origin/develop` — the commands are the same.
++ **Merge Request vs Pull Request:** I default to **Merge Request** because that is my day-to-day wording. On GitHub, the equivalent is **Pull Request** — same review step, different metaphor.
++ **`origin/<branch>` is not the live remote.** Names like `origin/develop` are **remote-tracking refs**: local bookmarks updated by `git fetch`. I always `fetch` before I rebase or merge onto them.
+
+---
+
+### Start a branch
+
 + **Sync `develop` before I start**
+
 ```shell
 git fetch origin
 git checkout develop
 git pull origin develop --rebase
 ```
 
-+ **Create and publish the feature branch**
++ **Create and publish the feature branch** _Same idea as **Branching** §6 — here the base is `develop`._
+
 ```shell
 git checkout -b feature/my-change develop
 git push -u origin feature/my-change
 ```
 
-+ **Work in the branch with the same local loop**
+---
+
+### Work and review
+
++ **Work in the branch with the same local loop** _Same rhythm as **The Daily Loop** §2._
+
 ```shell
 git add .
 git commit -m "feat: implement my change"
 git push
 ```
 
-+ **Staying current with `develop` during development**
-    + I do not follow a rigid schedule.
-    + I `fetch` and rebase onto `origin/develop` whenever it occurs to me, or right after I notice `develop` moved.
-    + **Why I sync early:** conflicts are usually smaller, and I resolve them while context is still fresh.
-    + **How I adapt cadence:** if `develop` is quiet, syncing around MR time can be enough; if it moves fast, I integrate more often.
-
-+ **After I open the MR (PR on GitHub) — same branch, more pushes**
++ **After I open the MR — same branch, more pushes**
     + The MR tracks the remote feature branch.
     + I keep working on the same local branch and push as usual; new commits appear in the same review automatically.
 
@@ -226,9 +241,27 @@ git commit -m "fix: address review feedback"
 git push
 ```
 
-+ **Rebase onto `develop` when I need a fresh base**
-    + I prefer `git rebase` over merge so my branch history stays linear.
-    + I use the same commands before opening the MR, while the MR is open (for example, after `develop` moves), or when I need CI on a fresh base.
+---
+
+### Stay current on a feature branch
+
+**I pull `develop` (or `main`) into my feature branch while I am still working — not on a fixed schedule.**
+
++ I `fetch` and integrate whenever it occurs to me, or right after I notice the integration branch moved.
++ **Why I sync early:** conflicts are usually smaller, and I resolve them while context is still fresh.
++ **How I adapt cadence:** if `develop` is quiet, syncing around MR time can be enough; if it moves fast, I integrate more often.
+
+Every integration path below follows the same shape: **`fetch` → stay on the feature branch → rebase or merge onto `origin/<integration-branch>`**. I never run these while checked out on `develop` itself.
+
+| **I want…** | **I usually use…** | **Trade-off** |
+|---|---|---|
+| Linear history on a **solo** feature branch | `git rebase origin/develop` | Rewrites my commits; may need `--force-with-lease` if already pushed |
+| Updates **without** rewriting published commits | `git merge origin/develop` | May add a merge commit; normal `git push` afterward |
+| A **shared** feature branch (others push to it) | `git merge origin/develop` | See the warning at the end of §7 |
+
+#### Rebase onto the integration branch
+
++ I prefer rebase when the branch is **mine only** and I want a straight commit line before or during the MR.
 
 ```shell
 git fetch origin
@@ -236,58 +269,48 @@ git checkout feature/my-change
 git rebase origin/develop
 ```
 
-+ **What each line in that block does** — _Unpacking the three commands above — same shape as updating from `main` in **Syncing** (`git pull origin main --rebase`): refresh what the remote knows, then replay my commits on top of the latest integration branch. Here that branch is `develop`, so I target `origin/develop`._
-    + **Step 1 — Refresh remote state with `git fetch origin`:**
-        + `origin` is the remote alias. This `fetch` updates local remote-tracking refs (like `origin/develop`) without changing my working files.
-    + **Step 2 — Stay on my feature branch:**
-        + I run the rebase while checked out on `feature/my-change` (not on `develop` itself).
-    + **Step 3 — Rebase onto the refreshed base with `git rebase origin/develop`:**
-        + Git takes commits on my current branch that are not in `origin/develop` and replays them on top of the latest `origin/develop`.
-    + **Why this order matters:**
-        + I fetch first so I do not accidentally rebase onto stale remote history.
-+ **Merge the integration branch when I want updates without rewriting history**
-    + On a feature branch, **`git merge origin/main`** (or `origin/develop` in the flow above) means: bring the latest integration-branch commits *into* my current branch, instead of replaying my commits on top of them.
-    + **Same shape as rebase, different outcome** — I still `fetch`, stay on the feature branch, then integrate. Rebase moves my commits; merge moves *their* commits onto mine.
++ **What Git does:** take commits on my current branch that are not in `origin/develop`, and **replay** them on top of the latest `origin/develop`. Same idea as `git pull origin main --rebase` in **Syncing** §3 — here the integration branch is `develop`.
++ **Why `fetch` first:** so `origin/develop` is current; otherwise I rebase onto stale history.
+
+#### Merge the integration branch
+
++ On a feature branch, **`git merge origin/develop`** brings the integration branch's new commits **into** my branch instead of replaying mine on top.
 
 ```shell
 git fetch origin
 git checkout feature/my-change
-git merge origin/main
+git merge origin/develop
 ```
 
-+ **What each piece means (Git's view)**
-    + **`origin/main` is not "the remote."** It is a **remote-tracking ref**: a local bookmark for where `main` pointed on `origin` after my last `git fetch`. Until I fetch, it can be behind the real remote.
-    + **I run merge while checked out on the feature branch.** Git's current branch is `feature/my-change`; `origin/main` is only the *other* tip I am joining with.
-    + **What Git actually does:** find commits reachable from `origin/main` that are not already in my branch history, combine that work with mine, and record the result. My existing feature commits **keep the same hashes** — nothing is replayed.
-    + **If my branch simply lags behind `main`:** Git may **fast-forward** — move my branch pointer forward with no merge commit. If both sides have unique commits, Git creates a **merge commit** with two parents (my tip and `origin/main`).
-    + **Rebase vs merge in one line:** `git rebase origin/main` puts *my* commits on top of `main` and rewrites history; `git merge origin/main` pulls *main's* commits into my branch and preserves both lines of history (often with a merge commit).
-    + **Why I use this on a shared feature branch:** after merge I can usually **`git push` normally** — no `--force-with-lease`, because I did not replace commits I already published.
-+ **If merge conflicts appear:** edit the files, `git add` the resolutions, then finish with `git commit` (Git opens the merge commit message if needed). There is no `merge --continue` like `rebase --continue`; to cancel an in-progress merge, use `git merge --abort`.
-+ **If conflicts appear during rebase, I resolve files, then continue:**
++ **What Git does:** find commits in `origin/develop` that my branch does not have yet, combine them with my work, and move my branch tip forward. My existing feature commits **keep the same hashes**.
++ **Fast-forward vs merge commit:** if I have no unique commits, Git may fast-forward with no merge commit. If both sides diverged, Git records a **merge commit** with two parents.
++ **Rebase vs merge in one line:** rebase puts *my* commits on top of `develop` and rewrites history; merge pulls *develop's* commits into my branch and keeps both histories visible.
+
+#### Conflicts, push after rebase, and force-with-lease
+
++ **After a merge conflict:** edit files, `git add` resolutions, then `git commit` (merge message if Git prompts). Cancel with `git merge --abort`.
++ **After a rebase conflict:** edit files, `git add` resolutions, then:
 
 ```shell
-git add <resolved_files>
 git rebase --continue
-# Or bail out and return to pre-rebase state
+# Or return to pre-rebase state
 git rebase --abort
 ```
 
-+ **If I already pushed this branch before the rebase**
-    + Rebase rewrites commit hashes. If those commits were already pushed, local and remote history no longer line up, so a normal `git push` is rejected.
-    + The follow-up push usually needs `git push --force-with-lease`.
-    + I refresh `git fetch origin` before rebasing and before force-pushing so the lease compares against current remote state.
-
-+ **`git push --force-with-lease` after rebase or amend on published commits**
-    + I use this when I must replace the remote tip to match rewritten local history.
-    + `--force-with-lease` is a guarded force push: it only updates when the remote tip is still what I last fetched.
-    + If someone else pushed first, Git aborts instead of overwriting their commits.
-    + A plain `git push --force` skips this safety check.
++ **If I already pushed this branch before a rebase:** rebase replaces commit hashes, so a normal `git push` is rejected. I `fetch` again, then:
 
 ```shell
 git push --force-with-lease
 ```
 
-+ **Cleanup after merge** - I first update local `develop`, then remove the feature branch locally and on remote.
++ **`--force-with-lease` is a guarded force push** — it updates the remote only if the tip still matches what I last fetched. If someone else pushed first, Git aborts. A plain `git push --force` skips that check. I use this after rebase or amend on commits that were already published; I avoid it when others share the branch (see below).
+
+---
+
+### After the MR merges
+
++ I update local `develop`, then remove the feature branch locally and on the remote.
+
 ```shell
 git checkout develop
 git pull origin develop --rebase
@@ -297,6 +320,8 @@ git push origin --delete feature/my-change
 
 _If my repo uses squash/rebase merge and `git branch -d` says "not fully merged," I verify the branch is already in `develop`, then delete it with `git branch -D feature/my-change`._
 
+---
+
 > If my feature branch is **shared** — someone else pushes to it, or bases their work on it — I treat **`git rebase` + `git push --force-with-lease` as a team decision**, not a solo convenience trick.
 >
 > **Why:** Rebase and amend **replace commits** with new hashes. My collaborators may still have the old chain locally or in their MRs/PRs. After I force-push, their history and mine diverge in ways that are tedious to untangle (duplicate changes, confusing merges, “where did this commit go?”).
@@ -305,9 +330,3 @@ _If my repo uses squash/rebase merge and `git branch -d` says "not fully merged,
 >
 > **What I usually do instead:** pull `develop` into my branch with **`git merge origin/develop`** (no force push), or agree upfront that this branch is **mine only** until the MR lands — then rebase is fine.
 {: .prompt-warning }
-
-## 8. Notes
-
-_Small tangents and naming — not part of the command loops above._
-
-+ **Merge Request vs Pull Request** _I default to **Merge Request** in this post because that is my day-to-day wording. On GitHub, the equivalent term is **Pull Request**. **Same review step, different metaphor.** I mention both where it helps cross-platform readers._
