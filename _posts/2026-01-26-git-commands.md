@@ -245,7 +245,25 @@ git rebase origin/develop
         + Git takes commits on my current branch that are not in `origin/develop` and replays them on top of the latest `origin/develop`.
     + **Why this order matters:**
         + I fetch first so I do not accidentally rebase onto stale remote history.
-+ **If conflicts appear, I resolve files, then continue:**
++ **Merge the integration branch when I want updates without rewriting history**
+    + On a feature branch, **`git merge origin/main`** (or `origin/develop` in the flow above) means: bring the latest integration-branch commits *into* my current branch, instead of replaying my commits on top of them.
+    + **Same shape as rebase, different outcome** — I still `fetch`, stay on the feature branch, then integrate. Rebase moves my commits; merge moves *their* commits onto mine.
+
+```shell
+git fetch origin
+git checkout feature/my-change
+git merge origin/main
+```
+
++ **What each piece means (Git's view)**
+    + **`origin/main` is not "the remote."** It is a **remote-tracking ref**: a local bookmark for where `main` pointed on `origin` after my last `git fetch`. Until I fetch, it can be behind the real remote.
+    + **I run merge while checked out on the feature branch.** Git's current branch is `feature/my-change`; `origin/main` is only the *other* tip I am joining with.
+    + **What Git actually does:** find commits reachable from `origin/main` that are not already in my branch history, combine that work with mine, and record the result. My existing feature commits **keep the same hashes** — nothing is replayed.
+    + **If my branch simply lags behind `main`:** Git may **fast-forward** — move my branch pointer forward with no merge commit. If both sides have unique commits, Git creates a **merge commit** with two parents (my tip and `origin/main`).
+    + **Rebase vs merge in one line:** `git rebase origin/main` puts *my* commits on top of `main` and rewrites history; `git merge origin/main` pulls *main's* commits into my branch and preserves both lines of history (often with a merge commit).
+    + **Why I use this on a shared feature branch:** after merge I can usually **`git push` normally** — no `--force-with-lease`, because I did not replace commits I already published.
++ **If merge conflicts appear:** edit the files, `git add` the resolutions, then finish with `git commit` (Git opens the merge commit message if needed). There is no `merge --continue` like `rebase --continue`; to cancel an in-progress merge, use `git merge --abort`.
++ **If conflicts appear during rebase, I resolve files, then continue:**
 
 ```shell
 git add <resolved_files>
