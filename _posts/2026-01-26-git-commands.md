@@ -67,6 +67,40 @@ git log --oneline
 
 ## 3. Syncing
 
++ **Pull fast-forward only** _Catch up with the remote only when my branch can move forward cleanly — if local and remote have diverged, Git stops instead of creating a merge commit I did not plan for._
+
+```shell
+git pull origin main --ff-only
+```
+
+```mermaid
+graph TD
+    Pull["<b>git pull --ff-only</b><br/><i>fetch, then integrate</i>"]
+    Check{"<b>Fast-forward possible?</b><br/><i>Local strictly behind remote</i>"}
+    FF["<b>Branch tip moves forward</b><br/><i>No merge commit</i>"]
+    Fail["<b>Git refuses</b><br/><i>Local has commits remote lacks</i>"]
+    Next["<b>I inspect, then choose</b><br/><i>rebase or merge on purpose</i>"]
+
+    Pull --> Check
+    Check -->|Yes| FF
+    Check -->|No| Fail
+    Fail --> Next
+
+    classDef decision fill:#fff,stroke:#f57c00,stroke-width:2px,color:#000;
+    classDef outcome fill:#fff,stroke:#2e7d32,stroke-width:2px,color:#000;
+    classDef alert fill:#fff,stroke:#906,stroke-width:2px,color:#000;
+    classDef process fill:#fff,stroke:#0277bd,stroke-width:2px,color:#000;
+
+    class Pull process;
+    class Check decision;
+    class FF outcome;
+    class Fail,Next alert;
+```
+
++ **What it does:** same `fetch` + integrate as a normal `git pull`, but Git refuses unless a **fast-forward** is possible — my branch is strictly behind the remote, with no local-only commits blocking a straight pointer move.
++ **When I use it:** on **`main`** or **`develop`** when I only mirror the remote and do not commit on that branch locally. If pull fails, I inspect stray local commits before I rebase or merge on purpose.
++ **vs `git pull --rebase`:** `--rebase` replays my local commits on top of incoming changes; `--ff-only` does not — it either fast-forwards or errors. I reach for `--ff-only` when I expect no local commits; `--rebase` when I do.
+
 + **Pull with Rebase** _Keeps my history clean by moving my local commits on top of the incoming changes_.
 
 ```shell
@@ -204,12 +238,12 @@ flowchart LR
 
 ### Start a branch
 
-+ **Sync `develop` before I start**
++ **Sync `develop` before I start** _I do not commit on `develop` locally, so I often use `--ff-only` here — see **Syncing** §3. If pull fails, I check for stray local commits before I rebase or merge._
 
 ```shell
 git fetch origin
 git checkout develop
-git pull origin develop --rebase
+git pull origin develop --ff-only
 ```
 
 + **Create and publish the feature branch** _Same idea as **Branching** §6 — here the base is `develop`._
@@ -313,7 +347,7 @@ git push --force-with-lease
 
 ```shell
 git checkout develop
-git pull origin develop --rebase
+git pull origin develop --ff-only
 git branch -d feature/my-change
 git push origin --delete feature/my-change
 ```
