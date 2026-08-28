@@ -51,6 +51,14 @@ The site has two main tracks, reflected in categories and nav tabs:
 - **Plugin:** `jekyll-redirect-from` (for legacy URL redirects)
 - **TOC:** enabled globally for all posts
 
+## SEO & Google Search Console
+
+- **Property:** `https://roobystudio.com/` (verified in `_config.yml` → `webmaster_verifications.google`)
+- **Expected GSC status:** “Page with redirect” on legacy URLs is **normal, not an error**. Google indexes the destination (`/posts/:title/`), not the redirect source.
+- **Legacy URL patterns** (via `redirect_from` on early posts): `/tech/YYYY/MM/DD/slug.html`, `/update/...`, `/lead/...` → current permalink `/posts/:title/`
+- **When to act:** only if a **current** `/posts/...` URL shows as redirecting, points to the wrong page, or is missing from the indexed count (~59 pages as of Aug 2026).
+- **Where to inspect in GSC:** Page indexing → “Why pages aren't indexed” → **Page with redirect** (affected URLs); or **URL Inspection** (top bar) for a single URL’s redirect chain and canonical.
+
 ## What NOT to Touch
 
 - `_site/` — auto-generated, never edit directly
