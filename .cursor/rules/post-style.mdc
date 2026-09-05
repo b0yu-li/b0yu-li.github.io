@@ -30,6 +30,8 @@ alwaysApply: false
 - Place diagrams early (after the hook, before the deep-dive) so readers get the mental model upfront
 - Use Mermaid for flowcharts, sequences, comparisons, and decision trees
 - Add `mermaid: true` to front matter when a diagram is included
+- **Comparisons:** one diagram containing both sides; stack with `top --> bottom` and `direction LR` in each subgraph so text scale stays consistent — never a big model chart plus a smaller repeat (see visual-content rule)
+
 
 ### When to Use Diagrams
 

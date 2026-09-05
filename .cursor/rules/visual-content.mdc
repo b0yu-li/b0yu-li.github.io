@@ -97,34 +97,63 @@ graph TD
     class ResultYes,ResultNo outcome;
 ```
 
-### 4. Comparison (Side-by-Side)
+### 4. Comparison (One Diagram, Equal Scale)
+
+**Preference (Rooby Studio):** when contrasting two models (e.g. Linear vs Compounding), use **one** Mermaid diagram — not a big diagram plus a smaller repeat.
+
+**Required pattern:**
+
+1. Single `flowchart TB` with two subgraphs (one approach each)
+2. `direction LR` inside each subgraph
+3. Connect the subgraphs with `topRow --> bottomRow` so Mermaid **stacks** them full-width (without this edge, it often places them side-by-side and shrinks text)
+4. Do **not** duplicate the same chain in a second diagram at a different scale
+5. Keep label length in the same ballpark across rows so node boxes feel consistent
 
 ```mermaid
-graph LR
-    subgraph approach_a [Approach A]
-        A1["<b>Step 1</b>"]
-        A2["<b>Step 2</b>"]
-        A3["<b>Result</b>"]
+flowchart TB
+    subgraph approach_a ["Approach A"]
+        direction LR
+        A1["<b>Step 1</b><br/><i>Detail</i>"]
+        A2["<b>Step 2</b><br/><i>Detail</i>"]
+        A3["<b>Result</b><br/><i>Detail</i>"]
         A1 --> A2 --> A3
     end
 
-    subgraph approach_b [Approach B]
-        B1["<b>Step 1</b>"]
-        B2["<b>Step 2</b>"]
-        B3["<b>Result</b>"]
-        B1 --> B2 --> B3
+    subgraph approach_b ["Approach B"]
+        direction LR
+        B1["<b>Step 1</b><br/><i>Detail</i>"]
+        B2["<b>Step 2</b><br/><i>Detail</i>"]
+        B3["<b>Step 3</b><br/><i>Detail</i>"]
+        B4["<b>Result</b><br/><i>Detail</i>"]
+        B1 --> B2 --> B3 --> B4
     end
 
-    classDef groupA fill:#fff,stroke:#0277bd,stroke-width:2px,color:#000;
-    classDef groupB fill:#fff,stroke:#906,stroke-width:2px,color:#000;
+    approach_a --> approach_b
+
+    classDef groupA fill:#fff,stroke:#f57c00,stroke-width:2px,color:#000;
+    classDef groupB fill:#fff,stroke:#0277bd,stroke-width:2px,color:#000;
 
     class A1,A2,A3 groupA;
-    class B1,B2,B3 groupB;
+    class B1,B2,B3,B4 groupB;
 ```
+
+**Avoid:** two separate Mermaid blocks for the same contrast (one TD/LR intro + one compressed comparison) — text size will fight.
+
+**Side-by-side (`~~~`) is OK only when** each subgraph has ≤3 short nodes and a preview confirms labels stay readable.
 
 ---
 
 ## Mermaid Best Practices
+
+### Strict Left-to-Right + Consistent Scale
+
++ Prefer **one** comparison diagram that includes both sides — never a large model diagram plus a tiny repeat of the same nodes
++ Force stacked rows with `topSubgraph --> bottomSubgraph` (without that edge, Mermaid often lays subgraphs side-by-side and shrinks text)
++ Always set `direction LR` inside each comparison subgraph
++ Related diagrams in one section should share orientation (usually LR chains)
++ Prefer `flowchart` over bare `graph` for these diagrams
++ Loops that return to an earlier node: dashed back-edge (`-.->`) so the main chain still reads left-to-right
++ Side-by-side `~~~` only for short chains (≤3 nodes) after a visual check
 
 ### Styling for Dark Mode
 
@@ -160,6 +189,8 @@ classDef className fill:#fff,stroke:#colorCode,stroke-width:2px,color:#000;
 + Keep node count under **~10 nodes** for clarity
 + If a diagram grows too large, split it into multiple diagrams
 + Use subgraphs to group related nodes visually
++ For comparison subgraphs, always force `direction LR`
++ Prefer stacked full-width LR rows over side-by-side when scale would otherwise mismatch other diagrams on the page
 
 ---
 
@@ -172,6 +203,8 @@ classDef className fill:#fff,stroke:#colorCode,stroke-width:2px,color:#000;
 - [ ] Are node labels clear and concise (under 20 chars per line)?
 - [ ] Did I use dark-mode-safe styling (white fills, colored strokes)?
 - [ ] Is the node count under ~10 for readability?
+- [ ] If it's a comparison: **one** diagram with both sides, stacked via `top --> bottom`, each row `direction LR` — not two diagrams at different scales
+
 
 ---
 

@@ -86,9 +86,9 @@ bundle exec jekyll build
 
 ## Cover Image Generator
 
-Post headers live in `assets/images/headers/<slug>.png` (or `.jpg`) at **1200×630**. Prefer **PNG** for flat abstract covers (no JPEG banding); JPG uses quality **100** if you need it. Keep under ~600KB.
+Post headers live in `assets/images/headers/<slug>.png` (or `.jpg`) at **2400×1260** (2× OG). Prefer **PNG** (lossless). Keep under ~600KB.
 
-CLI fonts: `fraunces` · `didot` · `newyork` · `hoefler` · `baskerville` · `arial`. Default output is `.png`.
+CLI fonts: `fraunces` (bold default) · `didot` · `newyork` · `hoefler` · `baskerville` · `arial`. Default output is `.png`.
 
 **CLI (preferred — writes the file):**
 
