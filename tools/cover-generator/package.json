@@ -1,0 +1,12 @@
+{
+  "name": "rooby-cover-generator",
+  "private": true,
+  "type": "module",
+  "description": "CLI + browser tool for Rooby Studio post header images (1200×630, high JPEG quality)",
+  "scripts": {
+    "render": "node render.mjs"
+  },
+  "dependencies": {
+    "@napi-rs/canvas": "^0.1.80"
+  }
+}

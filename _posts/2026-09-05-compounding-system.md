@@ -7,7 +7,7 @@ categories: [ Journal, Philosophy ]
 tags: [ compounding, systems, habits, mindset, growth ]
 description: "Compounding isn't magic interest — it's a loop you design. The core model of a compounding system, and how to build one that keeps paying you back."
 mermaid: true
-image: /assets/images/headers/compounding-system.jpg
+image: /assets/images/headers/compounding-system.png
 ---
 
 <!-- Open with a concrete scene: something tiny that later became huge — writing, skill, fitness, or a broken loop that never compounded. -->

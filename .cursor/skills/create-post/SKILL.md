@@ -153,5 +153,6 @@ Then stub the body based on track:
 
 After creating the file, always remind:
 
-> **Next step:** Add a header image at `assets/images/headers/<slug>.jpg` (or `.png`) before publishing.  
-> Recommended size: 1200×630px.
+> **Next step:** Generate a header with the cover CLI:  
+> `cd tools/cover-generator && node render.mjs --title "Your Title" --slug <slug> --style hills --palette indigo-lime`  
+> Writes `assets/images/headers/<slug>.png` (1200×630). Browser UI optional: `python3 -m http.server 8765` in that folder.
