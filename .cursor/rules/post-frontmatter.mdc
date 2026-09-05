@@ -31,7 +31,7 @@ image: /assets/images/headers/<slug>.<ext>
 - **tags**: all lowercase, 3–6 values — e.g. `[ tech, graphql, api, rest ]`
 - **description**: double-quoted, 1–2 sentences, written for SEO
 - **image**: path to `/assets/images/headers/<slug>.jpg` (or `.png`); omit only for casual journal posts
-- Generate covers with `tools/cover-generator/` (1200×630 PNG preferred; JPG @ q100); see project conventions → Cover Image Generator
+- Generate covers with `tools/cover-generator/` (2400×1260 PNG preferred); see project conventions → Cover Image Generator
 
 ## Common Categories
 

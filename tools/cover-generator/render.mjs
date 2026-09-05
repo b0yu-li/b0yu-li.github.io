@@ -23,32 +23,32 @@ const DEFAULT_OUT_DIR = path.join(ROOT, "assets/images/headers");
 const FONT_CANDIDATES = [
   {
     id: "fraunces",
-    family: "CoverDisplay",
+    family: "Fraunces",
     paths: [path.join(__dirname, "fonts/Fraunces-Bold.ttf")],
   },
   {
     id: "didot",
-    family: "CoverDisplay",
+    family: "Didot",
     paths: ["/System/Library/Fonts/Supplemental/Didot.ttc"],
   },
   {
     id: "newyork",
-    family: "CoverDisplay",
+    family: "NewYork",
     paths: ["/System/Library/Fonts/NewYork.ttf"],
   },
   {
     id: "hoefler",
-    family: "CoverDisplay",
+    family: "Hoefler Text",
     paths: ["/System/Library/Fonts/Supplemental/Hoefler Text.ttc"],
   },
   {
     id: "baskerville",
-    family: "CoverDisplay",
+    family: "Baskerville",
     paths: ["/System/Library/Fonts/Supplemental/Baskerville.ttc"],
   },
   {
     id: "arial",
-    family: "CoverSans",
+    family: "Arial",
     paths: [
       "/System/Library/Fonts/Supplemental/Arial Bold.ttf",
       "/System/Library/Fonts/Supplemental/Arial.ttf",
@@ -67,7 +67,7 @@ function parseArgs(argv) {
     subtitleColor: "",
     titleSize: 78,
     seed: 42,
-    font: "didot",
+    font: "fraunces",
     out: "",
   };
 
@@ -176,8 +176,9 @@ async function main() {
   const ctx = canvas.getContext("2d");
 
   const p = PALETTES[args.palette];
-  // Serif display faces read better slightly lighter than ultra-black sans.
-  const weight = font.id === "arial" || font.id === "system" ? 800 : 600;
+  // Fraunces: heavy display weight (the bold look). Thin fashion serifs stay lighter.
+  const weight =
+    font.id === "fraunces" ? 800 : font.id === "arial" || font.id === "system" ? 800 : 600;
 
   renderCover(
     ctx,

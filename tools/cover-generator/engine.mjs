@@ -1,7 +1,7 @@
 /** Shared cover render engine (browser canvas + Node @napi-rs/canvas). */
 
-/** Design + export size (OG / Chirpy header ratio). */
-export const SCALE = 1;
+/** Design + export size (OG / Chirpy header ratio). SCALE=2 → 2400×1260 retina PNG. */
+export const SCALE = 2;
 export const W = 1200 * SCALE;
 export const H = 630 * SCALE;
 
