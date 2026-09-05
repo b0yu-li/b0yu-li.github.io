@@ -59,6 +59,31 @@ The site has two main tracks, reflected in categories and nav tabs:
 - **When to act:** only if a **current** `/posts/...` URL shows as redirecting, points to the wrong page, or is missing from the indexed count (~59 pages as of Aug 2026).
 - **Where to inspect in GSC:** Page indexing → “Why pages aren't indexed” → **Page with redirect** (affected URLs); or **URL Inspection** (top bar) for a single URL’s redirect chain and canonical.
 
+## Local Development
+
+First time (or after `Gemfile` / lockfile changes):
+
+```bash
+bundle install
+```
+
+Serve locally (live reload):
+
+```bash
+bundle exec jekyll serve --livereload
+```
+
++ **URL:** http://127.0.0.1:4000/
++ Post permalinks: http://127.0.0.1:4000/posts/<slug>/
++ Future-dated posts need `--future` (or set `date` to now / earlier)
++ Drafts in `_drafts/` need `--drafts`
+
+Build only (no server):
+
+```bash
+bundle exec jekyll build
+```
+
 ## What NOT to Touch
 
 - `_site/` — auto-generated, never edit directly
