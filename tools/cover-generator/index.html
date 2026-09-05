@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rooby Cover Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="cover.css" />
+</head>
+<body>
+  <aside class="panel">
+    <header class="panel-head">
+      <h1>Cover Generator</h1>
+      <p>Match Rooby header essence → export 1200×630 @ high JPEG quality</p>
+    </header>
+
+    <label>
+      Title
+      <textarea id="title" rows="3">The Compounding
+System</textarea>
+    </label>
+
+    <label>
+      Subtitle <span class="muted">(optional)</span>
+      <input id="subtitle" type="text" placeholder="e.g. Build the loop" />
+    </label>
+
+    <label>
+      Filename slug
+      <input id="slug" type="text" value="compounding-system" />
+    </label>
+
+    <label>
+      Style
+      <select id="style">
+        <option value="glow">Glow streak — Infinite Game / GraphQL</option>
+        <option value="hills" selected>Layered hills — Growth / Notes / Redis</option>
+        <option value="blobs">Organic blobs — Language Is the World</option>
+        <option value="waves">Soft bottom waves — Steel Thread</option>
+      </select>
+    </label>
+
+    <label>
+      Palette
+      <select id="palette">
+        <option value="violet">Violet glow</option>
+        <option value="indigo-lime" selected>Indigo + lime</option>
+        <option value="navy-gold">Navy + gold</option>
+        <option value="forest-coral">Forest + coral</option>
+        <option value="teal">Deep teal</option>
+        <option value="navy-ember">Navy + ember</option>
+      </select>
+    </label>
+
+    <div class="row">
+      <label>
+        Title color
+        <input id="titleColor" type="color" value="#b8f000" />
+      </label>
+      <label>
+        Subtitle color
+        <input id="subtitleColor" type="color" value="#ffffff" />
+      </label>
+    </div>
+
+    <div class="row">
+      <label>
+        Title size
+        <input id="titleSize" type="range" min="48" max="120" value="78" />
+      </label>
+      <label>
+        Seed
+        <input id="seed" type="number" value="42" />
+      </label>
+    </div>
+
+    <div class="actions">
+      <button type="button" id="randomize" class="btn ghost">Randomize seed</button>
+      <button type="button" id="redraw" class="btn ghost">Redraw</button>
+      <button type="button" id="download" class="btn primary">Download JPG</button>
+    </div>
+
+    <p class="hint">
+      Prefer CLI (writes the file):
+      <code>node render.mjs --title "…" --slug your-slug</code>
+      → <code>assets/images/headers/&lt;slug&gt;.jpg</code>.
+      Preview here via
+      <code>python3 -m http.server 8765</code>.
+    </p>
+  </aside>
+
+  <main class="stage-wrap">
+    <div class="stage-frame">
+      <canvas id="stage" width="1200" height="630" aria-label="Cover preview"></canvas>
+    </div>
+    <p class="meta">1200 × 630 · JPEG q100 · dark abstract covers</p>
+  </main>
+
+  <script type="module" src="cover.js"></script>
+</body>
+</html>

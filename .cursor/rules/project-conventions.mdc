@@ -84,6 +84,43 @@ Build only (no server):
 bundle exec jekyll build
 ```
 
+## Cover Image Generator
+
+Post headers live in `assets/images/headers/<slug>.png` (or `.jpg`) at **1200×630**. Prefer **PNG** for flat abstract covers (no JPEG banding); JPG uses quality **100** if you need it. Keep under ~600KB.
+
+CLI fonts: `fraunces` · `didot` · `newyork` · `hoefler` · `baskerville` · `arial`. Default output is `.png`.
+
+**CLI (preferred — writes the file):**
+
+```bash
+cd tools/cover-generator
+npm install   # once
+node render.mjs --title "The Compounding\nSystem" --slug compounding-system --style hills --palette indigo-lime
+```
+
+Output defaults to `assets/images/headers/<slug>.jpg`.
+
+**Browser UI (preview / tweak):**
+
+```bash
+cd tools/cover-generator && python3 -m http.server 8765
+```
+
+Open http://127.0.0.1:8765/
+
+**Visual essence** (match existing headers):
+
++ Dark atmospheric field (navy / violet / teal / forest) — not flat white
++ Soft abstract depth: layered hills, glow streak, organic blobs, or bottom waves
++ Centered bold sans title (Inter-like); optional secondary line
++ One high-contrast accent for title or subtitle; generous negative space
++ Styles map to prior covers: Glow → Infinite Game / GraphQL; Hills → Growth / Notes / Redis; Blobs → Language; Waves → Steel Thread
+
+| Flag | Values |
+|------|--------|
+| `--style` | `hills` · `glow` · `blobs` · `waves` |
+| `--palette` | `violet` · `indigo-lime` · `navy-gold` · `forest-coral` · `teal` · `navy-ember` |
+
 ## What NOT to Touch
 
 - `_site/` — auto-generated, never edit directly
