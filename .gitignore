@@ -26,3 +26,6 @@ package-lock.json
 _sass/vendors
 assets/js/dist
 .DS_Store
+
+# Local analysis / working notes (not published)
+logs/

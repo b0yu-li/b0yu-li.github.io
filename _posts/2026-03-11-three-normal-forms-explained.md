@@ -7,7 +7,7 @@ mermaid: true
 categories: [ Tech, Design ]
 tags: [ tech, database, design, normalization, sql ]
 description: "A practical walkthrough of the three normal forms (1NF, 2NF, 3NF) — with flawed tables and challenge questions — plus a four-step decomposition framework for splitting any messy table into clean, perpendicular pieces."
-image: /assets/images/headers/db-three-normal-forms.jpg
+image: /assets/images/headers/three-normal-forms-explained.jpg
 ---
 
 > A bad API can be versioned. A bad database schema haunts you forever.

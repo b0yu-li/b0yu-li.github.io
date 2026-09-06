@@ -7,7 +7,7 @@ categories: [ Tech, Design ]
 tags: [ tech, solid, principle, design ]
 description: "SOLID principle helps us write better code."
 image: /assets/images/headers/solid-principle.jpg
-pin: true
+pin: false
 ---
 
 This brochure consolidates everything I need to know about the **SOLID** principle.

@@ -7,7 +7,7 @@ categories: [ Tech, Tutorial ]
 tags: [ analytics, blog, goat-counter, privacy, tutorial ]
 redirect_from:
   - /tech/2026/01/06/goat-analytics.html
-image: /assets/images/headers/goatcounter.jpg
+image: /assets/images/headers/goat-analytics.jpg
 description: "Want to track your blog's traffic without invasive spying or annoying cookie banners? Learn how to set up GoatCounter—a lightweight, privacy-focused alternative to Google Analytics—in under 10 minutes."
 ---
 

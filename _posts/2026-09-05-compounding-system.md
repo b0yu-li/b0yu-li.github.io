@@ -8,6 +8,7 @@ tags: [ compounding, systems, habits, mindset, growth ]
 description: "Compounding isn't magic interest — it's a loop we can design. The core model of a compounding system, and how to build one that keeps paying me back."
 mermaid: true
 image: /assets/images/headers/compounding-system.png
+pin: true
 ---
 
 <!-- Open with a concrete scene: something tiny that later became huge — writing, skill, fitness, or a broken loop that never compounded. -->

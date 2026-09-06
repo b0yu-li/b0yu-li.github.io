@@ -7,7 +7,7 @@ categories: [ Journal, Life ]
 tags: [ introduction, life ]
 redirect_from:
   - /update/2026/01/05/my-first-post.html
-image: /assets/images/headers/hello.png
+image: /assets/images/headers/my-first-post.png
 description: "Meet Boyu—building Pixel Bot, writing about databases, reading wuxia on a handheld, and still blending code with music. A living intro and recent updates."
 ---
 
