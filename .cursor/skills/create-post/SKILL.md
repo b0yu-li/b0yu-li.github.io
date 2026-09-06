@@ -156,3 +156,15 @@ After creating the file, always remind:
 > **Next step:** Generate a header with the cover CLI:  
 > `cd tools/cover-generator && node render.mjs --title "Your Title" --slug <slug> --style hills --palette indigo-lime`  
 > Writes `assets/images/headers/<slug>.png` (2400×1260). Browser UI optional: `python3 -m http.server 8765` in that folder.
+
+---
+
+## Phase 5 — Promote on X (after live)
+
+When the post is **published** on `https://roobystudio.com/posts/<slug>/` (or the user asks to promote), follow the **promote-x** skill:
+
++ Draft 1–2 X posts (insight-first, URL on its own line)
++ Offer the Twitter intent URL for one-click compose
++ Account: `@b0yu_li`
+
+Do **not** draft X copy for unpublished drafts unless the user explicitly wants a scheduled promo queued for later.
