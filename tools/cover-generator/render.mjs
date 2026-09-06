@@ -13,7 +13,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createCanvas, GlobalFonts } from "@napi-rs/canvas";
-import { H, JPEG_QUALITY, PALETTES, W, renderCover, slugify } from "./engine.mjs";
+import { H, JPEG_QUALITY, PALETTES, STYLES, W, renderCover, slugify } from "./engine.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "../..");
@@ -140,6 +140,7 @@ function registerFont(preferredId) {
 
 function printHelp() {
   const palettes = Object.keys(PALETTES).join(", ");
+  const styles = STYLES.join("|");
   const fonts = FONT_CANDIDATES.map((f) => f.id).join(", ");
   console.log(`Rooby cover renderer
 
@@ -147,7 +148,7 @@ Options:
   --title "Line one\\nLine two"
   --subtitle "Optional"
   --slug compounding-system
-  --style hills|glow|blobs|waves
+  --style ${styles}
   --palette ${palettes}
   --font ${fonts}
   --title-color #f3e6d0
@@ -163,6 +164,10 @@ async function main() {
   if (args.help) {
     printHelp();
     return;
+  }
+
+  if (!STYLES.includes(args.style)) {
+    throw new Error(`Unknown style "${args.style}". Choose: ${STYLES.join(", ")}`);
   }
 
   if (!PALETTES[args.palette]) {
