@@ -8,6 +8,22 @@ export const H = 630 * SCALE;
 /** JPEG quality 0–100 (CLI) / 0–1 (browser). Max quality to limit banding on flats. */
 export const JPEG_QUALITY = 100;
 
+/**
+ * Abstract background themes (shape language — pick independently from palette).
+ * hills/waves share undulating silhouettes; the rest are intentionally different.
+ */
+export const STYLES = [
+  "glow",
+  "hills",
+  "blobs",
+  "waves",
+  "aurora",
+  "rings",
+  "mesh",
+  "beams",
+];
+
+/** Background + default title/subtitle color combinations. */
 export const PALETTES = {
   violet: {
     top: "#0a0612",
@@ -63,6 +79,42 @@ export const PALETTES = {
     hill: ["#050508", "#0a1020", "#101c38", "#182848"],
     title: "#ff4433",
     subtitle: "#ffffff",
+  },
+  "plum-cream": {
+    top: "#1a0e28",
+    mid: "#2e1848",
+    accent: "#f3e6d0",
+    glow: "#a86bff",
+    hill: ["#140a20", "#241438", "#3a2060", "#563088", "#6e48a0"],
+    title: "#f3e6d0",
+    subtitle: "#d4b8f0",
+  },
+  "midnight-cyan": {
+    top: "#020618",
+    mid: "#061830",
+    accent: "#4df0ff",
+    glow: "#2a7cff",
+    hill: ["#020610", "#061428", "#0a2440", "#103858", "#184868"],
+    title: "#4df0ff",
+    subtitle: "#e8f8ff",
+  },
+  "wine-rose": {
+    top: "#14080e",
+    mid: "#2a1018",
+    accent: "#ff8fa8",
+    glow: "#ff4d6d",
+    hill: ["#10060a", "#1e0c14", "#32101c", "#4a1828", "#602030"],
+    title: "#ffe4ec",
+    subtitle: "#ff8fa8",
+  },
+  "violet-cyan": {
+    top: "#0c0618",
+    mid: "#1a0a38",
+    accent: "#5ef0d8",
+    glow: "#b44dff",
+    hill: ["#0a0414", "#160a30", "#2a1460", "#3d2088", "#5430a8"],
+    title: "#5ef0d8",
+    subtitle: "#e8d4ff",
   },
 };
 
@@ -219,6 +271,159 @@ function drawWaves(ctx, p, rand) {
   }
 }
 
+/** Vertical aurora ribbons — not hills. */
+function drawAurora(ctx, p, rand) {
+  fillBase(ctx, p);
+
+  const veil = ctx.createLinearGradient(0, 0, 0, H);
+  veil.addColorStop(0, "rgba(0,0,0,0.55)");
+  veil.addColorStop(0.45, "rgba(0,0,0,0)");
+  veil.addColorStop(1, "rgba(0,0,0,0.35)");
+  ctx.fillStyle = veil;
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.save();
+  ctx.globalCompositeOperation = "screen";
+  for (let i = 0; i < 6; i++) {
+    const cx = W * (0.12 + i * 0.15 + rand() * 0.04);
+    const tilt = (rand() - 0.5) * 0.35;
+    const bandW = (70 + rand() * 90) * SCALE;
+    ctx.save();
+    ctx.translate(cx, H * 0.5);
+    ctx.rotate(tilt);
+    const g = ctx.createLinearGradient(0, -H * 0.55, 0, H * 0.55);
+    const c = i % 2 === 0 ? p.glow : p.accent;
+    g.addColorStop(0, "rgba(0,0,0,0)");
+    g.addColorStop(0.25, hexAlpha(c, 0.05));
+    g.addColorStop(0.5, hexAlpha(c, 0.45));
+    g.addColorStop(0.75, hexAlpha(c, 0.12));
+    g.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = g;
+    ctx.fillRect(-bandW / 2, -H * 0.55, bandW, H * 1.1);
+    ctx.restore();
+  }
+  ctx.restore();
+}
+
+/** Concentric rings / pulse — club / drop energy. */
+function drawRings(ctx, p, rand) {
+  fillBase(ctx, p);
+
+  const cx = W * (0.5 + (rand() - 0.5) * 0.12);
+  const cy = H * (0.55 + (rand() - 0.5) * 0.1);
+
+  const core = ctx.createRadialGradient(cx, cy, 0, cx, cy, W * 0.55);
+  core.addColorStop(0, hexAlpha(p.glow, 0.35));
+  core.addColorStop(0.35, hexAlpha(p.accent, 0.12));
+  core.addColorStop(1, "rgba(0,0,0,0)");
+  ctx.fillStyle = core;
+  ctx.fillRect(0, 0, W, H);
+
+  for (let i = 0; i < 7; i++) {
+    const r = (90 + i * 55 + rand() * 12) * SCALE;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.strokeStyle = hexAlpha(i % 2 === 0 ? p.accent : p.glow, 0.18 - i * 0.018);
+    ctx.lineWidth = (2.5 + (i % 3)) * SCALE;
+    ctx.stroke();
+  }
+
+  const edge = ctx.createRadialGradient(cx, cy, W * 0.2, cx, cy, W * 0.75);
+  edge.addColorStop(0, "rgba(0,0,0,0)");
+  edge.addColorStop(1, "rgba(0,0,0,0.45)");
+  ctx.fillStyle = edge;
+  ctx.fillRect(0, 0, W, H);
+}
+
+/** Soft node mesh / constellation grid. */
+function drawMesh(ctx, p, rand) {
+  fillBase(ctx, p);
+
+  const cols = 6;
+  const rows = 4;
+  const nodes = [];
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      nodes.push({
+        x: W * ((col + 0.5) / cols) + (rand() - 0.5) * 40 * SCALE,
+        y: H * ((row + 0.35) / rows) + (rand() - 0.5) * 30 * SCALE,
+      });
+    }
+  }
+
+  ctx.lineWidth = 1.5 * SCALE;
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const a = nodes[i];
+      const b = nodes[j];
+      const dx = a.x - b.x;
+      const dy = a.y - b.y;
+      const dist = Math.hypot(dx, dy);
+      if (dist > W * 0.28) continue;
+      ctx.strokeStyle = hexAlpha(p.accent, 0.08 + (1 - dist / (W * 0.28)) * 0.14);
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.stroke();
+    }
+  }
+
+  for (let i = 0; i < nodes.length; i++) {
+    const n = nodes[i];
+    const r = (4 + rand() * 6) * SCALE;
+    const g = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, r * 6);
+    g.addColorStop(0, hexAlpha(i % 3 === 0 ? p.glow : p.accent, 0.55));
+    g.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, r * 6, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = hexAlpha("#ffffff", 0.55);
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, r * 0.45, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+/** Diagonal light beams / shards. */
+function drawBeams(ctx, p, rand) {
+  fillBase(ctx, p);
+
+  const originX = W * (0.15 + rand() * 0.2);
+  const originY = H * (0.75 + rand() * 0.15);
+
+  ctx.save();
+  ctx.globalCompositeOperation = "screen";
+  for (let i = 0; i < 9; i++) {
+    const angle = -1.15 + i * 0.18 + (rand() - 0.5) * 0.05;
+    const len = W * (0.9 + rand() * 0.25);
+    const spread = (18 + i * 4 + rand() * 10) * SCALE;
+    ctx.save();
+    ctx.translate(originX, originY);
+    ctx.rotate(angle);
+    const g = ctx.createLinearGradient(0, 0, len, 0);
+    const c = i % 2 === 0 ? p.glow : p.accent;
+    g.addColorStop(0, hexAlpha(c, 0.5));
+    g.addColorStop(0.45, hexAlpha(c, 0.18));
+    g.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(len, -spread);
+    ctx.lineTo(len, spread);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  }
+  ctx.restore();
+
+  const fade = ctx.createLinearGradient(0, 0, 0, H * 0.4);
+  fade.addColorStop(0, "rgba(0,0,0,0.5)");
+  fade.addColorStop(1, "rgba(0,0,0,0)");
+  ctx.fillStyle = fade;
+  ctx.fillRect(0, 0, W, H * 0.4);
+}
+
 function wrapLines(ctx, text, maxWidth, font) {
   ctx.font = font;
   const raw = text.replace(/\r/g, "").split("\n");
@@ -263,7 +468,7 @@ function drawText(ctx, state, fontFamily, fontWeight = 800) {
     titleLines.length * titleLineH + (sub ? subSize * 1.6 + 18 * SCALE : 0);
   let y = H * 0.48 - blockH / 2 + titleLineH / 2;
 
-  if (state.style === "hills" || state.style === "waves") {
+  if (state.style === "hills" || state.style === "waves" || state.style === "beams") {
     y -= H * 0.04;
   }
 
@@ -317,6 +522,18 @@ export function renderCover(ctx, state, opts = {}) {
       break;
     case "waves":
       drawWaves(ctx, p, rand);
+      break;
+    case "aurora":
+      drawAurora(ctx, p, rand);
+      break;
+    case "rings":
+      drawRings(ctx, p, rand);
+      break;
+    case "mesh":
+      drawMesh(ctx, p, rand);
+      break;
+    case "beams":
+      drawBeams(ctx, p, rand);
       break;
     case "hills":
     default:

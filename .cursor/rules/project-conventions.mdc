@@ -111,15 +111,16 @@ Open http://127.0.0.1:8765/
 **Visual essence** (match existing headers):
 
 + Dark atmospheric field (navy / violet / teal / forest) — not flat white
-+ Soft abstract depth: layered hills, glow streak, organic blobs, or bottom waves
++ Soft abstract depth: hills, glow, blobs, waves, aurora ribbons, rings, mesh, or beams
 + Centered bold sans title (Inter-like); optional secondary line
 + One high-contrast accent for title or subtitle; generous negative space
-+ Styles map to prior covers: Glow → Infinite Game / GraphQL; Hills → Growth / Notes / Redis; Blobs → Language; Waves → Steel Thread
++ Styles map to prior covers: Glow → Infinite Game / GraphQL; Hills → Growth / Notes / Redis; Blobs → Language; Waves → Steel Thread; plus Aurora, Rings, Mesh, Beams for non-hill abstracts
++ Palettes pair background tones with default title/subtitle colors (override with `--title-color` / `--subtitle-color`)
 
 | Flag | Values |
 |------|--------|
-| `--style` | `hills` · `glow` · `blobs` · `waves` |
-| `--palette` | `violet` · `indigo-lime` · `navy-gold` · `forest-coral` · `teal` · `navy-ember` |
+| `--style` | `hills` · `glow` · `blobs` · `waves` · `aurora` · `rings` · `mesh` · `beams` |
+| `--palette` | `violet` · `indigo-lime` · `navy-gold` · `forest-coral` · `teal` · `navy-ember` · `plum-cream` · `midnight-cyan` · `wine-rose` · `violet-cyan` |
 
 ## What NOT to Touch
 
