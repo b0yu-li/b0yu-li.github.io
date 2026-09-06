@@ -50,6 +50,8 @@ The site has two main tracks, reflected in categories and nav tabs:
 - **Pagination:** 10 posts per page
 - **Plugin:** `jekyll-redirect-from` (for legacy URL redirects)
 - **TOC:** enabled globally for all posts
+- **X / Twitter:** `@b0yu_li` (`twitter.username`); post share button via `_data/share.yml`
+- **Promote after publish:** use skill `.cursor/skills/promote-x` — insight-first draft + canonical URL
 
 ## SEO & Google Search Console
 
