@@ -7,7 +7,7 @@ mermaid: true
 categories: [ Journal, Leadership ]
 tags: [ lead, strategy, playbook, clarity, seniority ]
 description: "The true mark of a senior engineer or leader isn't the ability to give orders. It's the ability to absorb ambiguity and project clarity."
-image: /assets/images/headers/leadership-clarity.jpg
+image: /assets/images/headers/clarity-over-authority.jpg
 ---
 
 A common trap in our industry is confusing **seniority** with **authority**. 

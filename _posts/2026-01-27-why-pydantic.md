@@ -6,7 +6,7 @@ date: 2026-01-27 17:11:00 +0800
 categories: [ Tech, AI ]
 tags: [ tech, AI, Pydantic, python ]
 description: "Why Pydantic is crucial for robust AI workflows. It's not just a validator; it's a smart parser that enforces strict data contracts for LLMs."
-image: /assets/images/headers/pydantic.jpg
+image: /assets/images/headers/why-pydantic.jpg
 ---
 
 ## 1. Why Pydantic

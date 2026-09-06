@@ -6,7 +6,7 @@ date: 2026-01-15 16:02:00 +0800
 mermaid: true
 categories: [ Journal, Productivity ]
 tags: [ journaling, career, growth, mental-health ]
-image: /assets/images/headers/3-writing-tools.jpg
+image: /assets/images/headers/three-writing-tools.jpg
 description: "Feeling heavy, numb, or confused? Here is a toolkit of three writing styles to help you process reality, including a case study on reframing career disappointment."
 ---
 

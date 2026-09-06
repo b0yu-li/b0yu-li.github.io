@@ -8,6 +8,7 @@ tags: [ trance, music, producer, studio, craft ]
 description: "Trance job in three words — Energy, Euphoria, Emotion. A floor-simple map you can use while listening, mixing, or arranging."
 mermaid: true
 image: /assets/images/headers/trance-3es-energy-euphoria-emotion.png
+pin: true
 ---
 
 Trance job in three words:

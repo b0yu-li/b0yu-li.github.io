@@ -5,7 +5,7 @@ author: boyu
 date: 2026-01-06 11:42:00 +0800
 categories: [ Tech, Java ]
 tags: [ tech, java, stream, utility, cheatsheet ]
-image: /assets/images/headers/java-stream-operations.jpg
+image: /assets/images/headers/common-java-stream-operations.jpg
 description: "An evolving cheatsheet for essential Java Stream operations. Stop searching for syntax and grab quick solutions for tasks like creating frequency maps with Collectors.groupingBy."
 redirect_from:
   - /tech/2026/01/06/common-java-stream-operations.html

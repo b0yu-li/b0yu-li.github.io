@@ -7,6 +7,7 @@ categories: [ Tech, Agile ]
 tags: [ steel-thread, poc, value ]
 description: "Stop building horizontal layers that don't connect. Learn how 'Steel Threading' helps you deliver end-to-end value from Day 1."
 image: /assets/images/headers/steel-thread.jpg
+pin: true
 ---
 
 ## The Layered Cake Trap
