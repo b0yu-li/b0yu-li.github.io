@@ -2,7 +2,7 @@
 layout: post
 title: "Understanding Compaction in Pi: Why It Exists and Why It's Explicit"
 author: boyu
-date: 2026-10-07 14:00:00 +0800
+date: 2026-10-07 15:50:00 +0800
 categories: [ Tech, AI ]
 tags: [ tech, pi, ai-agent, context-management, compaction, llm ]
 description: "Compaction is Pi's intelligent context management system that summarizes older messages to free up context space. But why does it exist, and why is it exposed as an explicit /compact command instead of working invisibly? Let's explore the design philosophy behind this feature."
@@ -41,15 +41,65 @@ The compaction process follows these steps:
 
 **Visual example:**
 
-```
-Before compaction:
-  entries: [header, user, assistant, tool, user, assistant, tool, tool, assistant, tool]
-           └─────────────────────────┘ └──────────────────────────────────────┘
-           messages to summarize      kept messages (recent 20k tokens)
+Imagine a 2-hour coding session where you've been refactoring authentication:
 
-After compaction:
-  entries: [..., compaction_summary, kept messages...]
 ```
+BEFORE COMPACTION (context: 95k tokens — approaching limit)
+
+  ┌─────────────────────────────────────────────────────────────────────┐
+  │ Entry 1: User asks about auth requirements              (2k tokens) │
+  │ Entry 2: Assistant explains JWT vs session tokens        (3k tokens)│
+  │ Entry 3: User chooses JWT, asks for implementation       (1k tokens)│
+  │ Entry 4: Assistant reads auth.config.ts                   (8k tokens)│
+  │ Entry 5: Assistant proposes JWT middleware code           (5k tokens)│
+  │ Entry 6: User approves, asks to implement                 (1k tokens)│
+  │ Entry 7: Assistant edits src/middleware/auth.ts          (12k tokens)│
+  │ Entry 8: Tool result: file updated successfully           (2k tokens)│
+  │ Entry 9: User reports test failure                        (1k tokens)│
+  │ Entry 10: Assistant reads test file                       (6k tokens)│
+  │ Entry 11: Assistant debugs and fixes the issue           (15k tokens)│
+  │ Entry 12: User confirms tests pass, asks about refresh    (2k tokens)│
+  │ Entry 13: Assistant explains refresh token strategy       (8k tokens)│
+  │ Entry 14: Assistant edits refresh logic                  (10k tokens)│
+  │ Entry 15: User asks about security implications           (1k tokens)│
+  │ Entry 16: Assistant explains security best practices      (7k tokens)│
+  │ Entry 17: User says "let's move to the next feature"     (1k tokens)│
+  └─────────────────────────────────────────────────────────────────────┘
+                                    ↑
+                          Context limit approaching!
+                          Need to free up space...
+
+
+AFTER COMPACTION (context: 25k tokens — plenty of room)
+
+  ┌─────────────────────────────────────────────────────────────────────┐
+  │ [COMPACTION SUMMARY]                                    (8k tokens) │
+  │                                                                     │
+  │ "We implemented JWT authentication with refresh tokens.              │
+  │  Key decisions:                                                      │
+  │  - Chose JWT over session-based auth                                 │
+  │  - Created middleware in src/middleware/auth.ts                      │
+  │  - Fixed token validation bug in tests                               │
+  │  - Implemented refresh token strategy                                │
+  │  - Applied security best practices (short expiry, secure flags)"     │
+  │                                                                     │
+  │ Files modified: auth.config.ts, src/middleware/auth.ts               │
+  └─────────────────────────────────────────────────────────────────────┘
+  ┌─────────────────────────────────────────────────────────────────────┐
+  │ Entry 15: User asks about security implications           (1k token)│
+  │ Entry 16: Assistant explains security best practices      (7k tokens)│
+  │ Entry 17: User says "let's move to the next feature"     (1k tokens)│
+  │ Entry 18: [NEW WORK CONTINUES HERE — plenty of context space!]       │
+  └─────────────────────────────────────────────────────────────────────┘
+
+Result: 14 entries → 1 summary + 3 recent entries
+Token usage: 95k → 25k (saved 70k tokens!)
+Context preserved: All key decisions and file changes
+```
+
+Notice what happened: the **essence** of the earlier work (decisions, file changes, bugs fixed) is preserved in the summary, while the **verbose details** (exact code, tool outputs, back-and-forth) are compressed. The recent entries — where you're about to start the next feature — remain intact so the model has full context for what comes next.
+
+This is the key insight: compaction doesn't delete your work. It **distills** it.
 
 ### Key Features
 
@@ -253,7 +303,3 @@ So the next time you use `/compact`, remember: it's not just a command, it's a d
 - [Compaction Reference](https://pi.dev/docs/latest/compaction) - Technical details
 - [Sessions and Context](https://pi.dev/docs/latest/sessions) - User workflow guide
 - [Session Format](https://pi.dev/docs/latest/session-format) - How entries are stored
-
----
-
-*Have questions about compaction or other Pi features? Check out the [Pi documentation](https://pi.dev/docs) or join the community.*
