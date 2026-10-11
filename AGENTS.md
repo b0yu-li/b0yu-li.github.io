@@ -26,6 +26,7 @@ Categories used: Tech, Backend, Frontend, Journal, Philosophy, Music, AI.
 
 ## Writing Guidelines
 
+- **Always write in first-person perspective** ("I do this", "I've learned", "my process") — avoid second-person instructional tone ("you should", "you need to")
 - Use short, direct sentences
 - Start with concrete examples before abstract concepts
 - Use Mermaid diagrams for workflows and architecture
